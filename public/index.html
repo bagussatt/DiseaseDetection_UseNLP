@@ -6,35 +6,81 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@0.0.3/lib/p5.speech.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        html, body {
+            height: 100%;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
         }
+
         h4 {
-            text-align: center;
+            text-align: center; 
+            padding: 20px;
+            color: #444;
         }
+
         .container {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .box {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            height: 100vh;
             padding: 20px;
-            width: 30%;
+            box-sizing: border-box;
         }
+
+        .box {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
+        h5 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
         #view {
-            height: 100px;
+            flex: 1;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             background-color: #e9ecef;
             overflow-y: auto;
+            margin-bottom: 10px;
         }
+
         button {
             display: block;
             margin: 0 auto;
@@ -44,7 +90,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
@@ -76,7 +124,6 @@
         </div>
     </div>
     
-
     <script src="sketch.js"></script>
 </body>
 </html>

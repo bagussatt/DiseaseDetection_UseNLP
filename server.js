@@ -7,7 +7,7 @@ const port = 3000;
 
 // Middleware untuk parsing data formulir
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public')); // Menyajikan file statis dari folder public
+app.use(express.static('public')); 
 
 // Inisialisasi Naive Bayes Classifier
 const classifier = new natural.BayesClassifier();
