@@ -26,7 +26,7 @@ function deteksiGejala(teks) {
                 break;
             }
         }
-        if (hasil.penyakit) break; // Keluar dari loop jika penyakit sudah terdeteksi
+        if (hasil.penyakit) break;
     }
 
     // Memberikan saran berdasarkan penyakit yang terdeteksi
