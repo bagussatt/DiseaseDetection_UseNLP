@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { deteksiGejala } = require('./nlp'); // Pastikan ini sesuai dengan nama file Anda
+const { deteksiGejala } = require('./nlp'); // Mengimpor fungsi dari nlp.js
 
 const app = express();
 const port = 3000;
@@ -15,17 +15,34 @@ app.get('/', (req, res) => {
 });
 
 // Route untuk memproses teks
-app.post('/process', (req, res) => {
+app.post('/process', async (req, res) => {
     const inputText = req.body.inputText;
-    const hasilDeteksi = deteksiGejala(inputText);
+    const intent = await deteksiGejala(inputText); // Menggunakan fungsi deteksi gejala
 
-    if (hasilDeteksi.penyakit) {
-        res.send(`Penyakit terdeteksi: ${hasilDeteksi.penyakit}<br>
-                  Saran obat: ${hasilDeteksi.saranObat}<br>
-                  Saran dokter: ${hasilDeteksi.saranDokter}`);
-    } else {
-        res.send('Tidak ada gejala yang terdeteksi.');
+    // Menentukan saran berdasarkan intent
+    let saranObat = '';
+    let saranDokter = '';
+
+    switch (intent) {
+        case 'gejala.flu':
+            saranObat = 'Obat yang disarankan: Paracetamol untuk demam dan batuk.';
+            saranDokter = 'Saran: Istirahat yang cukup dan minum banyak cairan.';
+            break;
+        case 'gejala.diare':
+            saranObat = 'Obat yang disarankan: Loperamide untuk diare.';
+            saranDokter = 'Saran: Pastikan untuk tetap terhidrasi.';
+            break;
+        case 'gejala.hipertensi':
+            saranObat = 'Obat yang disarankan: Obat antihipertensi sesuai resep dokter.';
+            saranDokter = 'Saran: Periksa tekanan darah secara rutin.';
+            break;
+        default:
+            saranObat = 'Gejala tidak terdeteksi. Silakan konsultasikan dengan dokter.';
+            saranDokter = '';
+            break;
     }
+
+    res.send(`Hasil deteksi: ${intent}<br>${saranObat}<br>${saranDokter}`);
 });
 
 // Jalankan server
