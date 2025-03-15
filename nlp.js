@@ -1,28 +1,59 @@
-const { NlpManager } = require('node-nlp');
+const natural = require('natural');
+const { WordTokenizer, PorterStemmer } = natural;
+const tokenizer = new WordTokenizer();
 
-// Membuat instance NlpManager
-const manager = new NlpManager({ languages: ['id'] });
+const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke', 'itu', 'ini'];
+const keywords = {
+    flu: {
+        keywords: ['demam', 'batuk', 'pilek', 'sakit kepala', 'nyeri otot'],
+        saranObat: 'Obat yang disarankan: Paracetamol untuk demam dan batuk.',
+        saranDokter: 'Saran: Istirahat yang cukup dan minum banyak cairan.'
+    },
+    diare: {
+        keywords: ['diare', 'nyeri perut', 'mual', 'kram perut'],
+        saranObat: 'Obat yang disarankan: Loperamide untuk diare.',
+        saranDokter: 'Saran: Pastikan untuk tetap terhidrasi.'
+    },
+    hipertensi: {
+        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'lemas'],
+        saranObat: 'Obat yang disarankan: Obat antihipertensi sesuai resep dokter.',
+        saranDokter: 'Saran: Periksa tekanan darah secara rutin.'
+    }
+};
 
-// Menambahkan dokumen pelatihan untuk mendeteksi gejala
-manager.addDocument('id', 'saya merasa demam dan batuk', 'gejala.flu');
-manager.addDocument('id', 'saya mengalami diare', 'gejala.diare');
-manager.addDocument('id', 'saya merasa pusing dan tekanan darah tinggi', 'gejala.hipertensi');
-manager.addDocument('id', 'saya batuk dan pilek', 'gejala.flu');
-manager.addDocument('id', 'saya lemas dan demam', 'gejala.flu');
-manager.addDocument('id', 'saya nyeri perut dan diare', 'gejala.diare');
-manager.addDocument('id', 'saya mual dan pusing', 'gejala.hipertensi');
-
-// Melatih model
-(async () => {
-    await manager.train();
-    manager.save();
-})();
-
-// Fungsi untuk mendeteksi gejala berdasarkan input
-async function deteksiGejala(teks) {
-    const response = await manager.process('id', teks);
-    return response.intent; // Mengembalikan intent yang terdeteksi
+function removeStopwords(tokens) {
+    return tokens.filter(token => !stopwords.includes(token));
 }
 
-// Ekspor fungsi
-module.exports = { deteksiGejala };
+function detectPenyakit(input) {
+    const tokens = tokenizer.tokenize(input.toLowerCase());
+    const filteredTokens = removeStopwords(tokens);
+    const stemmedTokens = filteredTokens.map(token => PorterStemmer.stem(token));
+
+    const hasil = [];
+    for (const [penyakit, data] of Object.entries(keywords)) {
+        const foundKeywords = data.keywords.filter(keyword => stemmedTokens.includes(PorterStemmer.stem(keyword)));
+        if (foundKeywords.length > 0) {
+            hasil.push({
+                penyakit: penyakit,
+                saranObat: data.saranObat,
+                saranDokter: data.saranDokter,
+                gejala: foundKeywords
+            });
+        }
+    }
+
+    // Jika tidak ada penyakit yang terdeteksi
+    if (hasil.length === 0) {
+        return [{
+            penyakit: 'Tidak ada penyakit yang terdeteksi.',
+            saranObat: 'Tidak ada obat yang disarankan.',
+            saranDokter: 'Silakan konsultasikan dengan dokter.',
+            gejala: []
+        }];
+    }
+
+    return hasil;
+}
+
+module.exports = { detectPenyakit };

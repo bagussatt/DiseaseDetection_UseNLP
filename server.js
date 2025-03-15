@@ -1,6 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { deteksiGejala } = require('./nlp'); // Mengimpor fungsi dari nlp.js
+const admin = require('firebase-admin');
+const { detectPenyakit } = require('./nlp'); // Pastikan jalur ini benar
+
+
+// Inisialisasi Firebase Admin SDK
+const serviceAccount = require('./config/serviceAccountKey.json');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://deteksipenyakit-e049c-default-rtdb.asia-southeast1.firebasedatabase.app"
+});
 
 const app = express();
 const port = 3000;
@@ -17,32 +27,31 @@ app.get('/', (req, res) => {
 // Route untuk memproses teks
 app.post('/process', async (req, res) => {
     const inputText = req.body.inputText;
-    const intent = await deteksiGejala(inputText); // Menggunakan fungsi deteksi gejala
 
-    // Menentukan saran berdasarkan intent
-    let saranObat = '';
-    let saranDokter = '';
+    // Panggil fungsi deteksi penyakit dari nlp.js
+    const hasil = detectPenyakit(inputText); // Pastikan Anda sudah mengimpor fungsi ini dari nlp.js
 
-    switch (intent) {
-        case 'gejala.flu':
-            saranObat = 'Obat yang disarankan: Paracetamol untuk demam dan batuk.';
-            saranDokter = 'Saran: Istirahat yang cukup dan minum banyak cairan.';
-            break;
-        case 'gejala.diare':
-            saranObat = 'Obat yang disarankan: Loperamide untuk diare.';
-            saranDokter = 'Saran: Pastikan untuk tetap terhidrasi.';
-            break;
-        case 'gejala.hipertensi':
-            saranObat = 'Obat yang disarankan: Obat antihipertensi sesuai resep dokter.';
-            saranDokter = 'Saran: Periksa tekanan darah secara rutin.';
-            break;
-        default:
-            saranObat = 'Gejala tidak terdeteksi. Silakan konsultasikan dengan dokter.';
-            saranDokter = '';
-            break;
+    // Jika tidak ada penyakit yang terdeteksi
+    if (hasil.length === 0) {
+        res.send("Tidak ada penyakit yang terdeteksi.");
+    } else {
+        // Menghasilkan respons
+        let responseText = '';
+        hasil.forEach(item => {
+            responseText += `Penyakit terdeteksi: ${item.penyakit}<br>`;
+            responseText += `${item.saranObat}<br>`;
+            responseText += `${item.saranDokter}<br>`;
+            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}<br><br>`;
+        });
+
+        // Simpan hasil ke Firebase
+        const db = admin.database();
+        const ref = db.ref('deteksiPenyakit');
+        await ref.push(hasil); // Menyimpan hasil ke Firebase
+
+        // Kirim respons ke klien
+        res.send(responseText);
     }
-
-    res.send(`Hasil deteksi: ${intent}<br>${saranObat}<br>${saranDokter}`);
 });
 
 // Jalankan server
