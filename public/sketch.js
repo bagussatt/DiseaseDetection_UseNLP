@@ -13,10 +13,6 @@ function setup() {
     speech.onStart = function() {
         viewer.innerHTML = "Merekam suara...";
     };
-
-    // Event listener ketika rekaman suara berakhir
-    speech.onEnd = reset;
-
     // Mulai mendengarkan dengan mode kontinu diaktifkan
     speech.start(true, true);
 }
@@ -40,7 +36,7 @@ document.getElementById("submitBtn").addEventListener("click", async function() 
     if (recording) {
         await sendToServer(recording); // Kirim data ke server
     } else {
-        alert("Tidak ada teks yang direkam untuk dikirim.");
+        Swal.fire("Peringatan", "Tidak ada teks yang direkam untuk dikirim.", "warning");
     }
 });
 
@@ -61,10 +57,25 @@ async function sendToServer(inputText) {
 
         const data = await response.text();
         viewer.innerHTML = data; // Tampilkan hasil klasifikasi di elemen viewer
+
+        // Menampilkan hasil dengan SweetAlert2
+        Swal.fire({
+            title: "Hasil Deteksi",
+            html: data, // Menampilkan hasil deteksi dalam popup
+            icon: "success",
+            confirmButtonText: "Kembali ke Home"
+        }).then(() => {
+            window.location.href = "index.html"; // Redirect ke index.html
+            setTimeout(() => {
+                location.reload(); // Refresh halaman setelah pindah ke index.html
+            }, 500); // Beri jeda untuk memastikan halaman sudah termuat sebelum refresh
+        });
+        
+
         resetRecording(); // Reset rekaman setelah pengiriman
     } catch (error) {
         console.error('Error:', error);
-        viewer.innerHTML = "Terjadi kesalahan saat mengirim data.";
+        Swal.fire("Kesalahan", "Terjadi kesalahan saat mengirim data.", "error");
     }
 }
 

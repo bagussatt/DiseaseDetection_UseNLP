@@ -1,7 +1,50 @@
 const admin = require('firebase-admin');
 const { detectPenyakit } = require('../nlp');
 
-// Fungsi untuk mendapatkan persentase penyakit
+
+
+// API untuk memproses input teks dan mendeteksi penyakit
+exports.processText = async (req, res) => {
+    const inputText = req.body.inputText;
+    const hasil = detectPenyakit(inputText);
+
+    // Format tanggal DD-MM-YYYY
+    const now = new Date();
+    const timestamp = now.toLocaleDateString('id-ID');
+
+    let responseText = '';
+
+    if (hasil.length > 0) {
+        hasil.forEach(item => {
+            item.timestamp = timestamp; // Pastikan timestamp ditambahkan ke setiap entri
+        });
+
+        hasil.forEach(item => {
+            responseText += `Penyakit terdeteksi: ${item.penyakit}<br>`;
+            responseText += `Saran Obat: ${item.saranObat}<br>`;
+            responseText += `Saran Dokter: ${item.saranDokter}<br>`;
+            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}<br>`;
+            responseText += `Waktu Deteksi: ${item.timestamp}<br><br>`;
+        });
+
+        // Simpan ke Firebase dengan format yang seragam
+        await admin.database().ref('deteksiPenyakit').push({ hasil });
+    } else {
+        responseText = 'Tidak ada penyakit yang terdeteksi.';
+    }
+
+    res.send(`
+        <html>
+            <body>
+                <div>${responseText}</div>
+                <script>
+                    alert('Data berhasil disimpan ke Firebase!');
+                </script>
+            </body>
+        </html>
+    `);
+};
+// Fungsi untuk menghitung persentase penyakit secara keseluruhan
 exports.getPersentasePenyakit = async (req, res) => {
     try {
         const db = admin.database();
@@ -20,7 +63,7 @@ exports.getPersentasePenyakit = async (req, res) => {
         let totalCount = 0;
 
         for (const key in data) {
-            const penyakitList = data[key];
+            const penyakitList = data[key].hasil; // Mengakses `hasil` agar sesuai dengan struktur penyimpanan
             penyakitList.forEach(item => {
                 totalCount++;
                 if (totalPenyakit[item.penyakit]) {
@@ -34,7 +77,7 @@ exports.getPersentasePenyakit = async (req, res) => {
         // Hitung persentase
         const persentasePenyakit = {};
         for (const penyakit in totalPenyakit) {
-            persentasePenyakit[penyakit] = (totalPenyakit[penyakit] / totalCount) * 100;
+            persentasePenyakit[penyakit] = ((totalPenyakit[penyakit] / totalCount) * 100).toFixed(2);
         }
 
         res.json({ totalCount, persentasePenyakit });
@@ -44,42 +87,9 @@ exports.getPersentasePenyakit = async (req, res) => {
     }
 };
 
-// Fungsi untuk memproses teks
-exports.processText = async (req, res) => {
-    const inputText = req.body.inputText;
 
-    // Panggil fungsi deteksi penyakit dari nlp.js
-    const hasil = detectPenyakit(inputText);
 
-    // Menghasilkan respons
-    let responseText = '';
-    if (hasil.length > 0) {
-        hasil.forEach(item => {
-            responseText += `Penyakit terdeteksi: ${item.penyakit}<br>`;
-            responseText += `${item.saranObat}<br>`;
-            responseText += `${item.saranDokter}<br>`;
-            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}<br><br>`;
-        });
-
-        // Simpan hasil ke Firebase
-        await admin.database().ref('deteksiPenyakit').push(hasil);
-    } else {
-        responseText = 'Tidak ada penyakit yang terdeteksi.';
-    }
-
-    // Kirim respons ke klien
-    res.send(`
-        <html>
-            <body>
-                <h1>Hasil Deteksi</h1>
-                <div>${responseText}</div>
-                <script>
-                    alert('Data berhasil disimpan ke Firebase!');
-                </script>
-            </body>
-        </html>
-    `);
-};
+// API untuk mendapatkan persentase penyakit spesifik berdasarkan nama penyakit
 exports.getPersentaseSpesifik = async (req, res) => {
     try {
         const penyakitDicari = req.params.penyakit.toLowerCase(); // Ambil parameter penyakit dari URL
@@ -97,7 +107,7 @@ exports.getPersentaseSpesifik = async (req, res) => {
         let penyakitCount = 0;
 
         for (const key in data) {
-            const penyakitList = data[key];
+            const penyakitList = data[key].hasil; // Mengakses `hasil` agar sesuai dengan format penyimpanan
             penyakitList.forEach(item => {
                 totalCount++;
                 if (item.penyakit.toLowerCase() === penyakitDicari) {
