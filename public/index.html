@@ -1,129 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Speech to Text Classification</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@0.0.3/lib/p5.speech.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Menarik</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        html, body {
-            height: 100%;
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
             color: #333;
+            line-height: 1.6;
         }
 
-        h4 {
-            text-align: center; 
+        header {
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        main {
             padding: 20px;
-            color: #444;
+            max-width: 1200px;
+            margin: auto;
         }
 
-        .container {
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+
+        section:hover {
+            transform: scale(1.02);
+        }
+
+        section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        #section1 {
+            border-left: 5px solid #4CAF50;
+            
+        }
+
+        #section2 {
+            border-left: 5px solid #2196F3;
+            flex-direction: row;
+        }
+
+        #section3 {
+            border-left: 5px solid #f44336;
             flex-direction: column;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
+            text-align: center;
         }
 
-        .box {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
+        #statistik {
+            text-align: center;
         }
 
-        .box:hover {
-            transform: translateY(-5px);
-        }
-
-        h5 {
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        #view {
-            flex: 1;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            background-color: #e9ecef;
-            overflow-y: auto;
-            margin-bottom: 10px;
+        canvas {
+            max-width: 80%;
+            margin: auto;
         }
 
         button {
-            display: block;
-            margin: 0 auto;
-            padding: 10px 20px;
-            background-color: #007bff;
+            background: linear-gradient(135deg, #2196F3, #4CAF50);
             color: white;
+            padding: 12px 24px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 16px;
+            transition: background 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            section {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <h4>Speech to Text Classification</h4>
-    <div class="container">
-        <div class="box">
-            <h5>Identitas Pasien</h5>
-            <label for="patientName">Nama Pasien:</label>
-            <input type="text" id="patientName" placeholder="Masukkan nama pasien" value="John Doe" />
-            <label for="patientAge">Usia Pasien:</label>
-            <input type="number" id="patientAge" placeholder="Masukkan usia pasien" value="30" />
-            <label for="patientGender">Jenis Kelamin:</label>
-            <select id="patientGender">
-                <option value="Laki-laki" selected>Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
-            </select>
-        </div>
-        <div class="box">
-            <h5>Riwayat Penyakit Pasien</h5>
-            <textarea id="medicalHistory" rows="5" placeholder="Masukkan riwayat penyakit pasien...">Tidak ada riwayat penyakit serius.</textarea>
-        </div>
-        <div class="box">
-            <h5>Hasil Pengenalan Suara</h5>
-            <div id="view">Silahkan berbicara...</div>
-            <button id="submitBtn">Submit</button>
-        </div>
-    </div>
+    <div id="navbar-container"></div>
+    <main>
+        <section id="section1">
+            <img src="/component/stt.png" alt="Gambar Section 1">
+            <div>
+                <h2>Konsultasi Penyakit</h2>
+                <p>Kami menyediakan layanan konsultasi penyakit berbasis teknologi NLP yang dapat membantu Anda mendeteksi keluhan kesehatan dengan lebih akurat.</p>
+                <a href="deteksiPenyakit.html">
+                    <button>Cek Gejala Anda</button>
+                </a>
+            </div>
+        </section>
+        
+        <section id="section2">
+            <img src="/component/medic.png" alt="Gambar Section 2">
+            <div>
+                <h2>Layanan Medis Cepat</h2>
+                <p>Gunakan teknologi canggih kami untuk mendapatkan saran medis dalam hitungan detik, kapan saja dan di mana saja.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <img src="diare.png" alt="Gambar Section 3">
+            <h2>Kontak Kami</h2>
+            <p>Hubungi tim kami kapan saja untuk mendapatkan informasi lebih lanjut mengenai layanan kami.</p>
+        </section>
+
+        <section id="statistik">
+            <h2>Statistik Penyakit</h2>
+            <canvas id="statistikChart"></canvas>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Konsultasi Penyakit dengan NLP by Bagus Satrio</p>
+    </footer>
     
-    <script src="sketch.js"></script>
+    <script src="statistik.js"></script>
+    <script>
+        async function loadNavbar() {
+            try {
+                const response = await fetch("navbar.html");
+                if (!response.ok) throw new Error("Navbar gagal dimuat");
+                document.getElementById("navbar-container").innerHTML = await response.text();
+            } catch (error) {
+                console.error("Error loading navbar:", error);
+            }
+        }
+        loadNavbar();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const links = document.querySelectorAll("nav ul li a");
+            links.forEach(link => {
+                link.addEventListener("click", function(event) {
+                    if (this.getAttribute("href").startsWith("#")) {
+                        event.preventDefault();
+                        const sectionId = this.getAttribute("href").substring(1);
+                        document.getElementById(sectionId).scrollIntoView({
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

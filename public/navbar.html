@@ -1,0 +1,50 @@
+<nav>
+    <ul>
+        <li><a href="#section1">Tentang Kami</a></li>
+        <li><a href="#section2">Data Penyakit</a></li>
+        <li><a href="#statistik">Statistik Penyakit</a></li>
+        <li><a href="deteksiPenyakit.html">Deteksi Penyakit</a></li>
+    </ul>
+</nav>
+<style>
+    nav {
+        background: linear-gradient(135deg, #4CAF50, #2196F3);
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    nav ul li {
+        display: inline;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 10px 15px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    nav ul li a:hover {
+        background-color: #45a049;
+        border-radius: 5px;
+    }
+
+    /* Tambahkan padding agar konten tidak tertutup navbar */
+    body {
+        padding-top: 50px;
+    }
+</style>

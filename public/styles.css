@@ -1,0 +1,94 @@
+/* Resetting default styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: #006400;
+  overflow: hidden;
+}
+
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Menambahkan margin 0 untuk menghindari spasi */
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s; /* Menambahkan transisi untuk efek hover */
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Content Styles */
+#content {
+  padding: 20px;
+}
+
+/* Section Styles */
+section {
+  padding: 60px 20px; /* Menambahkan padding untuk setiap section */
+  border-bottom: 1px solid #ccc; /* Menambahkan garis pemisah antar section */
+}
+
+h2 {
+  color: #444; /* Warna judul section */
+  text-align: center; /* Menyelaraskan judul ke tengah */
+}
+/* Container Styles */
+.container {
+  padding: 20px;
+}
+
+/* Box Styles */
+.box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px 0;
+}
+
+/* Heading Styles */
+h4 {
+  text-align: center;
+  color: #444;
+}
+
+h5 {
+  color: #333;}
+  
+  .carousel-item {
+    display: flex;
+    align-items: center;
+}
+.carousel-image {
+    flex: 1;
+    max-height: 400px; /* Atur tinggi maksimum gambar */
+    object-fit: cover; /* Memastikan gambar tidak terdistorsi */
+}
+.carousel-text {
+    flex: 1;
+    padding: 20px;

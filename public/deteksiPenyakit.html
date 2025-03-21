@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech to Text Classification</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@0.0.3/lib/p5.speech.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h4 {
+            text-align: center; 
+            padding: 20px;
+            color: #444;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .box {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
+        h5 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        #view {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #e9ecef;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h4>Speech to Text Classification</h4>
+    <div class="container">
+        <div class="box">
+            <h5>Identitas Pasien</h5>
+            <label for="patientName">Nama Pasien:</label>
+            <input type="text" id="patientName" placeholder="Masukkan nama pasien" value="John Doe" />
+            <label for="patientAge">Usia Pasien:</label>
+            <input type="number" id="patientAge" placeholder="Masukkan usia pasien" value="30" />
+            <label for="patientGender">Jenis Kelamin:</label>
+            <select id="patientGender">
+                <option value="Laki-laki" selected>Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+        </div>
+        <div class="box">
+            <h5>Riwayat Penyakit Pasien</h5>
+            <textarea id="medicalHistory" rows="5" placeholder="Masukkan riwayat penyakit pasien...">Tidak ada riwayat penyakit serius.</textarea>
+        </div>
+        <div class="box">
+            <h5>Hasil Pengenalan Suara</h5>
+            <div id="view">Silahkan berbicara...</div>
+            <button id="submitBtn">Submit</button>
+        </div>
+    </div>
+    
+    <script src="sketch.js"></script>
+</body>
+</html>
