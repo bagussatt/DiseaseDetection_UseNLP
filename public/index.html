@@ -107,6 +107,28 @@
                 text-align: center;
             }
         }
+        /* Floating Button */
+#floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background 0.3s;
+}
+
+#floating-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #2196F3, #4CAF50);
+}
+
     </style>
 </head>
 <body>
@@ -117,9 +139,7 @@
             <div>
                 <h2>Konsultasi Penyakit</h2>
                 <p>Kami menyediakan layanan konsultasi penyakit berbasis teknologi NLP yang dapat membantu Anda mendeteksi keluhan kesehatan dengan lebih akurat.</p>
-                <a href="deteksiPenyakit.html">
-                    <button>Cek Gejala Anda</button>
-                </a>
+                <button id="cek-gejala-button">Cek Gejala Anda</button>
             </div>
         </section>
         
@@ -141,39 +161,17 @@
             <h2>Statistik Penyakit</h2>
             <canvas id="statistikChart"></canvas>
         </section>
+        <!-- Floating Button -->
+<button id="floating-button">?</button>
+
     </main>
     <footer>
         <p>&copy; 2024 Konsultasi Penyakit dengan NLP by Bagus Satrio</p>
     </footer>
     
     <script src="statistik.js"></script>
-    <script>
-        async function loadNavbar() {
-            try {
-                const response = await fetch("navbar.html");
-                if (!response.ok) throw new Error("Navbar gagal dimuat");
-                document.getElementById("navbar-container").innerHTML = await response.text();
-            } catch (error) {
-                console.error("Error loading navbar:", error);
-            }
-        }
-        loadNavbar();
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const links = document.querySelectorAll("nav ul li a");
-            links.forEach(link => {
-                link.addEventListener("click", function(event) {
-                    if (this.getAttribute("href").startsWith("#")) {
-                        event.preventDefault();
-                        const sectionId = this.getAttribute("href").substring(1);
-                        document.getElementById(sectionId).scrollIntoView({
-                            behavior: "smooth"
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="notif.js"></script>
+
 </body>
 </html>

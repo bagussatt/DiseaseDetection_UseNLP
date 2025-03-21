@@ -40,6 +40,43 @@ document.getElementById("submitBtn").addEventListener("click", async function() 
     }
 });
 
+function saveAsPDF(content, print = false) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Hasil Deteksi Penyakit", 20, 20);
+    doc.setFont("helvetica", "normal");
+
+    
+    let tempDiv = document.createElement("div");
+    tempDiv.innerHTML = content;
+    let cleanText = tempDiv.textContent || tempDiv.innerText || "";
+
+    cleanText = cleanText.replace(/alert\(.*?\);/g, "").trim();
+    cleanText = cleanText.replace(/Obat yang disarankan:\s+/g, ""); // Hapus label duplikat
+    cleanText = cleanText.replace(/Saran:\s+/g, ""); // Hapus kata "Saran:" berulang
+
+   
+    let formattedText = cleanText
+        .replace(/Penyakit terdeteksi:/g, "\nPenyakit terdeteksi: ")
+        .replace(/Saran Obat:/g, "\nSaran Obat: ")
+        .replace(/Saran Dokter:/g, "\nSaran Dokter: ")
+        .replace(/Gejala yang muncul:/g, "\nGejala yang muncul: ")
+        .replace(/Waktu Deteksi:/g, "\nWaktu Deteksi: ");
+
+    let splitText = doc.splitTextToSize(formattedText, 180);
+    doc.text(splitText, 20, 40);
+
+    if (print) {
+        doc.autoPrint(); // Cetak otomatis
+        window.open(doc.output("bloburl"), "_blank");
+    } else {
+        doc.save("Hasil_Deteksi.pdf"); // Simpan PDF
+    }
+}
+
+
 async function sendToServer(inputText) {
     try {
         viewer.innerHTML = "Mengirim data ke server..."; // Umpan balik saat mengirim
@@ -58,19 +95,35 @@ async function sendToServer(inputText) {
         const data = await response.text();
         viewer.innerHTML = data; // Tampilkan hasil klasifikasi di elemen viewer
 
-        // Menampilkan hasil dengan SweetAlert2
+            // 🔹 Bersihkan & Format Hasil Deteksi agar lebih rapi
+            let formattedData = data
+            .replace("Obat yang disarankan:", "") 
+            .replace("Saran:", "")
+            .replace(/Penyakit terdeteksi:/g, "<b>Penyakit terdeteksi:</b> ")
+            .replace(/Saran Obat:/g, "<b>Saran Obat:</b> ")
+            .replace(/Saran Dokter:/g, "<b>Saran Dokter:</b> ")
+            .replace(/Gejala yang muncul:/g, "<b>Gejala yang muncul:</b> ")
+            .replace(/Waktu Deteksi:/g, "<b>Waktu Deteksi:</b> ")
+            .replace(/\n/g, "<br>"); // Ganti newline dengan <br> agar HTML terformat dengan baik
+
+        // 🔹 Tampilkan notifikasi dengan SweetAlert2
         Swal.fire({
             title: "Hasil Deteksi",
-            html: data, // Menampilkan hasil deteksi dalam popup
+            html: `<div style="text-align: left;">${formattedData}</div>`, // Menjadikan teks rata kiri
             icon: "success",
-            confirmButtonText: "Kembali ke Home"
-        }).then(() => {
-            window.location.href = "index.html"; // Redirect ke index.html
-            setTimeout(() => {
-                location.reload(); // Refresh halaman setelah pindah ke index.html
-            }, 500); // Beri jeda untuk memastikan halaman sudah termuat sebelum refresh
+            showCancelButton: true,
+            confirmButtonText: "Kembali ke Home",
+            cancelButtonText: "Simpan sebagai PDF"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "index.html"; // Redirect ke index.html
+                setTimeout(() => {
+                    location.reload(); // Refresh halaman setelah pindah ke index.html
+                }, 500);
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                saveAsPDF(data); // Simpan sebagai PDF
+            }
         });
-        
 
         resetRecording(); // Reset rekaman setelah pengiriman
     } catch (error) {
