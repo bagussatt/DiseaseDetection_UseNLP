@@ -121,6 +121,7 @@ async function sendToServer(inputText) {
                     location.reload(); // Refresh halaman setelah pindah ke index.html
                 }, 500);
             } else if (result.dismiss === Swal.DismissReason.cancel) {
+                window.location.href = "index.html"; 
                 saveAsPDF(data); // Simpan sebagai PDF
             }
         });

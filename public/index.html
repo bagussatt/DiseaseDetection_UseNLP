@@ -68,6 +68,10 @@
             flex-direction: column;
             text-align: center;
         }
+        #section4 {
+            border-left: 5px solid #4CAF50;
+            
+        }
 
         #statistik {
             text-align: center;
@@ -128,6 +132,14 @@
     transform: scale(1.1);
     background: linear-gradient(135deg, #2196F3, #4CAF50);
 }
+/* Persentase Flu */
+#flu-percentage {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+
 
     </style>
 </head>
@@ -138,23 +150,42 @@
             <img src="/component/stt.png" alt="Gambar Section 1">
             <div>
                 <h2>Konsultasi Penyakit</h2>
-                <p>Kami menyediakan layanan konsultasi penyakit berbasis teknologi NLP yang dapat membantu Anda mendeteksi keluhan kesehatan dengan lebih akurat.</p>
+                <p>Kami menyediakan layanan konsultasi penyakit berbasis teknologi NLP yang dapat membantu Anda mendeteksi keluhan kesehatan
+                     dengan lebih akurat.Gunakan teknologi canggih kami untuk mendapatkan saran medis dalam hitungan detik, kapan saja dan di mana saja.</p>
                 <button id="cek-gejala-button">Cek Gejala Anda</button>
             </div>
         </section>
         
         <section id="section2">
-            <img src="/component/medic.png" alt="Gambar Section 2">
+           
             <div>
-                <h2>Layanan Medis Cepat</h2>
-                <p>Gunakan teknologi canggih kami untuk mendapatkan saran medis dalam hitungan detik, kapan saja dan di mana saja.</p>
+                <h1>FLU atau Influenza</h1>
+                <p>Flu, atau influenza, adalah infeksi virus yang menyerang saluran pernapasan, termasuk hidung, tenggorokan, dan paru-paru. Penyakit ini disebabkan oleh virus influenza, yang dapat menyebar melalui tetesan udara ketika seseorang yang terinfeksi batuk atau bersin.</p>
+                <p>Persentase kasus: <span id="fluPercentage">0%</span></p>
+                <a href="flu.html">
+                    <button style="background-color: #2196F3; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                        Cek Gejala Flu Lebih Detail
+                    </button>
+                </a>
             </div>
+            <img src="/component/batuk.png" alt="Gambar Section 2">
+        </section>
+        
+            
+           
         </section>
 
         <section id="section3">
             <img src="diare.png" alt="Gambar Section 3">
             <h2>Kontak Kami</h2>
             <p>Hubungi tim kami kapan saja untuk mendapatkan informasi lebih lanjut mengenai layanan kami.</p>
+        </section>
+        <section id="section4">
+            <img src="/component/medic.png" alt="Gambar Section 2">
+            <div>
+                <h2>Layanan Medis Cepat</h2>
+                <p>Gunakan teknologi canggih kami untuk mendapatkan saran medis dalam hitungan detik, kapan saja dan di mana saja.</p>
+            </div>
         </section>
 
         <section id="statistik">
