@@ -18,7 +18,13 @@ const keywords = {
         keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'lemas'],
         saranObat: 'Obat yang disarankan: Obat antihipertensi sesuai resep dokter.',
         saranDokter: 'Saran: Periksa tekanan darah secara rutin.'
+    },
+    diabetes: {
+        keywords: ['sering kencing', 'lemas', 'luka sulit sembuh', 'lemas','kesemutan','kencing manis','haus'],
+        saranObat: 'Obat yang disarankan: Insulin sesuai resep dokter.',
+        saranDokter: 'Saran:  menjaga pola makan sehat, rutin berolahraga, memantau kadar gula darah, dan mengikuti saran dokter '
     }
+    
 };
 
 function removeStopwords(tokens) {
