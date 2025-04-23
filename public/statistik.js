@@ -135,10 +135,10 @@ async function updatePersentaseHipertensi() {
         }
 
         // Update elemen HTML dengan format angka + '%'
-        const fluPercentageElement = document.getElementById('HipertensiPercentage');
+        const hipePercentageElement = document.getElementById('HipertensiPercentage');
         
-        if(fluPercentageElement){
-            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+        if(hipePercentageElement){
+            hipePercentageElement.textContent = `${percentage.toFixed(2)}%`;
         } else {
             console.warn("Elemen #HipertensiPercentage tidak ditemukan");
         }
@@ -147,8 +147,8 @@ async function updatePersentaseHipertensi() {
        console.error("Error saat update persentase Hipertensi:", error);
        // Jika error, tetap tampilkan "0%"
        const fluPercentageElement = document.getElementById('HipertensiPercentage');
-       if(fluPercentageElement){
-           fluPercentageElement.textContent = "0%";
+       if(hipePercentageElement){
+           hipePercentageElement.textContent = "0%";
        }
     }
 }
@@ -158,4 +158,42 @@ document.addEventListener('DOMContentLoaded', () => {
    updatePersentaseHipertensi();
 });
 
+async function updatePersentaseIspa() {
+    try {
+        const response = await fetch("http://localhost:3000/api/persentase-penyakit/ispa");
+      if (!response.ok) throw new Error("Gagal mengambil data");
+
+        const data = await response.json();
+
+        // Ambil nilai persentasenya (dari properti 'persentase')
+        let percentage = parseFloat(data.persentase);
+
+        // Jika kosong/null/NaN maka set ke 0
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+
+        // Update elemen HTML dengan format angka + '%'
+        const fluPercentageElement = document.getElementById('IspaPercentage');
+        
+        if(fluPercentageElement){
+            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+        } else {
+            console.warn("Elemen #IspaPercentage tidak ditemukan");
+        }
+        
+    } catch (error) {
+       console.error("Error saat update persentase Ispa:", error);
+       // Jika error, tetap tampilkan "0%"
+       const fluPercentageElement = document.getElementById('IspaPercentage');
+       if(fluPercentageElement){
+           fluPercentageElement.textContent = "0%";
+       }
+    }
+}
+
+// Panggil fungsi setelah halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+   updatePersentaseIspa();
+});
 

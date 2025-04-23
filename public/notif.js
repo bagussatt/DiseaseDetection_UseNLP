@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (floatingButton) {
         floatingButton.addEventListener("click", function () {
             Swal.fire({
-                title: "Konsultasi Penyakit",
-                text: "Apakah Anda ingin melakukan konsultasi?",
+                title: "Persetujuan",
+                text: "Sistem akan Merekam Suara anda untuk melakukan identifikasi penyakit, Apakah anda bersedia?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Ya, Lanjutkan",
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cekGejalaButton.addEventListener("click", function () {
             Swal.fire({
                 title: "Konsultasi Penyakit",
-                text: "Apakah Anda ingin melakukan konsultasi?",
+                text: "Sistem akan Merekam Suara anda untuk melakukan identifikasi penyakit, Apakah anda bersedia ?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Ya, Lanjutkan",
