@@ -80,4 +80,82 @@ document.addEventListener('DOMContentLoaded', () => {
    updatePersentaseFlu();
 });
 
+async function updatePersentaseDiare() {
+    try {
+        const response = await fetch("http://localhost:3000/api/persentase-penyakit/diare");
+        if (!response.ok) throw new Error("Gagal mengambil data");
+
+        const data = await response.json();
+
+        // Ambil nilai persentasenya (dari properti 'persentase')
+        let percentage = parseFloat(data.persentase);
+
+        // Jika kosong/null/NaN maka set ke 0
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+
+        // Update elemen HTML dengan format angka + '%'
+        const fluPercentageElement = document.getElementById('DiarePercentage');
+        
+        if(fluPercentageElement){
+            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+        } else {
+            console.warn("Elemen #DiarePercentage tidak ditemukan");
+        }
+        
+    } catch (error) {
+       console.error("Error saat update persentase Diare:", error);
+       // Jika error, tetap tampilkan "0%"
+       const fluPercentageElement = document.getElementById('DiarePercentage');
+       if(fluPercentageElement){
+           fluPercentageElement.textContent = "0%";
+       }
+    }
+}
+
+// Panggil fungsi setelah halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+   updatePersentaseDiare();
+});
+
+async function updatePersentaseHipertensi() {
+    try {
+        const response = await fetch("http://localhost:3000/api/persentase-penyakit/hipertensi");
+        if (!response.ok) throw new Error("Gagal mengambil data");
+
+        const data = await response.json();
+
+        // Ambil nilai persentasenya (dari properti 'persentase')
+        let percentage = parseFloat(data.persentase);
+
+        // Jika kosong/null/NaN maka set ke 0
+        if (isNaN(percentage)) {
+            percentage = 0;
+        }
+
+        // Update elemen HTML dengan format angka + '%'
+        const fluPercentageElement = document.getElementById('HipertensiPercentage');
+        
+        if(fluPercentageElement){
+            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+        } else {
+            console.warn("Elemen #HipertensiPercentage tidak ditemukan");
+        }
+        
+    } catch (error) {
+       console.error("Error saat update persentase Hipertensi:", error);
+       // Jika error, tetap tampilkan "0%"
+       const fluPercentageElement = document.getElementById('HipertensiPercentage');
+       if(fluPercentageElement){
+           fluPercentageElement.textContent = "0%";
+       }
+    }
+}
+
+// Panggil fungsi setelah halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+   updatePersentaseHipertensi();
+});
+
 
