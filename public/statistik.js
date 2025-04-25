@@ -60,7 +60,7 @@ async function updatePersentaseFlu() {
         const fluPercentageElement = document.getElementById('fluPercentage');
         
         if(fluPercentageElement){
-            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+            fluPercentageElement.textContent = `${percentage.toFixed()}%`;
         } else {
             console.warn("Elemen #fluPercentage tidak ditemukan");
         }
@@ -99,7 +99,7 @@ async function updatePersentaseDiare() {
         const fluPercentageElement = document.getElementById('DiarePercentage');
         
         if(fluPercentageElement){
-            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+            fluPercentageElement.textContent = `${percentage.toFixed()}%`;
         } else {
             console.warn("Elemen #DiarePercentage tidak ditemukan");
         }
@@ -138,7 +138,7 @@ async function updatePersentaseHipertensi() {
         const hipePercentageElement = document.getElementById('HipertensiPercentage');
         
         if(hipePercentageElement){
-            hipePercentageElement.textContent = `${percentage.toFixed(2)}%`;
+            hipePercentageElement.textContent = `${percentage.toFixed()}%`;
         } else {
             console.warn("Elemen #HipertensiPercentage tidak ditemukan");
         }
@@ -177,7 +177,7 @@ async function updatePersentaseIspa() {
         const fluPercentageElement = document.getElementById('IspaPercentage');
         
         if(fluPercentageElement){
-            fluPercentageElement.textContent = `${percentage.toFixed(2)}%`;
+            fluPercentageElement.textContent = `${percentage.toFixed()}%`;
         } else {
             console.warn("Elemen #IspaPercentage tidak ditemukan");
         }

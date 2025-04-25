@@ -60,10 +60,10 @@ function saveAsPDF(content, print = false) {
    
     let formattedText = cleanText
         .replace(/Penyakit terdeteksi:/g, "\nPenyakit terdeteksi: ")
-        .replace(/Saran Obat:/g, "\nSaran Obat: ")
-        .replace(/Saran Dokter:/g, "\nSaran Dokter: ")
         .replace(/Gejala yang muncul:/g, "\nGejala yang muncul: ")
-        .replace(/Waktu Deteksi:/g, "\nWaktu Deteksi: ");
+        .replace(/Saran Dokter:/g, "\nSaran Dokter: ")
+        .replace(/Saran Obat:/g, "\nSaran Obat: ")     
+        // .replace(/Waktu Deteksi:/g, "\nWaktu Deteksi: ");
 
     let splitText = doc.splitTextToSize(formattedText, 180);
     doc.text(splitText, 20, 40);

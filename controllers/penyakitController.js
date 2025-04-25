@@ -77,7 +77,7 @@ exports.getPersentasePenyakit = async (req, res) => {
         // Hitung persentase
         const persentasePenyakit = {};
         for (const penyakit in totalPenyakit) {
-            persentasePenyakit[penyakit] = ((totalPenyakit[penyakit] / totalCount) * 100).toFixed(2);
+            persentasePenyakit[penyakit] = ((totalPenyakit[penyakit] / totalCount) * 100).toFixed();
         }
 
         res.json({ totalCount, persentasePenyakit });
@@ -120,7 +120,7 @@ exports.getPersentaseSpesifik = async (req, res) => {
             return res.json({ penyakit: penyakitDicari, persentase: "0.00" });
         }
 
-        const persentase = ((penyakitCount / totalCount) * 100).toFixed(2);
+        const persentase = ((penyakitCount / totalCount) * 100).toFixed();
 
         res.json({ penyakit: penyakitDicari, persentase });
     } catch (error) {

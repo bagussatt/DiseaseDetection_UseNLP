@@ -4,32 +4,31 @@ const tokenizer = new WordTokenizer();
 
 const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke', 'itu', 'ini'];
 const keywords = {
-    flu: {
-        keywords: ['demam', 'batuk', 'pilek', 'sakit kepala', 'nyeri otot'],
-        saranObat: 'Obat yang disarankan: Paracetamol untuk demam dan batuk.',
-        saranDokter: 'Saran: Istirahat yang cukup dan minum banyak cairan.'
-    },
-    diare: {
-        keywords: ['diare', 'nyeri perut', 'mual', 'kram perut'],
-        saranObat: 'Obat yang disarankan: Loperamide untuk diare.',
-        saranDokter: 'Saran: Pastikan untuk tetap terhidrasi.'
-    },
-    hipertensi: {
-        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'lemas'],
-        saranObat: 'Obat yang disarankan: Obat antihipertensi sesuai resep dokter.',
-        saranDokter: 'Saran: Periksa tekanan darah secara rutin.'
-    },
-    diabetes: {
-        keywords: ['sering kencing', 'lemas', 'luka sulit sembuh', 'lemas','kesemutan','kencing manis','haus'],
-        saranObat: 'Obat yang disarankan: Insulin sesuai resep dokter.',
-        saranDokter: 'Saran:  menjaga pola makan sehat, rutin berolahraga, memantau kadar gula darah, dan mengikuti saran dokter '
-    },
-    ISPA : {
-
-        keyword: ['batuk','pilek','sakit tenggorokan','Sesak Nafas','Kelelahan','Bersin'],
-        saranObat: ['Obat yang disarankan: Tentu, ini ringkasan obat-obatan dalam format paragraf biasa:Untuk mengatasi demam dan nyeri otot, Anda bisa menggunakan ibuprofen atau paracetamol. Jika Anda mengalami pilek dan hidung tersumbat, diphenhydramine dan pseudoephedrine dapat membantu. Guaifenesin digunakan untuk meredakan batuk. Apabila infeksi saluran pernapasan disebabkan oleh bakteri, antibiotik mungkin diperlukan dan penting untuk menghabiskan seluruh dosis sesuai anjuran dokter. Terakhir, jika ISPA disebabkan oleh virus dan gejalanya berat, seperti pada influenza, obat antiviral mungkin akan diresepkan'],
-        saranDokter: ['Saran: Silahkan datang ke dokter untuk diresepkan obat untuk antibiotik, Lakukan pemeriksaan ke dokter jika Anda mengalami gejala di atas, terutama bila keluhan memburuk dan telah berlangsung selama lebih dari 3 minggu.']
-    },
+        flu: {
+            keywords: ['demam', 'batuk', 'pilek', 'sakit kepala', 'nyeri otot'],
+            saranObat: 'Obat yang disarankan: Paracetamol untuk demam dan nyeri, serta obat batuk yang sesuai.',
+            saranDokter: 'Saran: Istirahat yang cukup dan minum banyak cairan.'
+        },
+        diare: {
+            keywords: ['diare', 'nyeri perut', 'mual', 'kram perut'],
+            saranObat: 'Obat yang disarankan: Loperamide untuk mengurangi frekuensi buang air besar.',
+            saranDokter: 'Saran: Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.'
+        },
+        hipertensi: {
+            keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'lemas', "Mimisan", 'Kepala berdenging'],
+            saranObat: 'Obat yang disarankan: Obat antihipertensi seperti amlodipin atau sesuai resep dokter.',
+            saranDokter: 'Saran: Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.'
+        },
+        diabetes: {
+            keywords: ['sering kencing', 'lemas', 'luka sulit sembuh', 'kesemutan', 'kencing manis', 'haus'],
+            saranObat: 'Obat yang disarankan: Insulin atau obat antidiabetes oral sesuai resep dokter.',
+            saranDokter: 'Saran: Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.'
+        },
+        ispa: {
+            keywords: ['sakit tenggorokan', 'sesak napas', 'kelelahan', 'bersin', 'nyeri tenggorokan'],
+            saranObat: 'Obat yang disarankan: Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
+            saranDokter: 'Saran: Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.'
+        }
     
 };
 
