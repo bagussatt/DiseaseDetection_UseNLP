@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const serviceAccount = require('./config/serviceAccountKey.json');
 const penyakitRoutes = require('./routes/penyakitRoutes');
+const axios = require('axios');
 
 // Inisialisasi Firebase Admin SDK
 admin.initializeApp({
@@ -38,7 +39,7 @@ app.get('/api/nearby-hospitals', async (req, res) => {
         return res.status(400).json({ error: 'Latitude dan longitude dibutuhkan.' });
     }
 
-    const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:30];(node(around:5000,${lat},${lng})["amenity"="hospital"];way(around:5000,${lat},${lng})["amenity"="hospital"];relation(around:5000,${lat},${lng})["amenity"="hospital"];);out center;`;
+    const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:30];(node(around:3000,${lat},${lng})["amenity"="hospital"];way(around:3000,${lat},${lng})["amenity"="hospital"];relation(around:3000,${lat},${lng})["amenity"="hospital"];);out center;`;
 
     try {
         const response = await axios.get(overpassUrl);
@@ -57,8 +58,6 @@ app.get('/api/nearby-hospitals', async (req, res) => {
         res.status(500).json({ error: 'Gagal mengambil data rumah sakit terdekat.' });
     }
 });
-
-
 // Jalankan server
 app.listen(port, () => {
     console.log(`Server berjalan di http://localhost:${port}`);

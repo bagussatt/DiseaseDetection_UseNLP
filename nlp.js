@@ -5,45 +5,35 @@ const tokenizer = new WordTokenizer();
 const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke', 'itu', 'ini'];
 const keywords = {
 
-    flu: {
-        keywords: ['demam', 'batuk', 'pilek', 'sakit kepala', 'nyeri otot'].map(PorterStemmer.stem),
-        saranObat: 'Obat yang disarankan: Paracetamol untuk demam dan nyeri, serta obat batuk yang sesuai.',
-        saranDokter: 'Saran: Istirahat yang cukup dan minum banyak cairan.'
-    },
-    diare: {
-        keywords: ['diare', 'nyeri perut', 'mual', 'kram perut'].map(PorterStemmer.stem),
-        saranObat: 'Obat yang disarankan: Loperamide untuk mengurangi frekuensi buang air besar.',
-        saranDokter: 'Saran: Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.'
+    ispa: {
+        keywords: ['batuk', 'pilek', 'sakit tenggorokan', 'demam', 'sesak napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'].map(stemmer),
+        saranObat: 'Obat yang disarankan: Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
+        saranDokter: 'Saran: Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.',
+        sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/mengenali-gejala-ispa-dan-tindakan-yang-perlu-dilakukan)'
     },
     hipertensi: {
-        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'lemas', "mimisan", 'kepala berdenging'].map(PorterStemmer.stem),
+        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'sesak napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'].map(stemmer),
         saranObat: 'Obat yang disarankan: Obat antihipertensi seperti amlodipin atau sesuai resep dokter.',
-        saranDokter: 'Saran: Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.'
+        saranDokter: 'Saran: Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.',
+        sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/topik-penyakit/pencegahan-infeksi-pada-usia-produktif/hipertensi-tekanan-darah-tinggi). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diabetes: {
-        keywords: ['sering kencing', 'lemas', 'luka sulit sembuh', 'kesemutan', 'kencing manis', 'gula darah tinggi', 'haus'].map(PorterStemmer.stem),
+        keywords: ['sering kencing', 'cepat lapar', 'sering haus', 'berat badan menurun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'cepat lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi', 'haus'].map(stemmer),
         saranObat: 'Obat yang disarankan: Insulin atau obat antidiabetes oral sesuai resep dokter.',
-        saranDokter: 'Saran: Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.'
+        saranDokter: 'Saran: Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.',
+        sumber: '[Kementerian Kesehatan RI](https://upk.kemkes.go.id/new/mengenal-gejala-diabetes-melitus). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
-    ispa: {
-        keywords: ['sakit tenggorokan', 'sesak napas', 'kelelahan', 'bersin', 'nyeri tenggorokan'].map(PorterStemmer.stem),
-        saranObat: 'Obat yang disarankan: Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
-        saranDokter: 'Saran: Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.'
+    diare: {
+        keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'dehidrasi', 'demam', 'lemas'].map(stemmer),
+        saranObat: 'Obat yang disarankan: Loperamide untuk mengurangi frekuensi buang air besar.',
+        saranDokter: 'Saran: Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.',
+        sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/penyakit/diare). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
-    stroke: {
-        keywords: ['lemah anggota gerak', 'bicara pelo', 'mati rasa', 'gangguan penglihatan', 'sakit kepala hebat', 'pecah pembuluh darah otak', 'penyumbatan pembuluh darah otak'].map(PorterStemmer.stem),
-        saranObat: 'Obat yang disarankan: Tidak ada penanganan obat mandiri. Segera cari pertolongan medis.',
-        saranDokter: 'Saran: Segera bawa ke rumah sakit jika ada gejala stroke. Penanganan cepat sangat penting.'
-    },
-    sakitjantung: {
-        keywords: ['nyeri dada', 'sesak napas', 'berdebar debar', 'mudah lelah', 'keringat dingin'].map(PorterStemmer.stem),
+    ginjalkronis: {
+        keywords: ['sering kencing malam', 'bengkak kaki', 'mudah lelah', 'mual', 'muntah', 'nafsu makan menurun', 'tekanan darah tinggi', 'darah dalam urin', 'gatal', 'sakit kepala', 'sesak napas'].map(stemmer),
         saranObat: 'Obat yang disarankan: Tidak ada penanganan obat mandiri. Konsultasikan dengan dokter.',
-        saranDokter: 'Saran: Lakukan pemeriksaan jantung secara rutin, terutama jika ada faktor risiko.'
-    },
-    penyakitparukronis: {
-        keywords: ['sesak napas kronis', 'batuk berdahak menahun', 'mengik', 'napas pendek', 'penyempitan saluran napas menahun'].map(PorterStemmer.stem),
-        saranObat: 'Obat yang disarankan: Bronkodilator inhaler sesuai resep dokter.',
-        saranDokter: 'Saran: Hindari paparan asap rokok dan polusi udara. Konsultasikan dengan dokter paru.'
+        saranDokter: 'Saran: Jaga pola makan sehat, batasi asupan cairan sesuai anjuran dokter, dan lakukan pemeriksaan ginjal secara rutin jika berisiko.',
+        sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/gejala-penyakit-ginjal-kronis-yang-harus-diwaspadai). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     }
 }
 
@@ -65,7 +55,7 @@ function detectPenyakit(input) {
                 foundKeywords.push(keyword);
             }
         }
-        if (foundKeywords.length > 2) {
+        if (foundKeywords.length > 1) {
             hasil.push({
                 penyakit: penyakit,
                 gejala: foundKeywords,

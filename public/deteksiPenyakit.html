@@ -5,6 +5,9 @@
     <title>Speech to Text Classification</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@0.0.3/lib/p5.speech.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         html, body {
             height: 100%;
@@ -135,13 +138,12 @@
             <button id="submitBtn">Submit</button>
         </div>
     </div>
-    <button id="floating-buttonhome"><</button>
+    <button id="floating-buttonhome">&lt;</button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="sketch.js"></script>
     <script>
         document.getElementById('floating-buttonhome').addEventListener('click', function() {
-            window.location.href = '/'; 
+            window.location.href = '/';
         });
     </script>
 </body>

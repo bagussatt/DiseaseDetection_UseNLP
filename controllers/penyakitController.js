@@ -1,8 +1,6 @@
 const admin = require('firebase-admin');
 const { detectPenyakit } = require('../nlp');
 
-
-
 // API untuk memproses input teks dan mendeteksi penyakit
 exports.processText = async (req, res) => {
     const inputText = req.body.inputText;
@@ -12,38 +10,29 @@ exports.processText = async (req, res) => {
     const now = new Date();
     const timestamp = now.toLocaleDateString('id-ID');
 
-    let responseText = '';
-
     if (hasil.length > 0) {
         hasil.forEach(item => {
             item.timestamp = timestamp; // Pastikan timestamp ditambahkan ke setiap entri
         });
 
-        hasil.forEach(item => {
-            responseText += `Penyakit terdeteksi: ${item.penyakit}<br>`;
-            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}<br>`;
-            responseText += `Saran Dokter: ${item.saranDokter}<br>`;
-            responseText += `Saran Obat: ${item.saranObat}<br>`;
-            // responseText += `Waktu Deteksi: ${item.timestamp}<br><br>`;
-        });
-
         // Simpan ke Firebase dengan format yang seragam
         await admin.database().ref('deteksiPenyakit').push({ hasil });
-    } else {
-        responseText = 'Tidak ada penyakit yang terdeteksi.';
-    }
 
-    res.send(`
-        <html>
-            <body>
-                <div>${responseText}</div>
-                <script>
-                    alert('Data berhasil disimpan ke Firebase!');
-                </script>
-            </body>
-        </html>
-    `);
+        let responseText = '';
+        hasil.forEach(item => {
+            responseText += `Penyakit terdeteksi: ${item.penyakit}\n`;
+            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}\n`;
+            responseText += `Saran Dokter: ${item.saranDokter}\n`;
+            responseText += `Saran Obat: ${item.saranObat}\n`;
+            // responseText += `Waktu Deteksi: ${item.timestamp}\n\n`;
+        });
+
+        res.json({ hasilDeteksi: responseText }); // Kirim respons JSON
+    } else {
+        res.json({ hasilDeteksi: 'Tidak ada penyakit yang terdeteksi.' }); // Kirim respons JSON
+    }
 };
+
 // Fungsi untuk menghitung persentase penyakit secara keseluruhan
 exports.getPersentasePenyakit = async (req, res) => {
     try {
@@ -86,8 +75,6 @@ exports.getPersentasePenyakit = async (req, res) => {
         res.status(500).json({ message: 'Terjadi kesalahan saat mengambil data' });
     }
 };
-
-
 
 // API untuk mendapatkan persentase penyakit spesifik berdasarkan nama penyakit
 exports.getPersentaseSpesifik = async (req, res) => {
