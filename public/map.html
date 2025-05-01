@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Peta dan Rumah Sakit Terdekat (Leaflet + OSM)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 400px; }
+        #hospital-list div { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Peta dan Rumah Sakit Terdekat (Leaflet + OSM)</h1>
+    <div id="map"></div>
+    <h2>Daftar Rumah Sakit Terdekat:</h2>
+    <div id="hospital-list"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        let map;
+        let userLocation;
+
+        function initMap() {
+            map = L.map('map').setView([-7.79, 110.35], 13); // Set initial view to Yogyakarta
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    map.setView(userLocation, 15);
+                    L.marker(userLocation).addTo(map).bindPopup('Lokasi Anda').openPopup();
+                    fetchNearbyHospitals(userLocation.lat, userLocation.lng);
+                }, () => {
+                    alert('Gagal mendapatkan lokasi Anda.');
+                    fetchNearbyHospitals(-7.79, 110.35); // Default location
+                });
+            } else {
+                alert('Browser Anda tidak mendukung geolokasi.');
+                fetchNearbyHospitals(-7.79, 110.35); // Default location
+            }
+        }
+
+        async function fetchNearbyHospitals(lat, lng) {
+            try {
+                const response = await fetch(`/api/nearby-hospitals?lat=${lat}&lng=${lng}`);
+                const hospitals = await response.json();
+                displayHospitals(hospitals);
+            } catch (error) {
+                console.error('Error fetching hospitals:', error);
+                document.getElementById('hospital-list').textContent = 'Gagal mengambil data rumah sakit.';
+            }
+        }
+
+        function displayHospitals(hospitals) {
+            const hospitalListDiv = document.getElementById('hospital-list');
+            hospitalListDiv.innerHTML = '';
+
+            hospitals.forEach(hospital => {
+                if (hospital.lat && hospital.lng) {
+                    L.marker([hospital.lat, hospital.lng]).addTo(map).bindPopup(hospital.name);
+                    const hospitalItem = document.createElement('div');
+                    hospitalItem.textContent = `${hospital.name} - ${hospital.address}`;
+                    hospitalListDiv.appendChild(hospitalItem);
+                }
+            });
+
+            if (hospitals.length === 0) {
+                hospitalListDiv.textContent = 'Tidak ada rumah sakit terdekat ditemukan.';
+            }
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>

@@ -1,43 +1,81 @@
 let viewer = document.getElementById("view");
 let speech;
 let recording = "";
-let uniqueTexts = new Set(); // Menggunakan Set untuk menyimpan teks unik
+let finalTranscript = "";
+let isRecordingActive = false;
+let storedSentence = ""; // Variabel untuk menyimpan kalimat yang lebih dari empat kata
+let interimTimeoutId;
+const interimDebounceTime = 200; // Waktu debounce untuk hasil sementara (200ms)
 
 function setup() {
-    noCanvas(); // Tidak perlu kanvas untuk aplikasi ini
+    noCanvas();
 
-    // Inisialisasi pengenalan suara untuk bahasa Indonesia
     speech = new p5.SpeechRec("id-ID", getResult);
+    speech.continuous = true;
+    speech.interimResults = true;
 
-    // Event listener ketika rekaman suara dimulai
     speech.onStart = function() {
         viewer.innerHTML = "Merekam suara...";
+        isRecordingActive = true;
+        finalTranscript = "";
+        storedSentence = "";
+        console.log("Mulai merekam");
     };
-    // Mulai mendengarkan dengan mode kontinu diaktifkan
-    speech.start(true, true);
+
+    speech.onResult = function() {
+        if (isRecordingActive) {
+            let currentResult = speech.resultString.trim();
+            let wordCount = currentResult.split(/\s+/).filter(Boolean).length;
+
+            clearTimeout(interimTimeoutId);
+            interimTimeoutId = setTimeout(() => {
+                if (wordCount > 4) {
+                    storedSentence = (storedSentence ? storedSentence + " " : "") + currentResult;
+                    viewer.innerHTML = storedSentence + " (sementara)";
+                    console.log("Kalimat disimpan (debounce):", storedSentence);
+                }
+            }, interimDebounceTime);
+
+            if (speech.final) {
+                finalTranscript += (finalTranscript ? " " : "") + currentResult;
+                console.log("Hasil final (per bagian):", currentResult);
+            }
+        }
+    };
+
+    speech.onEnd = function() {
+        if (isRecordingActive) {
+            console.log("Perekaman sementara berhenti");
+        }
+    };
+
+    speech.start();
+    console.log("speech.start() dipanggil");
 }
 
-function getResult() {
-    let text = speech.resultString.trim(); // Mengambil hasil pengenalan suara dan menghapus spasi di awal/akhir
-    if (text && !uniqueTexts.has(text)) { // Cek jika teks tidak kosong dan belum ada di Set
-        uniqueTexts.add(text); // Tambahkan teks ke Set
-        recording += (recording ? " " : "") + text; // Tambahkan teks ke rekaman
-        viewer.innerHTML = recording; // Tampilkan rekaman
-    }
-}
+function getResult() {}
 
 function reset() {
-    // Mulai kembali mendengarkan secara kontinu
-    speech.start(true, true);
+    isRecordingActive = false;
+    recording = "";
+    finalTranscript = "";
+    storedSentence = "";
+    viewer.innerHTML = "";
+    speech.stop();
+    console.log("Perekaman direset dan dihentikan");
 }
 
-// Event listener untuk tombol submit
 document.getElementById("submitBtn").addEventListener("click", async function() {
-    if (recording) {
-        await sendToServer(recording); // Kirim data ke server
-    } else {
-        Swal.fire("Peringatan", "Tidak ada teks yang direkam untuk dikirim.", "warning");
-    }
+        isRecordingActive = false;
+        speech.stop();
+        recording = storedSentence.trim(); // Kirim storedSentence, bukan finalTranscript
+        viewer.innerHTML = recording; // Tampilkan storedSentence sebagai hasil final
+        if (recording) {
+            console.log("Data yang akan dikirim (dari submit):", recording);
+            await sendToServer(recording); // Panggil fungsi sendToServer dengan storedSentence
+        } else {
+            Swal.fire("Peringatan", "Tidak ada teks yang direkam untuk dikirim.", "warning");
+        }
 });
 
 function saveAsPDF(content, print = false) {
@@ -45,7 +83,7 @@ function saveAsPDF(content, print = false) {
     const doc = new jsPDF();
 
     doc.setFont("helvetica", "bold");
-    doc.text("Hasil Deteksi Penyakit", 20, 20);
+    doc.text("Hasil Deteksi Penyakit", 10, 10);
     doc.setFont("helvetica", "normal");
 
     
@@ -97,12 +135,10 @@ async function sendToServer(inputText) {
 
             // 🔹 Bersihkan & Format Hasil Deteksi agar lebih rapi
             let formattedData = data
-            .replace("Obat yang disarankan:", "") 
-            .replace("Saran:", "")
             .replace(/Penyakit terdeteksi:/g, "<b>Penyakit terdeteksi:</b> ")
-            .replace(/Saran Obat:/g, "<b>Saran Obat:</b> ")
-            .replace(/Saran Dokter:/g, "<b>Saran Dokter:</b> ")
             .replace(/Gejala yang muncul:/g, "<b>Gejala yang muncul:</b> ")
+            .replace(/Saran Dokter:/g, "<b>Saran Dokter:</b> ")
+            .replace(/Saran Obat:/g, "<b>Saran Obat:</b> ")
             .replace(/Waktu Deteksi:/g, "<b>Waktu Deteksi:</b> ")
             .replace(/\n/g, "<br>"); // Ganti newline dengan <br> agar HTML terformat dengan baik
 
@@ -126,14 +162,14 @@ async function sendToServer(inputText) {
             }
         });
 
-        resetRecording(); // Reset rekaman setelah pengiriman
+        // resetRecording(); // Reset rekaman setelah pengiriman
     } catch (error) {
         console.error('Error:', error);
         Swal.fire("Kesalahan", "Terjadi kesalahan saat mengirim data.", "error");
     }
 }
 
-function resetRecording() {
-    recording = ""; // Reset rekaman
-    uniqueTexts.clear(); // Kosongkan Set setelah pengiriman
-}
+// function resetRecording() {
+//     recording = ""; // Reset rekaman
+//     uniqueTexts.clear(); // Kosongkan Set setelah pengiriman
+// }

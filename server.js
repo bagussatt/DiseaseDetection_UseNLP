@@ -32,6 +32,33 @@ app.get('/speech-to-text', (req, res) => {
 // Menggunakan rute penyakit
 app.use('/api', penyakitRoutes);
 
+app.get('/api/nearby-hospitals', async (req, res) => {
+    const { lat, lng } = req.query;
+    if (!lat || !lng) {
+        return res.status(400).json({ error: 'Latitude dan longitude dibutuhkan.' });
+    }
+
+    const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:30];(node(around:5000,${lat},${lng})["amenity"="hospital"];way(around:5000,${lat},${lng})["amenity"="hospital"];relation(around:5000,${lat},${lng})["amenity"="hospital"];);out center;`;
+
+    try {
+        const response = await axios.get(overpassUrl);
+        const hospitals = response.data.elements.map(element => {
+            return {
+                lat: element.lat || element.center?.lat,
+                lng: element.lon || element.center?.lon,
+                name: element.tags?.name || 'Hospital',
+                address: element.tags?.["addr:street"] ? `${element.tags?.["addr:street"]} ${element.tags?.["addr:housenumber"]}, ${element.tags?.["addr:city"] || element.tags?.["addr:locality"]}` : 'Alamat tidak tersedia'
+            };
+        }).filter(h => h.lat && h.lng);
+
+        res.json(hospitals);
+    } catch (error) {
+        console.error('Error fetching hospitals from Overpass API:', error);
+        res.status(500).json({ error: 'Gagal mengambil data rumah sakit terdekat.' });
+    }
+});
+
+
 // Jalankan server
 app.listen(port, () => {
     console.log(`Server berjalan di http://localhost:${port}`);

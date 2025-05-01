@@ -21,10 +21,10 @@ exports.processText = async (req, res) => {
 
         hasil.forEach(item => {
             responseText += `Penyakit terdeteksi: ${item.penyakit}<br>`;
-            responseText += `Saran Obat: ${item.saranObat}<br>`;
-            responseText += `Saran Dokter: ${item.saranDokter}<br>`;
             responseText += `Gejala yang muncul: ${item.gejala.join(', ')}<br>`;
-            responseText += `Waktu Deteksi: ${item.timestamp}<br><br>`;
+            responseText += `Saran Dokter: ${item.saranDokter}<br>`;
+            responseText += `Saran Obat: ${item.saranObat}<br>`;
+            // responseText += `Waktu Deteksi: ${item.timestamp}<br><br>`;
         });
 
         // Simpan ke Firebase dengan format yang seragam
