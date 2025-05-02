@@ -39,7 +39,7 @@ app.get('/api/nearby-hospitals', async (req, res) => {
         return res.status(400).json({ error: 'Latitude dan longitude dibutuhkan.' });
     }
 
-    const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:30];(node(around:3000,${lat},${lng})["amenity"="hospital"];way(around:3000,${lat},${lng})["amenity"="hospital"];relation(around:3000,${lat},${lng})["amenity"="hospital"];);out center;`;
+    const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:30];(node(around:5000,${lat},${lng})["amenity"="hospital"];way(around:5000,${lat},${lng})["amenity"="hospital"];relation(around:5000,${lat},${lng})["amenity"="hospital"];);out center;`;
 
     try {
         const response = await axios.get(overpassUrl);

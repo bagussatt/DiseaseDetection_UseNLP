@@ -6,33 +6,33 @@ const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke'
 const keywords = {
 
     ispa: {
-        keywords: ['batuk', 'pilek', 'sakit tenggorokan', 'demam', 'sesak napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'].map(stemmer),
-        saranObat: 'Obat yang disarankan: Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
-        saranDokter: 'Saran: Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.',
+        keywords: ['batuk', 'pilek', 'sakit tenggorokan', 'demam', 'sesak napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'],
+        saranObat: 'Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
+        saranDokter: 'Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/mengenali-gejala-ispa-dan-tindakan-yang-perlu-dilakukan)'
     },
     hipertensi: {
-        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'sesak napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'].map(stemmer),
-        saranObat: 'Obat yang disarankan: Obat antihipertensi seperti amlodipin atau sesuai resep dokter.',
-        saranDokter: 'Saran: Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.',
+        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'sesak napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'],
+        saranObat: 'Obat antihipertensi seperti amlodipin atau sesuai resep dokter.',
+        saranDokter: 'Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/topik-penyakit/pencegahan-infeksi-pada-usia-produktif/hipertensi-tekanan-darah-tinggi). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diabetes: {
-        keywords: ['sering kencing', 'cepat lapar', 'sering haus', 'berat badan menurun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'cepat lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi', 'haus'].map(stemmer),
-        saranObat: 'Obat yang disarankan: Insulin atau obat antidiabetes oral sesuai resep dokter.',
-        saranDokter: 'Saran: Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.',
+        keywords: ['sering kencing', 'cepat lapar', 'sering haus', 'berat badan menurun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'cepat lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi', 'haus'],
+        saranObat: 'Insulin atau obat antidiabetes oral sesuai resep dokter.',
+        saranDokter: 'Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.',
         sumber: '[Kementerian Kesehatan RI](https://upk.kemkes.go.id/new/mengenal-gejala-diabetes-melitus). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diare: {
-        keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'dehidrasi', 'demam', 'lemas'].map(stemmer),
-        saranObat: 'Obat yang disarankan: Loperamide untuk mengurangi frekuensi buang air besar.',
-        saranDokter: 'Saran: Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.',
+        keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'dehidrasi', 'demam', 'lemas'],
+        saranObat: 'Loperamide untuk mengurangi frekuensi buang air besar.',
+        saranDokter: 'Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/penyakit/diare). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     ginjalkronis: {
-        keywords: ['sering kencing malam', 'bengkak kaki', 'mudah lelah', 'mual', 'muntah', 'nafsu makan menurun', 'tekanan darah tinggi', 'darah dalam urin', 'gatal', 'sakit kepala', 'sesak napas'].map(stemmer),
-        saranObat: 'Obat yang disarankan: Tidak ada penanganan obat mandiri. Konsultasikan dengan dokter.',
-        saranDokter: 'Saran: Jaga pola makan sehat, batasi asupan cairan sesuai anjuran dokter, dan lakukan pemeriksaan ginjal secara rutin jika berisiko.',
+        keywords: ['sering kencing malam', 'bengkak kaki', 'mudah lelah', 'mual', 'muntah', 'nafsu makan menurun', 'tekanan darah tinggi', 'darah dalam urin', 'gatal', 'sakit kepala', 'sesak napas'],
+        saranObat: 'Tidak ada penanganan obat mandiri. Konsultasikan dengan dokter.',
+        saranDokter: 'Jaga pola makan sehat, batasi asupan cairan sesuai anjuran dokter, dan lakukan pemeriksaan ginjal secara rutin jika berisiko.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/gejala-penyakit-ginjal-kronis-yang-harus-diwaspadai). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     }
 }
