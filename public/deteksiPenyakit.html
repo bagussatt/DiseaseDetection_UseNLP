@@ -16,6 +16,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* === CSS untuk Transcript Area dan Chat Bubbles === */
+
+#transcript-area {
+    /* Atur tinggi, overflow, dan padding dasar untuk area chat */
+    height: 400px; /* Sesuaikan tinggi sesuai kebutuhan */
+    overflow-y: auto; /* Aktifkan scroll vertikal jika konten melebihi tinggi */
+    padding: 15px;
+    background-color: #f0f2f5; /* Warna latar belakang area chat (contoh: seperti WhatsApp web) */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex; /* Gunakan Flexbox untuk penataan bubble */
+    flex-direction: column; /* Susun bubble secara vertikal */
+    gap: 10px; /* Jarak antar bubble */
+  }
+  
+  /* Gaya dasar untuk semua bubble (opsional, bisa digabung ke user/bot) */
+  .user-transcript-bubble,
+  .bot-transcript-bubble {
+    padding: 10px 15px;
+    border-radius: 18px; /* Membuat sudut lebih melengkung seperti bubble */
+    max-width: 75%; /* Batasi lebar bubble agar tidak terlalu panjang */
+    word-wrap: break-word; /* Pastikan teks panjang pindah baris */
+    line-height: 1.4;
+    font-size: 0.95rem; /* Sedikit sesuaikan ukuran font */
+    /* Hapus float jika menggunakan flexbox di parent */
+    /* float: none; */
+    /* clear: both; */ /* Tidak perlu jika parent flex column */
+  }
+  
+  /* Gaya Spesifik untuk Bubble BOT */
+  .bot-transcript-bubble {
+    background-color: #ffffff; /* Warna latar bubble bot (putih) */
+    color: #333; /* Warna teks bot */
+    border: 1px solid #e0e0e0; /* Border tipis opsional */
+    align-self: flex-start; /* Rata kiri (karena parent display: flex) */
+    /* Jika tidak pakai flex, gunakan ini: */
+    /* margin-right: auto; */
+    /* float: left; */
+    border-bottom-left-radius: 5px; /* Sedikit bedakan sudut */
+  }
+  
+  /* Gaya Spesifik untuk Bubble USER */
+  .user-transcript-bubble {
+    background-color: #dcf8c6; /* Warna latar bubble user (hijau muda contoh) */
+    color: #333; /* Warna teks user */
+    align-self: flex-end; /* Rata kanan (karena parent display: flex) */
+    /* Jika tidak pakai flex, gunakan ini: */
+    /* margin-left: auto; */
+    /* float: right; */
+    border-bottom-right-radius: 5px; /* Sedikit bedakan sudut */
+  }
+  
+  /* Gaya untuk label sender [User]: atau [Bot]: (opsional) */
+  .sender-label {
+    font-weight: bold;
+    margin-right: 5px;
+    display: none; /* Sembunyikan label [User]: atau [Bot]: jika tidak diinginkan di dalam bubble */
+                   /* Atau beri gaya berbeda jika ingin tetap ditampilkan */
+    /* color: #555; */ /* Contoh warna jika ditampilkan */
+  }
+  
+ 
+
         :root {
              /* Definisikan variabel warna utama agar mudah diubah */
             --primary-gradient-start: #4CAF50;

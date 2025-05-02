@@ -1,8 +1,4 @@
-// ========================================================
-// KODE sketch.js LENGKAP DENGAN PERBAIKAN CLASS CSS
-// ========================================================
 
-// Variabel Global
 let speechRec;
 let speechSynth;
 let transcriptArea;
