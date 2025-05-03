@@ -1,7 +1,7 @@
 // ========================================================
-// KODE sketch.js - VERSI DENGAN KONFIRMASI RESERVASI (V4.0)
+// KODE sketch.js - VERSI DGN KONFIRMASI RESERVASI (V4.2)
 // FIX: Data terkirim ke reservasi (encodeURIComponent + param name)
-// ADD: Popup konfirmasi SweetAlert2 dengan checkbox
+// ADD: Popup konfirmasi SweetAlert2 SAAT KLIK RESERVASI + checkbox
 // FIX: removeClass errors
 // FIX: Hapus duplikasi fungsi speakDetectionResults
 // ========================================================
@@ -21,6 +21,7 @@ let lastDetectionResult = null; // Menyimpan hasil deteksi MENTAH terakhir yang 
 let lastDetectedDisease = null; // Menyimpan NAMA PENYAKIT terakhir yang valid
 let greetingSpoken = false;
 let statusTimeout;
+// let consentGiven = false; // Tidak ada popup consent awal di versi ini
 
 // --- Fungsi Setup p5.js ---
 function setup() {
@@ -67,8 +68,8 @@ function setup() {
             console.log("p5.SpeechRec (STT) initialized.");
             if (listenButton) {
                 listenButton.removeAttribute('disabled');
-                listenButton.mousePressed(toggleListening);
-                console.log("Listen button enabled.");
+                listenButton.mousePressed(toggleListening); // Listener tombol dengar
+                console.log("Listen button enabled and listener attached.");
             }
         } catch (sttError) {
             console.error("Error during p5.SpeechRec initialization:", sttError);
@@ -81,11 +82,9 @@ function setup() {
         if (statusDisplay) updateStatus("Peringatan: Fitur pengenal suara tidak tersedia.", 5000);
     }
 
-    // Listener untuk tombol Reservasi
+    // Listener untuk tombol Reservasi -> Panggil handleReservationClick (popup)
     if (reservationButton) {
-        // Hapus event listener lama jika ada (untuk safety)
-        // reservationButton.elt.removeEventListener('click', goToReservationPage); // Jika sebelumnya pakai addEventListener
-        reservationButton.mousePressed(handleReservationClick); // Panggil fungsi baru yang menampilkan popup
+        reservationButton.mousePressed(handleReservationClick); // Panggil fungsi popup
         reservationButton.html('Lanjut ke Reservasi');
         reservationButton.style('display', 'none');
         console.log("Reservation button (#showMapBtn) listener attached (calls handleReservationClick).");
@@ -93,8 +92,7 @@ function setup() {
         console.warn("Reservation button (#showMapBtn) not found.");
     }
 
-    // Pesan sapaan awal (dipindahkan ke voiceReady agar konsisten)
-    // addMessageToTranscript('Bot', 'Halo! Saya Asisten anda siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.');
+    // Pesan sapaan awal (dipindah ke voiceReady)
     console.log("Initial greeting will be added via voiceReady.");
     updateStatus('');
     console.log("p5.js setup complete.");
@@ -120,16 +118,15 @@ function initializeSpeechRec() {
 function voiceReady() {
     console.log("TTS engine is ready.");
     if (!greetingSpoken && speechSynth && !isSpeaking) {
-        const greetingMsg = 'Halo! Saya Asisten anda siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.';
+        const greetingMsg = 'Halo! Saya siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.';
         console.log("Attempting to speak initial greeting...");
-        addMessageToTranscript('Bot', greetingMsg); // Tambah ke transkrip
+        addMessageToTranscript('Bot', greetingMsg); // Tampilkan di transkrip
         speakText(greetingMsg); // Ucapkan
         greetingSpoken = true;
     }
 }
 
 function botStartedSpeaking() {
-    console.log("Bot started speaking.");
     isSpeaking = true;
     if (speakingIndicator) speakingIndicator.style('display', 'flex');
     if (listenButton) listenButton.attribute('disabled', '');
@@ -147,14 +144,10 @@ function botFinishedSpeaking() {
 
     // Aktifkan kembali tombol dengar jika tidak sedang mendengarkan
     if (listenButton && !isListening) {
-        listenButton.removeAttribute('disabled');
-        listenButton.html('<i class="fas fa-microphone-alt text-xl"></i><span class="text-base">Mulai Bicara</span>');
-        // FIX removeClass Error: Gunakan argumen terpisah
-        listenButton.removeClass('listening', 'recording-animation');
+        resetListenButtonUI(); // Gunakan helper
         console.log("Listen button re-enabled after TTS finished.");
     } else if (listenButton && isListening) {
-        console.log("TTS finished, but STT still marked as listening (possible state issue). Button remains as is.");
-         // Seharusnya STT sudah berhenti sebelum TTS selesai, tapi jika tidak, biarkan state listening
+        console.log("TTS finished, but STT still marked as listening.");
     }
 
     // Update visibilitas tombol reservasi berdasarkan hasil terakhir
@@ -168,32 +161,16 @@ function toggleListening() {
         updateStatus('Harap tunggu bot selesai berbicara.', 2000);
         return;
     }
-    if (!speechRec) {
+    if (!speechRec && !isListening) {
         console.error("toggleListening blocked: Speech Recognition not initialized!");
         updateStatus('Error: Fitur rekam suara tidak siap.', 3000);
         return;
     }
-    if (reservationButton) reservationButton.style('display', 'none'); // Sembunyikan tombol saat mendengar
+    if (reservationButton) reservationButton.style('display', 'none');
 
     if (!isListening) {
-        // --- MULAI MENDENGARKAN ---
-        console.log("Attempting to start listening...");
-        try {
-            // Tidak perlu re-init speechRec di sini
-            speechRec.start(); // continuous & interim sudah diset
-            isListening = true;
-            console.log("speechRec.start() called.");
-            if (listenButton) {
-                listenButton.html('<i class="fas fa-stop text-xl"></i><span class="text-base">Berhenti</span>');
-                listenButton.addClass('listening', 'recording-animation'); // Pisahkan argumen
-            }
-            updateStatus('Mendengarkan...');
-        } catch (err) {
-            console.error("Error starting speech recognition:", err);
-            updateStatus('Gagal memulai pendengaran.', 3000);
-            isListening = false;
-            resetListenButtonUI(!isSpeaking); // Reset UI, enable jika bot tidak bicara
-        }
+        // Langsung mulai mendengarkan (tidak ada popup consent awal di versi ini)
+         startListeningProcedure();
     } else {
         // --- BERHENTI MENDENGARKAN (MANUAL) ---
         console.log("Attempting to stop listening manually...");
@@ -205,15 +182,39 @@ function toggleListening() {
                 speechEnd(); // Panggil cleanup manual
                 return;
             }
-            if (listenButton) listenButton.removeClass('recording-animation'); // Hapus animasi segera
+            if (listenButton) listenButton.removeClass('recording-animation');
             updateStatus('Menghentikan pendengaran...');
-            // State isListening akan direset oleh speechEnd
         } catch (e) {
             console.error("Error stopping speech recognition:", e);
             updateStatus('Gagal menghentikan pendengaran.', 3000);
-            isListening = false; // Paksa state
-            speechEnd(); // Coba cleanup
+            isListening = false;
+            speechEnd();
         }
+    }
+}
+
+// Fungsi baru untuk memulai prosedur listening
+function startListeningProcedure() {
+    console.log("Attempting to start listening procedure...");
+    try {
+        if (!speechRec) {
+            console.error("Cannot start listening: speechRec not initialized.");
+            updateStatus('Error: Pengenal suara belum siap.', 3000);
+            return;
+        }
+        speechRec.start();
+        isListening = true;
+        console.log("speechRec.start() called.");
+        if (listenButton) {
+            listenButton.html('<i class="fas fa-stop text-xl"></i><span class="text-base">Berhenti</span>');
+            listenButton.addClass('listening', 'recording-animation'); // Pisahkan argumen
+        }
+        updateStatus('Mendengarkan...');
+    } catch (err) {
+        console.error("Error starting speech recognition:", err);
+        updateStatus('Gagal memulai pendengaran.', 3000);
+        isListening = false;
+        resetListenButtonUI(!isSpeaking);
     }
 }
 
@@ -226,13 +227,13 @@ function gotSpeech() {
         let userInput = speechRec.resultString;
         addMessageToTranscript('User', userInput);
         console.log("Proceeding to symptom analysis.");
-        sendToServerForDetection(userInput); // Kirim untuk analisis
-        if (listenButton) listenButton.attribute('disabled', ''); // Nonaktifkan tombol selama proses
+        sendToServerForDetection(userInput);
+        if (listenButton) listenButton.attribute('disabled', '');
     } else {
         console.warn("gotSpeech callback triggered but no valid result found.");
         updateStatus('Tidak dapat mengenali ucapan dengan jelas. Coba lagi.', 3000);
-        isListening = false; // Pastikan state reset jika tidak ada hasil
-        resetListenButtonUI(!isSpeaking); // Reset tombol jika tidak ada hasil & bot tidak bicara
+        isListening = false;
+        resetListenButtonUI(!isSpeaking);
     }
 }
 
@@ -242,9 +243,8 @@ async function sendToServerForDetection(inputText) {
     updateStatus('Menganalisis gejala...');
     if (listenButton) listenButton.attribute('disabled', '');
     if (reservationButton) reservationButton.style('display', 'none');
-    // Reset hasil sebelumnya
     lastDetectionResult = null;
-    lastDetectedDisease = null;
+    lastDetectedDisease = null; // Reset nama penyakit juga
 
     try {
         const response = await fetch('/api/process', {
@@ -269,7 +269,6 @@ async function sendToServerForDetection(inputText) {
         // lastDetectionResult & lastDetectedDisease sudah null
     } finally {
         console.log("sendToServerForDetection finished.");
-        // Tombol akan di-handle oleh botFinishedSpeaking setelah TTS (hasil/error) selesai
     }
 }
 
@@ -283,24 +282,22 @@ function displayDetectionResults(hasilDeteksiString) {
     const isNoDetection = !hasilDeteksiString || hasilDeteksiString.trim() === '' || noDetectionKeywords.some(keyword => hasilDeteksiString.toLowerCase().includes(keyword));
 
     let botMessage = '';
-    let speakPenyakit = "Tidak diketahui"; // Untuk dikirim ke fungsi speak
-    let speakGejala = "N/A"; // Untuk dikirim ke fungsi speak
-    let foundDiagnosis = false; // Untuk dikirim ke fungsi speak
+    let speakPenyakit = "Tidak diketahui";
+    let speakGejala = "N/A";
+    let foundDiagnosis = false;
 
     if (isNoDetection) {
         console.log("No specific disease detected.");
-        botMessage = 'Halo Saya Asisten anda! Saya siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.'; // Pesan jika tidak terdeteksi
-        lastDetectionResult = "NO_VALID_DIAGNOSIS"; // Pastikan ini
-        lastDetectedDisease = null;
+        botMessage = 'Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda';
         addMessageToTranscript('Bot', botMessage); // Tampilkan pesan ini
+        lastDetectionResult = "NO_VALID_DIAGNOSIS";
+        lastDetectedDisease = null;
     } else {
         console.log("Potential disease detected.");
-        lastDetectionResult = hasilDeteksiString.trim(); // Simpan hasil MENTAH yang valid
-        console.log(">>> Set lastDetectionResult to (VALID):", `"${lastDetectionResult}"`);
+        lastDetectionResult = hasilDeteksiString.trim(); // Simpan hasil MENTAH
 
-        const lines = lastDetectionResult.split('\n'); // Gunakan hasil yg sudah di-trim
+        const lines = lastDetectionResult.split('\n');
         let formattedHTML = '<span class="sender-label">[Bot]:</span> <strong>Hasil Analisis:</strong><ul class="list-disc list-inside ml-4 mt-1">';
-        // Variabel lokal untuk loop, tidak perlu global
         let currentPenyakit = "Tidak diketahui";
         let currentGejala = "N/A";
         let currentFoundDiagnosis = false;
@@ -312,36 +309,34 @@ function displayDetectionResults(hasilDeteksiString) {
                 const value = parts.slice(1).join(':').trim();
                 const escapedLabel = label.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 const escapedValue = value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
                 formattedHTML += `<li class="mb-1"><strong class="font-medium">${escapedLabel}:</strong> ${escapedValue}</li>`;
-
                 const labelLower = label.toLowerCase();
                 if (labelLower.includes('penyakit terdeteksi') || labelLower.includes('kemungkinan penyakit')) {
-                    currentPenyakit = value; // Simpan nama penyakit non-escaped
+                    currentPenyakit = value; // Simpan nama non-escaped
                     currentFoundDiagnosis = true;
                     lastDetectedDisease = value; // <<< SIMPAN NAMA PENYAKIT GLOBAL
                 } else if (labelLower.includes('gejala yang muncul') || labelLower.includes('gejala cocok')) {
-                    currentGejala = value;
+                    currentGejala = value; // Simpan gejala non-escaped
                 }
             } else if (line.trim()) {
                 const escapedLine = line.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 formattedHTML += `<li class="mb-1">${escapedLine}</li>`;
                 if (!currentFoundDiagnosis && (line.trim().toLowerCase().includes('penyakit:') || line.trim().toLowerCase().includes('kemungkinan:'))) {
                     const value = line.trim().split(':').slice(1).join(':').trim() || line.trim();
-                    currentPenyakit = value;
-                    currentFoundDiagnosis = true;
-                    lastDetectedDisease = value; // <<< SIMPAN NAMA PENYAKIT GLOBAL
+                    if(value){
+                        currentPenyakit = value;
+                        currentFoundDiagnosis = true;
+                        lastDetectedDisease = value; // <<< SIMPAN NAMA PENYAKIT GLOBAL
+                    }
                 }
             }
         });
         formattedHTML += '</ul>';
 
-        // Update variabel untuk dikirim ke fungsi speak
         speakPenyakit = currentPenyakit;
         speakGejala = currentGejala;
         foundDiagnosis = currentFoundDiagnosis;
 
-        // Tampilkan di transkrip
         let resultDiv = createDiv(formattedHTML);
         resultDiv.addClass('bot-transcript-bubble detection-result');
         if (transcriptArea) {
@@ -351,9 +346,9 @@ function displayDetectionResults(hasilDeteksiString) {
     }
 
     // Ucapkan hasil (atau pesan 'tidak terdeteksi')
-    // Fungsi ini akan mereset lastDetectedDisease jika diagnosis tidak valid
     speakDetectionResults(speakPenyakit, speakGejala, foundDiagnosis, isNoDetection, botMessage);
 }
+
 
 // --- Fungsi speakDetectionResults (HANYA SATU VERSI) ---
 function speakDetectionResults(penyakit, gejala, diagnosisDitemukan, isNoDetection, noDetectionMsg) {
@@ -361,7 +356,7 @@ function speakDetectionResults(penyakit, gejala, diagnosisDitemukan, isNoDetecti
     const validPenyakit = diagnosisDitemukan && penyakit && penyakit !== "Tidak diketahui" && penyakit.trim() !== '';
 
     if (isNoDetection) {
-        textToSpeak = 'Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda'; // Pesan suara jika tidak terdeteksi
+        textToSpeak = 'Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda';
         // lastDetectionResult & lastDetectedDisease sudah direset sebelumnya
     } else if (validPenyakit) {
         textToSpeak = `Baik, berdasarkan analisis, kemungkinan penyakit Anda adalah ${penyakit}. `;
@@ -372,8 +367,7 @@ function speakDetectionResults(penyakit, gejala, diagnosisDitemukan, isNoDetecti
         // lastDetectionResult & lastDetectedDisease sudah berisi data valid
     } else {
         textToSpeak = "Analisis selesai. Disarankan untuk konsultasi lebih lanjut dengan dokter.";
-        // Reset karena diagnosis tidak valid (misal "Tidak diketahui")
-        lastDetectionResult = "NO_VALID_DIAGNOSIS";
+        lastDetectionResult = "NO_VALID_DIAGNOSIS"; // Reset jika diagnosis tidak valid
         lastDetectedDisease = null;
     }
     console.log("Bot speaking diagnosis summary:", textToSpeak);
@@ -384,39 +378,43 @@ function speakDetectionResults(penyakit, gejala, diagnosisDitemukan, isNoDetecti
 // --- Fungsi inti untuk Text-to-Speech (TTS) ---
 function speakText(textToSpeak) {
     console.log(`Attempting to speak: "${textToSpeak}"`);
-    if (!textToSpeak) {
+     if (!textToSpeak) {
         console.warn("TTS: speakText called with empty text.");
         botFinishedSpeaking();
         return;
     }
     if (speechSynth && typeof speechSynth.speak === 'function') {
         try {
-            // Update UI dipindah ke onStart/onEnd
-            // updateStatus('Bot sedang berbicara...');
-            // isSpeaking = true; // Di handle onStart
-            // ... (UI lainnya di handle onStart/onEnd) ...
             speechSynth.speak(textToSpeak);
             console.log("speechSynth.speak() called.");
         } catch (e) {
             console.error("Error triggering speechSynth.speak():", e);
-            botFinishedSpeaking(); // Panggil onEnd manual jika speak gagal
+            botFinishedSpeaking();
         }
     } else {
         console.warn("TTS not available. Cannot speak.");
-        botFinishedSpeaking(); // Panggil onEnd manual jika TTS tidak jalan
+        botFinishedSpeaking();
     }
 }
-
 
 // --- Fungsi untuk menangani klik tombol reservasi -> Munculkan Popup ---
 function handleReservationClick() {
     console.log("Reservation button clicked. Preparing confirmation popup...");
 
-    // Ambil data yang akan dikirim (jika valid)
-    let gejalaDataRaw = "";
-    if (lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS") {
-        gejalaDataRaw = lastDetectionResult;
+    // Pastikan ada data valid sebelum menampilkan popup
+    if (!lastDetectionResult || lastDetectionResult === "NO_VALID_DIAGNOSIS") {
+        console.warn("Reservation button clicked, but no valid diagnosis data available.");
+        // Beri tahu pengguna bahwa tidak ada diagnosis untuk direservasi
+         Swal.fire(
+             'Tidak Ada Diagnosis',
+             'Belum ada hasil analisis gejala yang valid untuk dilanjutkan ke reservasi.',
+             'warning'
+         );
+        return; // Hentikan fungsi
     }
+
+    // Ambil data yang akan dikirim
+    const gejalaDataRaw = lastDetectionResult;
 
     // Ambil nama penyakit untuk pesan popup
     const penyakitDisplay = lastDetectedDisease || "kemungkinan kondisi ini"; // Fallback text
@@ -425,11 +423,11 @@ function handleReservationClick() {
     Swal.fire({
         title: 'Konfirmasi Reservasi',
         html: `
-            <p>Apakah Anda yakin ingin melanjutkan ke halaman reservasi untuk ${penyakitDisplay}?</p>
+            <p>Apakah Anda yakin ingin melanjutkan ke halaman reservasi untuk <b>${penyakitDisplay}</b> berdasarkan analisis gejala?</p>
             <div class="form-check text-start mt-3 mb-2">
                 <input class="form-check-input" type="checkbox" value="" id="konfirmasi-reservasi-check">
                 <label class="form-check-label" for="konfirmasi-reservasi-check">
-                    Saya memahami bahwa ini hanya analisis awal berdasarkan gejala yang saya sebutkan dan bukan merupakan diagnosis medis final.
+                    Saya setuju data hasil analisis ini dikirimkan untuk membantu proses reservasi.
                 </label>
             </div>
         `,
@@ -439,42 +437,43 @@ function handleReservationClick() {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ya, Lanjutkan Reservasi',
         cancelButtonText: 'Batal',
-        focusConfirm: false, // Agar fokus tidak langsung ke tombol confirm
+        focusConfirm: false,
         preConfirm: () => {
-            // Validasi checkbox sebelum konfirmasi
+            // Validasi checkbox
             const isChecked = document.getElementById('konfirmasi-reservasi-check').checked;
             if (!isChecked) {
-                Swal.showValidationMessage('Anda harus menyetujui pernyataan di atas untuk melanjutkan.');
-                return false; // Menghentikan konfirmasi
+                Swal.showValidationMessage('Anda harus menyetujui pengiriman data untuk melanjutkan.');
+                return false; // Hentikan konfirmasi
             }
             return true; // Lanjutkan jika dicentang
         }
     }).then((result) => {
-        // Jika user mengklik "Ya, Lanjutkan" DAN checkbox tercentang (validasi preConfirm lolos)
+        // Jika user mengklik "Ya, Lanjutkan" DAN checkbox tercentang
         if (result.isConfirmed) {
-            console.log("User confirmed reservation. Proceeding to redirect...");
-            goToReservationPage(gejalaDataRaw); // Panggil fungsi redirect dengan data
+            console.log("User confirmed reservation data sending. Proceeding to redirect...");
+            goToReservationPage(gejalaDataRaw); // Panggil fungsi redirect dengan data mentah
         } else {
-            console.log("User cancelled reservation.");
+            console.log("User cancelled reservation data sending.");
         }
     });
 }
 
 
-// --- Fungsi Baru: Redirect ke Halaman Reservasi (Dipanggil SETELAH konfirmasi) ---
+// --- Fungsi Redirect ke Halaman Reservasi (Dipanggil SETELAH konfirmasi) ---
 function goToReservationPage(diagnosisData) {
     console.log("Redirecting function called...");
     let diagnosisParam = "";
-    if (diagnosisData) {
+    if (diagnosisData && diagnosisData !== "NO_VALID_DIAGNOSIS") {
         // FIX: Encode data mentah sebelum dimasukkan ke URL
         diagnosisParam = encodeURIComponent(diagnosisData);
         console.log("Valid symptoms data encoded to send:", diagnosisParam);
     } else {
-        console.warn("Redirecting without valid symptoms data (should not happen if button logic is correct).");
-        diagnosisParam = encodeURIComponent("Gejala tidak dispesifikasi dari analisis awal.");
+        console.warn("goToReservationPage called without valid diagnosis data.");
+        // Seharusnya tidak terjadi karena dicek di handleReservationClick, tapi sbg fallback:
+        diagnosisParam = encodeURIComponent("Gejala tidak dispesifikasi atau tidak valid.");
     }
 
-    const targetPage = 'reservasi.html'; // Pastikan nama file benar
+    const targetPage = 'reservasi.html';
     // FIX: Gunakan nama parameter 'diagnosis' dan data yang sudah di-encode
     const reservationUrl = `${targetPage}?diagnosis=${diagnosisParam}`;
 
@@ -486,31 +485,21 @@ function goToReservationPage(diagnosisData) {
 // --- Fungsi addMessageToTranscript ---
 function addMessageToTranscript(sender, message) {
     if (!sender || !message || !transcriptArea) return;
-
-    // Cek untuk menghindari duplikasi hasil analisis format HTML
     if (sender === 'Bot' && message.startsWith('<span class="sender-label">[Bot]:</span> <strong>Hasil Analisis:</strong>')) {
-         console.log("Skipping duplicate HTML formatted message.");
-         return;
-    }
-
+         return; // Hindari duplikat format HTML
+     }
     let messageDiv = createDiv('');
-    // Gunakan styling yang lebih sederhana atau sesuaikan dengan CSS Anda
     let bubbleClass = (sender === 'User') ? 'user-transcript-bubble' : 'bot-transcript-bubble';
-    const safeMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // Basic escaping
-
+    const safeMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     messageDiv.html(`${safeMessage}`);
     messageDiv.addClass(bubbleClass);
-    // Tambahkan kelas styling dasar dari CSS jika perlu
-    // messageDiv.addClass('p-3 my-2 rounded-lg max-w-xs md:max-w-md');
     if(sender === 'Bot' && message.includes('Hasil Analisis')){
-         messageDiv.addClass('detection-result'); // Tambahkan kelas khusus jika ini hasil deteksi
+         messageDiv.addClass('detection-result');
     }
-
     transcriptArea.child(messageDiv);
     try { transcriptArea.elt.scrollTo({ top: transcriptArea.elt.scrollHeight, behavior: 'smooth' }); }
     catch (scrollError) { transcriptArea.elt.scrollTop = transcriptArea.elt.scrollHeight; }
 }
-
 
 // --- Fungsi speechError & speechEnd ---
 function speechError(error) {
@@ -526,8 +515,8 @@ function speechError(error) {
         }
     }
     updateStatus(userMessage, 5000);
-    addMessageToTranscript('System', userMessage); // Tampilkan error sebagai pesan sistem
-    resetListenButtonUI(!isSpeaking); // Reset tombol, aktifkan jika bot tidak bicara
+    addMessageToTranscript('System', userMessage);
+    resetListenButtonUI(!isSpeaking); // Reset tombol
 
     lastDetectionResult = null; // Reset hasil jika STT error
     lastDetectedDisease = null;
@@ -536,23 +525,22 @@ function speechError(error) {
 
 function speechEnd() {
     console.log("Speech Recognition session ended.");
-    if(isListening) isListening = false; // Pastikan reset
+    if(isListening) isListening = false;
 
-    // Reset UI jika bot tidak bicara, jika bicara hanya hilangkan animasi
     if (listenButton && !isSpeaking) {
-         // FIX removeClass error: Gunakan argumen terpisah
-         resetListenButtonUI(); // Reset penuh karena bot tidak bicara
-         console.log("speechEnd: Resetting button UI (bot not speaking).");
+        resetListenButtonUI(); // Reset penuh (termasuk fix removeClass)
+        console.log("speechEnd: Resetting button UI (bot not speaking).");
     } else if (listenButton && isSpeaking) {
-        listenButton.removeClass('recording-animation'); // Hanya hapus animasi
+        // FIX removeClass: Hapus hanya animasi
+        listenButton.removeClass('recording-animation');
         console.log("speechEnd: Bot is speaking, only removing recording animation.");
     }
 }
 
-// --- Helper untuk mereset Tombol Dengar ---
+// --- Helper UI & Status ---
 function resetListenButtonUI(enable = true) {
     if (listenButton) {
-        // FIX removeClass error: Gunakan argumen terpisah
+        // FIX removeClass: Gunakan argumen terpisah
         listenButton.removeClass('listening', 'recording-animation');
         listenButton.html('<i class="fas fa-microphone-alt text-xl"></i><span class="text-base">Mulai Bicara</span>');
         if (enable) {
@@ -563,12 +551,20 @@ function resetListenButtonUI(enable = true) {
     }
 }
 
+function updateReservationButtonVisibility() {
+    if (reservationButton) {
+        if (lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS") {
+            reservationButton.style('display', 'flex');
+            reservationButton.removeAttribute('disabled');
+        } else {
+            reservationButton.style('display', 'none');
+        }
+    }
+}
 
-// --- Helper updateStatus ---
 function updateStatus(message, duration = 0) {
     if (!statusDisplay) return;
     clearTimeout(statusTimeout);
-    // Basic escaping untuk keamanan
     const safeMessage = message ? message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
     statusDisplay.html(safeMessage);
     if (duration > 0) {
@@ -577,21 +573,6 @@ function updateStatus(message, duration = 0) {
         }, duration);
     }
 }
-
-// --- Helper Update Visibilitas Tombol Reservasi ---
-function updateReservationButtonVisibility() {
-    if (reservationButton) {
-        if (lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS") {
-            console.log("UI UPDATE: Showing reservation button.");
-            reservationButton.style('display', 'flex'); // Sesuaikan dgn CSS jika perlu
-            reservationButton.removeAttribute('disabled');
-        } else {
-             console.log("UI UPDATE: Hiding reservation button.");
-            reservationButton.style('display', 'none');
-        }
-    }
-}
-
 
 // --- Event Listener DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', (event) => {

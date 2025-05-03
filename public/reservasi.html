@@ -12,86 +12,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Styles inspired by index.html */
+        /* Custom Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa; /* Warna latar belakang lembut */
+            background-color: #f8f9fa;
             color: #343a40;
-            padding-top: 20px; /* Padding atas */
-            padding-bottom: 50px; /* Padding bawah */
+            padding-top: 20px;
+            padding-bottom: 50px;
         }
-
         .gradient-header {
-            background: linear-gradient(135deg, #4CAF50, #2196F3); /* Gradient Hijau ke Biru */
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
             color: white;
-            border-radius: 0.75rem; /* Rounded corners */
+            border-radius: 0.75rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
-
         .card-custom {
-             background-color: white;
-             border-radius: 0.75rem; /* Sudut lebih bulat */
-             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Shadow lebih halus */
-             border: none; /* Hapus border default card */
-             margin-bottom: 1.5rem; /* Jarak antar card */
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: none;
+            margin-bottom: 1.5rem;
         }
-
         .form-label i {
             margin-right: 0.5rem;
             opacity: 0.75;
         }
-
         .form-control:focus, .form-select:focus {
-            border-color: #2196F3; /* Warna biru saat fokus */
-            box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25); /* Shadow biru */
+            border-color: #2196F3;
+            box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25);
         }
-
         .btn-submit-custom {
-             background: linear-gradient(135deg, #4CAF50, #2196F3);
-             border: none;
-             color: white;
-             font-weight: 600;
-             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            border: none;
+            color: white;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
          .btn-submit-custom:hover {
-             transform: translateY(-2px);
-             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            color: white;
          }
          .btn-cancel-custom {
-             font-weight: 600;
+            font-weight: 600;
          }
-
-        /* Animasi pesan konfirmasi */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        /* Style untuk pre agar wrap */
+        @keyframes fadeIn { /* ... (definisi keyframes) ... */ }
+        .fade-in { /* ... (definisi class) ... */ }
         pre.whitespace-pre-wrap {
-             white-space: pre-wrap;
-             word-wrap: break-word;
-             font-family: inherit; /* Gunakan font body */
-             font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background-color: #f8f9fa; /* Sedikit bedakan latar <pre> */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
         }
-        .blockquote-custom {
-            background-color: #e9f5e9; /* Latar hijau muda */
-            border-left: 4px solid #4CAF50; /* Border kiri hijau */
-            padding: 0.8rem 1rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-style: italic;
-            color: #3d5c3d;
-        }
-        .alert-warning-custom {
-            background-color: #fff3cd;
-            border-color: #ffeeba;
-            color: #856404;
-        }
-
+         .blockquote-custom { /* ... (definisi gaya) ... */ }
+         .alert-warning-custom { /* ... (definisi gaya) ... */ }
     </style>
 </head>
 <body>
@@ -111,7 +89,7 @@
                 <div id="gejala-display" class="card card-custom h-100">
                     <div class="card-body d-flex flex-column">
                         <h2 class="h5 card-title text-primary mb-3 d-flex align-items-center border-bottom pb-2">
-                            <i class="fas fa-stethoscope me-2"></i> Ringkasan Gejala
+                            <i class="fas fa-stethoscope me-2"></i> Ringkasan Analisis Gejala
                         </h2>
                         <div id="gejala-content" class="text-dark small flex-grow-1">
                             <p class="text-muted fst-italic">Memeriksa data gejala...</p>
@@ -136,7 +114,6 @@
                                     </label>
                                     <input type="text" class="form-control form-control-sm" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
                                 </div>
-
                                 <div class="col-md-6">
                                     <label for="telepon" class="form-label small fw-medium">
                                         <i class="fas fa-phone"></i> Nomor Telepon Aktif <span class="text-danger">*</span>
@@ -171,7 +148,6 @@
                                  <div class="form-text xsmall">Pilih rumah sakit jika Anda memiliki preferensi.</div>
                             </div>
 
-
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
                                     <label for="tanggal" class="form-label small fw-medium">
@@ -179,7 +155,6 @@
                                     </label>
                                     <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal" required min="">
                                 </div>
-
                                 <div class="col-md-6">
                                     <label for="waktu" class="form-label small fw-medium">
                                         <i class="fas fa-clock"></i> Perkiraan Waktu (Opsional)
@@ -195,9 +170,7 @@
                                 <textarea class="form-control form-control-sm" id="catatan" name="catatan" rows="3" placeholder="Contoh: Riwayat alergi obat, preferensi dokter, dll."></textarea>
                             </div>
 
-                            <input type="hidden" id="gejala-data" name="gejala">
-
-                            <div class="text-center border-top pt-4 mt-2">
+                            <input type="hidden" id="gejala-data" name="diagnosis"> <div class="text-center border-top pt-4 mt-2">
                                 <button type="submit" class="btn btn-submit-custom px-4 py-2 me-2">
                                     <i class="fas fa-paper-plane me-2"></i> Kirim Permintaan
                                 </button>
@@ -208,15 +181,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id="confirmation-message" style="display: none;"
+        </div> <div id="confirmation-message" style="display: none;"
              class="mt-4 alert alert-success d-flex align-items-center fade-in card-custom" role="alert">
              </div>
 
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="reservasi.js" defer></script>
-    </body>
+</body>
 </html>
