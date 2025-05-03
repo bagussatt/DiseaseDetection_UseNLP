@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Reservasi Rumah Sakit</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Custom Styles (Optional) */
+        body {
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .gradient-header {
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Indigo to Purple gradient */
+        }
+        /* Animasi sederhana untuk pesan konfirmasi */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        /* Style untuk pre agar wrap */
+        pre.whitespace-pre-wrap {
+             white-space: pre-wrap;       /* Since CSS 2.1 */
+             white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+             white-space: -pre-wrap;      /* Opera 4-6 */
+             white-space: -o-pre-wrap;    /* Opera 7 */
+             word-wrap: break-word;       /* Internet Explorer 5.5+ */
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-8 max-w-3xl">
+
+        <div class="gradient-header text-white p-6 rounded-lg shadow-lg mb-8">
+            <h1 class="text-3xl font-bold flex items-center">
+                <i class="fas fa-hospital-user mr-3"></i> Formulir Reservasi Rumah Sakit
+            </h1>
+            <p class="mt-2 opacity-90">Lengkapi data di bawah ini untuk mengajukan permintaan reservasi.</p>
+        </div>
+
+        <div id="gejala-display" class="bg-white p-5 rounded-lg shadow mb-8 border-l-4 border-indigo-500">
+            <h2 class="text-xl font-semibold text-indigo-700 mb-3 flex items-center">
+                <i class="fas fa-stethoscope mr-2"></i> Ringkasan Gejala (Jika Ada)
+            </h2>
+            <div id="gejala-content" class="text-gray-700">
+                <p class="text-gray-500 italic">Memeriksa data gejala...</p>
+            </div>
+        </div>
+
+        <form id="reservation-form" class="bg-white p-6 sm:p-8 rounded-lg shadow">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 border-b pb-3">
+                <i class="fas fa-edit mr-2"></i> Detail Reservasi
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-user mr-1 opacity-75"></i> Nama Lengkap <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="nama" name="nama" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                           placeholder="Masukkan nama lengkap Anda">
+                </div>
+
+                <div>
+                    <label for="telepon" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-phone mr-1 opacity-75"></i> Nomor Telepon Aktif <span class="text-red-500">*</span>
+                    </label>
+                    <input type="tel" id="telepon" name="telepon" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                           placeholder="Contoh: 081234567890">
+                </div>
+            </div>
+
+             <div class="mb-6">
+                <label for="rumah_sakit" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-hospital mr-1 opacity-75"></i> Rumah Sakit Tujuan (Jika ada preferensi)
+                </label>
+                <input type="text" id="rumah_sakit" name="rumah_sakit"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                       placeholder="Contoh: RS Panti Rapih Yogyakarta">
+                 <p class="text-xs text-gray-500 mt-1">Kosongkan jika belum menentukan atau ingin rekomendasi terdekat.</p>
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">
+                         <i class="fas fa-calendar-alt mr-1 opacity-75"></i> Tanggal Preferensi <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="tanggal" name="tanggal" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                           min=""> </div>
+
+                <div>
+                    <label for="waktu" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-clock mr-1 opacity-75"></i> Perkiraan Waktu (Opsional)
+                    </label>
+                    <input type="time" id="waktu" name="waktu"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="catatan" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-sticky-note mr-1 opacity-75"></i> Catatan Tambahan (Opsional)
+                </label>
+                <textarea id="catatan" name="catatan" rows="3"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                          placeholder="Contoh: Riwayat alergi obat, preferensi dokter, dll."></textarea>
+            </div>
+
+            <input type="hidden" id="gejala-data" name="gejala">
+
+            <div class="text-center">
+                <button type="submit"
+                        class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    <i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan Reservasi
+                </button>
+            </div>
+        </form>
+
+        <div id="confirmation-message" style="display: none;"
+             class="mt-8 bg-green-100 border-l-4 border-green-500 text-green-700 p-6 rounded-lg shadow text-center">
+            </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Ambil data gejala dari URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const gejalaParam = urlParams.get('gejala'); // Bisa jadi null atau string kosong
+            const gejalaDisplayContent = document.getElementById('gejala-content');
+            const gejalaHiddenInput = document.getElementById('gejala-data');
+            let hasValidSymptoms = false; // Flag untuk status gejala
+
+            // Cek apakah parameter gejala ada dan tidak kosong
+            if (gejalaParam && gejalaParam.trim() !== '') {
+                // Bersihkan (ganti \n jika perlu) dan tampilkan
+                 // Ganti newline literal (\n) atau string "\\n" menjadi <br>
+                const formattedGejala = gejalaParam.trim().replace(/\\n|\n/g, '<br>');
+                gejalaDisplayContent.innerHTML = `<pre class="whitespace-pre-wrap font-sans text-sm">${formattedGejala}</pre>`;
+                gejalaHiddenInput.value = gejalaParam; // Simpan data mentah
+                hasValidSymptoms = true;
+                console.log("Symptom data received:", gejalaParam);
+            } else {
+                // Tidak ada data gejala atau string kosong
+                gejalaDisplayContent.innerHTML = '<p class="text-gray-500 italic">Tidak ada detail gejala yang disertakan.</p>';
+                gejalaHiddenInput.value = ""; // Pastikan value kosong
+                hasValidSymptoms = false;
+                console.log("No symptom data received.");
+            }
+
+            // 2. Set tanggal minimal untuk input tanggal (hari ini)
+            const today = new Date();
+            // Format YYYY-MM-DD
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const dd = String(today.getDate()).padStart(2, '0');
+            const minDate = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('tanggal').setAttribute('min', minDate);
+
+
+            // 3. Handle form submission (Diperbarui)
+            const form = document.getElementById('reservation-form');
+            const confirmationDiv = document.getElementById('confirmation-message');
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault(); // Mencegah pengiriman form standar
+
+                const nama = document.getElementById('nama').value;
+                const tanggal = document.getElementById('tanggal').value;
+                const gejalaData = gejalaHiddenInput.value; // Ambil dari hidden input (bisa kosong)
+
+                console.log('Form submitted (simulation)');
+                console.log('Nama:', nama);
+                console.log('Tanggal:', tanggal);
+                console.log('Gejala:', gejalaData); // Akan kosong jika tidak ada
+
+                // --- Simulasi Pengiriman ---
+                // Di aplikasi nyata, kirim data ke backend di sini
+
+                // --- Buat Pesan Konfirmasi (Disesuaikan) ---
+                let confirmationHTML = `
+                    <h3 class="text-xl font-semibold mb-3"><i class="fas fa-check-circle mr-2"></i> Permintaan Terkirim!</h3>
+                    <p>Terima kasih, <strong>${nama}</strong>.</p>
+                `;
+
+                // Cek apakah ada data gejala untuk ditampilkan
+                if (hasValidSymptoms && gejalaData) {
+                    confirmationHTML += `
+                        <p>Permintaan reservasi Anda untuk tanggal <strong>${formatDate(tanggal)}</strong> terkait gejala:</p>
+                        <blockquote class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded text-sm text-left italic">
+                            <pre class="whitespace-pre-wrap font-sans">${gejalaData.replace(/\\n|\n/g, '\n')}</pre> </blockquote>
+                    `;
+                } else {
+                    // Pesan jika tidak ada gejala
+                    confirmationHTML += `
+                        <p>Permintaan reservasi Anda untuk tanggal <strong>${formatDate(tanggal)}</strong> (tanpa detail gejala) telah kami teruskan.</p>
+                        <p class="text-sm text-orange-700 bg-orange-100 border border-orange-300 rounded p-2 my-3 inline-block">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Anda melanjutkan tanpa menyertakan detail gejala.
+                        </p>
+                    `;
+                }
+
+                confirmationHTML += `
+                    <p class="mt-3">Pihak rumah sakit (jika dipilih) atau admin akan segera menghubungi Anda untuk konfirmasi lebih lanjut melalui nomor telepon yang Anda berikan.</p>
+                    <p class="text-xs mt-4">Ini adalah simulasi. Data tidak benar-benar dikirim.</p>
+                `;
+
+                // Tampilkan pesan konfirmasi
+                confirmationDiv.innerHTML = confirmationHTML;
+                confirmationDiv.className = 'mt-8 bg-green-100 border-l-4 border-green-500 text-green-700 p-6 rounded-lg shadow text-center fade-in'; // Styling sukses
+                confirmationDiv.style.display = 'block';
+
+                // Sembunyikan form setelah submit
+                form.style.display = 'none';
+
+                 // Scroll ke pesan konfirmasi
+                confirmationDiv.scrollIntoView({ behavior: 'smooth' });
+
+            }); // Akhir event listener submit
+
+            // Helper function untuk format tanggal (Opsional)
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                try {
+                    // Format tanggal YYYY-MM-DD ke objek Date
+                    const [year, month, day] = dateString.split('-');
+                    // Note: Month in Date object is 0-indexed, so month - 1
+                    const dateObj = new Date(year, month - 1, day);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Jakarta' }; // Set timezone if needed
+                    return dateObj.toLocaleDateString('id-ID', options);
+                } catch (e) {
+                    console.error("Error formatting date:", e);
+                    return dateString; // Return original string if formatting fails
+                }
+            }
+
+        }); // Akhir DOMContentLoaded
+    </script>
+
+</body>
+</html>

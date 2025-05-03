@@ -16,8 +16,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* === CSS untuk Transcript Area dan Chat Bubbles === */
+        /* === CSS untuk Animasi Tombol Rekam === */
 
+@keyframes pulse-recording {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); /* Merah muda transparan */
+      transform: scale(1);
+    }
+    50% {
+       box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); /* Transparan di tengah animasi */
+       transform: scale(1.05); /* Sedikit membesar */
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); /* Kembali transparan */
+      transform: scale(1);
+    }
+  }
+  
+  /* Kelas yang akan ditambahkan ke tombol saat merekam */
+  .recording-animation {
+    /* Terapkan animasi 'pulse-recording' */
+    animation: pulse-recording 1.5s infinite ease-out;
+    /* Pastikan border-radius sesuai dengan tombol Anda */
+    /* border-radius: 50%; */ /* Uncomment jika tombol Anda bulat */
+    /* Atau sesuaikan dengan border-radius tombol #listenButton Anda */
+  }
+  
+  /* Opsional: Sesuaikan tampilan tombol saat dalam mode listening */
+  #listenButton.listening {
+    background-color: #dc3545; /* Contoh: Warna merah saat listening */
+    border-color: #bd2130;
+    /* Animasi akan berjalan di atas warna ini */
+  }
+  #listenButton.listening:hover {
+    background-color: #c82333;
+    border-color: #bd2130; /* Ganti dengan warna yang sesuai */
+  }
+  
+  /* Pastikan tombol tetap terlihat jelas saat animasi aktif */
+  #listenButton {
+      /* Mungkin perlu menambahkan ini jika belum ada */
+      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      /* Pastikan position relative jika shadow aneh */
+      /* position: relative; */
+  }
 #transcript-area {
     /* Atur tinggi, overflow, dan padding dasar untuk area chat */
     height: 400px; /* Sesuaikan tinggi sesuai kebutuhan */
@@ -273,6 +315,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+          
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"> <a class="nav-link" href="index.html">Beranda</a> </li>
@@ -298,6 +341,10 @@
 
                     <div class="mt-auto w-100 pt-3">
                         <div class="d-grid gap-2 col-10 col-xl-8 mx-auto">
+                            <button id="showMapBtn"
+                                    style="display: none;" class="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out w-full disabled:opacity-50">
+                                Lanjut ke Reservasi
+                            </button>
                             <button id="listenButton" class="btn btn-custom-gradient btn-lg" disabled>
                                 <i class="fas fa-microphone-alt me-2"></i>
                                 <span>Mulai Bicara</span>
@@ -325,7 +372,7 @@
         </div> </div> <a href="index.html" class="fab-custom" title="Kembali ke Halaman Utama">
         <i class="fas fa-arrow-left"></i>
     </a>
-
+    <div id="map-container" style="height: 400px; width: 100%; margin-bottom: 15px;"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/IDMNYU/p5.js-speech@latest/lib/p5.speech.js"></script>
