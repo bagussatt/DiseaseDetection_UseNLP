@@ -308,7 +308,7 @@ function displayDetectionResults(hasilDeteksiString) {
 
     if (isNoDetection) {
         console.log("No specific disease detected.");
-        addMessageToTranscript('Bot', 'Halo! Saya siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.'); 
+        addMessageToTranscript('Bot', 'Halo Saya Asisten anda! Saya siap membantu. Klik tombol "Mulai Bicara" lalu sebutkan gejala Anda.'); 
         speakText('Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda');
         lastDetectionResult = "NO_VALID_DIAGNOSIS";
         return;
@@ -363,6 +363,7 @@ function displayDetectionResults(hasilDeteksiString) {
 
     if (isNoDetection) {
         console.log("No specific disease detected.");
+        addMessageToTranscript('Bot', 'Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda'); 
         speakText('Berdasarkan gejala Anda, belum dapat dideteksi penyakit spesifik. silahkan ulang gejala anda');
         lastDetectionResult = "NO_VALID_DIAGNOSIS";
         return;
