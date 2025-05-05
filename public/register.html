@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Akun - KonsulSehat</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        input { transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        input:focus { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); border-color: #3b82f6; }
+        #messageContainer > div { transition: opacity 0.3s ease-in-out; } /* Target pesan di dalam container */
+        @keyframes fadeInUp { from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.98); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+        button { transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        button:hover { transform: scale(1.03); }
+        button[type="submit"]:hover { transform: scale(1.03) translateY(-1px); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); } /* Shadow biru untuk submit */
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-green-50 to-cyan-100 flex items-center justify-center min-h-screen px-4 py-8">
+
+    <div class="bg-white p-8 sm:p-10 md:p-12 rounded-2xl shadow-xl w-full max-w-md animate-fadeInUp">
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-block mb-4">
+                 <i class="fas fa-notes-medical text-5xl text-green-600"></i>
+            </a>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Buat Akun Baru</h1>
+            <p class="text-gray-500 text-sm mt-2">Daftarkan akun Anda untuk KonsulSehat.</p>
+        </div>
+
+        <form id="registerForm">
+             <div class="mb-5">
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-user text-gray-400"></i>
+                    </span>
+                    <input type="text" id="nama" name="nama" required
+                           class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="Masukkan nama lengkap Anda">
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-envelope text-gray-400"></i>
+                    </span>
+                    <input type="email" id="email" name="email" required
+                           class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="nama@email.com">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                 <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-lock text-gray-400"></i>
+                    </span>
+                    <input type="password" id="password" name="password" required minlength="6"
+                           class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                           placeholder="Minimal 6 karakter">
+                     <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                     </button>
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Password minimal 6 karakter.</p>
+            </div>
+
+            <div id="messageContainer" class="mb-4 text-center text-sm">
+                <div id="errorMessage" class="text-red-600 bg-red-100 p-2 rounded-lg opacity-0" role="alert"></div>
+                <div id="successMessage" class="text-green-600 bg-green-100 p-2 rounded-lg opacity-0 mt-2" role="status"></div>
+            </div>
+
+
+            <button type="submit" id="submitButton"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                <i class="fas fa-user-plus mr-2 mt-0.5"></i> Daftar Akun
+            </button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-gray-600">
+            Sudah punya akun?
+            <a href="login.html" class="font-medium text-blue-600 hover:text-blue-500">
+                Login di sini
+            </a>
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // --- Referensi Elemen DOM ---
+        const registerForm = document.getElementById('registerForm');
+        const namaInput = document.getElementById('nama');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        const togglePasswordButton = document.getElementById('togglePassword');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const submitButton = document.getElementById('submitButton');
+
+        // --- Fungsi untuk Menampilkan/Menyembunyikan Pesan ---
+        function showMessage(element, message, isError = true) {
+            element.textContent = message;
+            // Hapus kelas warna sebelumnya
+            element.classList.remove('text-red-600', 'bg-red-100', 'text-green-600', 'bg-green-100');
+            // Tambahkan kelas warna yang sesuai
+            if (isError) {
+                element.classList.add('text-red-600', 'bg-red-100');
+                // Sembunyikan pesan sukses jika ada pesan error
+                if (successMessageDiv) successMessageDiv.classList.add('opacity-0');
+            } else {
+                element.classList.add('text-green-600', 'bg-green-100');
+                 // Sembunyikan pesan error jika ada pesan sukses
+                if (errorMessageDiv) errorMessageDiv.classList.add('opacity-0');
+            }
+            element.classList.remove('opacity-0'); // Tampilkan pesan
+        }
+
+        function hideMessages() {
+            if (errorMessageDiv) errorMessageDiv.classList.add('opacity-0');
+            if (successMessageDiv) successMessageDiv.classList.add('opacity-0');
+        }
+
+        // --- Event Listener untuk Form Registrasi ---
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Mencegah form submit default
+                hideMessages(); // Sembunyikan pesan sebelumnya
+                submitButton.disabled = true; // Nonaktifkan tombol selama proses
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Mendaftar...'; // Tampilkan spinner
+
+                const nama = namaInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+
+                // Validasi frontend sederhana
+                if (!nama || !email || !password) {
+                    showMessage(errorMessageDiv, "Semua field wajib diisi.");
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-user-plus mr-2 mt-0.5"></i> Daftar Akun';
+                    return;
+                }
+                if (password.length < 6) {
+                    showMessage(errorMessageDiv, "Password minimal harus 6 karakter.");
+                    submitButton.disabled = false;
+                     submitButton.innerHTML = '<i class="fas fa-user-plus mr-2 mt-0.5"></i> Daftar Akun';
+                    return;
+                }
+
+                try {
+                    console.log("Mengirim data registrasi ke backend...");
+                    // Kirim data ke endpoint backend /api/register
+                    const response = await fetch('/api/register', { // Pastikan endpoint ini benar
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ nama, email, password }), // Kirim data sebagai JSON
+                    });
+
+                    const result = await response.json(); // Baca response JSON dari backend
+
+                    if (response.ok && result.success) {
+                        // Registrasi berhasil
+                        console.log("Registrasi berhasil:", result);
+                        showMessage(successMessageDiv, "Registrasi berhasil! Mengarahkan ke halaman login...", false);
+                        registerForm.reset(); // Kosongkan form
+                        // Arahkan ke halaman login setelah beberapa detik
+                        setTimeout(() => {
+                            window.location.href = 'login.html'; // Arahkan ke login
+                        }, 2500); // Tunggu 2.5 detik
+
+                    } else {
+                        // Registrasi gagal dari backend
+                        console.error("Registrasi gagal:", result.message || `Status: ${response.status}`);
+                        showMessage(errorMessageDiv, result.message || `Terjadi kesalahan (Status: ${response.status}).`);
+                        submitButton.disabled = false; // Aktifkan kembali tombol jika gagal
+                        submitButton.innerHTML = '<i class="fas fa-user-plus mr-2 mt-0.5"></i> Daftar Akun';
+                    }
+
+                } catch (error) {
+                    // Tangani error jaringan atau fetch
+                    console.error("Error saat mengirim permintaan registrasi:", error);
+                    showMessage(errorMessageDiv, "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.");
+                    submitButton.disabled = false; // Aktifkan kembali tombol jika error jaringan
+                    submitButton.innerHTML = '<i class="fas fa-user-plus mr-2 mt-0.5"></i> Daftar Akun';
+                }
+                // Tidak perlu finally di sini karena redirect atau error handling sudah mengembalikan state tombol
+            });
+        }
+
+        // --- Event Listener untuk Toggle Password ---
+        if (togglePasswordButton && passwordInput && toggleIcon) {
+            togglePasswordButton.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                toggleIcon.classList.toggle('fa-eye');
+                toggleIcon.classList.toggle('fa-eye-slash');
+            });
+        }
+
+    </script>
+
+</body>
+</html>

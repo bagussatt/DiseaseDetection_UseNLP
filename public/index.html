@@ -3,420 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konsultasi Kesehatan Modern | Cek Gejala Anda</title>
+    <title>Konsultasi Kesehatan Modern | KonsulSehat (Gradient)</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Poppins', Arial, sans-serif; /* Menggunakan Google Font */
-            background-color: #f8f9fa; /* Warna latar belakang lembut */
-            color: #343a40; /* Warna teks utama */
-            padding-top: 56px; /* Padding untuk fixed navbar */
-        }
-
-        /* Navbar Customization */
-        .navbar {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(135deg, #4CAF50, #2196F3); /* Gradient */
-        }
-        .navbar-brand {
-            font-weight: 700; /* Bold brand */
-        }
-
-        /* Hero Section Styling */
-        .hero-section {
-            background: linear-gradient(135deg, rgba(33, 150, 243, 0.85), rgba(76, 175, 80, 0.85)), url('/component/stt.png') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-            margin-bottom: 40px; /* Jarak dari section berikutnya */
-        }
-        .hero-section h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        .hero-section p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        .hero-section .btn {
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hero-section .btn:hover {
-             transform: translateY(-3px);
-             box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-
-
-        /* Section Styling */
-        section {
-            padding: 60px 0; /* Padding atas bawah untuk section */
-        }
-
-        .section-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px; /* Lebih rounded */
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Shadow lebih halus */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 30px; /* Jarak antar section content jika diperlukan */
-            overflow: hidden; /* Mencegah shadow terpotong */
-        }
-
-         .section-content:hover {
-            transform: translateY(-5px); /* Efek angkat saat hover */
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .section-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px; /* Rounded image corners */
-            object-fit: cover; /* Memastikan gambar terisi tanpa distorsi */
-            max-height: 350px; /* Batas tinggi gambar agar tidak terlalu dominan */
-        }
-
-        .section-title {
-            font-weight: 600;
-            color: #2196F3; /* Warna biru untuk judul */
-            margin-bottom: 15px;
-        }
-
-         .section-alt {
-             background-color: #e9ecef; /* Latar belakang alternatif untuk variasi */
-         }
-
-        /* Statistik Section */
-        #statistik {
-            text-align: center;
-            background-color: #fff; /* Latar putih agar kontras */
-             border-radius: 15px;
-             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-             padding: 40px 20px;
-             margin-top: 40px; /* Jarak dari section sebelumnya */
-        }
-
-        #statistik h2 {
-             margin-bottom: 30px;
-             font-weight: 700;
-             color: #4CAF50; /* Warna hijau untuk judul statistik */
-        }
-
-        canvas {
-            max-width: 100%; /* Biarkan container yang mengatur lebar */
-            height: auto !important; /* Biarkan chart.js mengatur tinggi */
-        }
-        .chart-container {
-            max-width: 800px; /* Batas lebar chart */
-            margin: auto;
-        }
-
-
-        /* Percentage Styling */
-        .percentage-value {
-            font-size: 1.5rem; /* Ukuran font lebih besar */
-            font-weight: bold;
-            margin-left: 8px; /* Sedikit jarak */
-        }
-        #fluPercentage { color: #2196F3; }
-        #DiarePercentage { color: #4CAF50; }
-        #HipertensiPercentage { color: #f44336; }
-        #IspaPercentage { color: #ffc107; } /* Warna kuning untuk ISPA */
-
-        /* Floating Button Styling */
-        #floating-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease-in-out, background 0.3s;
-            z-index: 1030; /* Di atas elemen lain */
-        }
-
-        #floating-button:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #2196F3, #4CAF50);
-        }
-
-         /* Button Styling */
-        .btn-custom {
-            background: linear-gradient(135deg, #2196F3, #4CAF50);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-
-        .btn-custom:hover {
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
-            transform: translateY(-2px);
-            color: white; /* Pastikan warna text tetap saat hover */
-        }
-
-
-        /* Footer Styling */
-        footer {
-            background: #343a40; /* Dark background */
-            color: #f8f9fa; /* Light text */
-            text-align: center;
-            padding: 25px 0;
-            margin-top: 50px; /* Jarak dari konten terakhir */
-            font-size: 0.9rem;
-        }
-
-        /* Responsiveness adjustments */
-        @media (max-width: 768px) {
-            .hero-section h1 {
-                font-size: 2.2rem;
-            }
-             .hero-section p {
-                 font-size: 1rem;
-             }
-            .section-content img {
-                margin-bottom: 20px;
-                max-height: 250px;
-            }
-            /* Pastikan teks di tengah pada mobile untuk semua section */
-            .row > div {
-                text-align: center;
-            }
-             .percentage-value {
-                font-size: 1.2rem;
-            }
-             /* Atur urutan agar gambar selalu di atas pada mobile jika perlu */
-             .row.align-items-center > div:first-child:not(:has(img)) {
-                 order: 2;
-             }
-             .row.align-items-center > div:has(img) {
-                 order: 1;
-             }
-        }
-
+        /* Custom Styles */
+        body { font-family: 'Poppins', sans-serif; font-size: 16px; line-height: 1.6; }
+        .percentage-value { font-size: 1.3rem; font-weight: 600; margin-left: 6px; }
+        #jantungPercentage { color: #dc2626; } #ginjalPercentage { color: #9333ea; } #hipertensiPercentage { color: #b91c1c; } #ispaPercentage { color: #d97706; } #diabetesPercentage { color: #4f46e5; }
+        section[id], div[id] { scroll-margin-top: 80px; }
+        .placeholder-img { background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.875rem; max-height: 200px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+        .placeholder-div { background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.875rem; width: 100%; min-height: 200px; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+        .icon-placeholder { background-color: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; width: 100%; min-height: 200px; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+        .feature-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        canvas { max-width: 100%; }
+        #chartContainer { min-height: 350px; position: relative; }
+        .gradient-text { background: linear-gradient(to right, #4CAF50, #2196F3); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .header-bg { background-image: url('/component/medical.png'); background-color: #e0f2fe; background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .header-bg[style*="url('error')"] { background-image: linear-gradient(to br, #ccfbf1, #e0f2fe); }
+        .stats-bg-pattern { background-color: #f0fdfa; background-image: linear-gradient(rgba(100, 200, 150, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 150, 200, 0.07) 1px, transparent 1px); background-size: 20px 20px; }
+        .chart-type-btn.active { background-color: #2563eb; color: white; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); border-color: #2563eb; }
     </style>
+    <script>
+        // Tailwind Configuration
+        tailwind.config = { theme: { extend: { colors: { 'primary': { DEFAULT: '#2563eb', 'hover': '#1d4ed8' }, 'secondary': { DEFAULT: '#16a34a', 'hover': '#15803d' }, 'accent': '#d97706', 'danger': '#dc2626', 'info': '#4f46e5', 'warning': '#9333ea', 'neutral': { light: '#f3f4f6', DEFAULT: '#6b7280', dark: '#1f2937' } } } } }
+    </script>
 </head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-heartbeat me-2"></i> KonsulSehat
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#layanan">Layanan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#statistik-section">Statistik</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#kontak">Kontak</a>
-                    </li>
-                </ul>
+<body class="bg-gradient-to-b from-white to-emerald-50 text-neutral-dark pt-16 md:pt-20">
+    <nav class="bg-gradient-to-r from-green-500 to-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a class="text-2xl font-bold flex items-center" href="#"> <i class="fas fa-heart-pulse mr-2"></i> KonsulSehat </a>
+            <button id="mobile-menu-button" class="md:hidden block text-white focus:outline-none text-xl"> <i class="fas fa-bars"></i> </button>
+            <div class="hidden md:flex space-x-6 items-center">
+                 <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-blue-300" href="#">Beranda</a>
+                 <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#layanan">Layanan</a>
+                 <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#statistik-section">Statistik</a>
+                 <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#kontak">Kontak</a>
+                 <button onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1.5 px-4 rounded-md transition duration-200 flex items-center"> <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout </button>
             </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-blue-600 text-left hidden border-t border-blue-500">
+             <a class="block py-3 px-5 hover:bg-blue-700 font-medium border-b border-blue-500/50" href="#">Beranda</a>
+             <a class="block py-3 px-5 hover:bg-blue-700 font-medium border-b border-blue-500/50" href="#layanan">Layanan</a>
+             <a class="block py-3 px-5 hover:bg-blue-700 font-medium border-b border-blue-500/50" href="#statistik-section">Statistik</a>
+             <a class="block py-3 px-5 hover:bg-blue-700 font-medium border-b border-blue-500/50" href="#kontak">Kontak</a>
+             <button onclick="logoutUser()" class="w-full text-left py-3 px-5 bg-red-500 hover:bg-red-600 font-medium flex items-center"> <i class="fas fa-sign-out-alt mr-2"></i> Logout </button>
         </div>
     </nav>
 
-    <header class="hero-section">
-        <div class="container">
-            <h1>Konsultasi Penyakit Cerdas</h1>
-            <p>Deteksi keluhan kesehatan Anda dengan teknologi NLP akurat. Dapatkan saran medis instan, kapan saja, di mana saja.</p>
-            <button id="cek-gejala-button" class="btn btn-light btn-lg">
-                <i class="fas fa-stethoscope me-2"></i> Cek Gejala Anda Sekarang
-            </button>
+    <header class="header-bg text-white pt-24 pb-20 md:pt-32 md:pb-28 mb-16 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-800/75 via-blue-800/65 to-blue-900/85 z-0"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight text-white drop-shadow-lg"> Solusi Cerdas <span class="text-green-300 font-semibold">Kesehatan Anda</span> </h1>
+            <p class="text-lg md:text-xl text-gray-100 max-w-3xl mx-auto mb-10 drop-shadow-md"> Dapatkan analisis gejala akurat dan rekomendasi medis awal berbasis AI. Cepat, mudah, dan terpercaya. </p>
+            <button id="cek-gejala-button" class="bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold py-3 px-10 rounded-lg shadow-xl hover:from-green-600 hover:to-blue-600 transform hover:-translate-y-1 transition duration-300 ease-in-out text-lg border border-white/30 hover:shadow-2xl"> <i class="fas fa-stethoscope mr-2"></i> Mulai Konsultasi </button>
+             <div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-16 -translate-y-16 -z-10 blur-2xl"></div>
+             <div class="absolute bottom-0 right-0 w-72 h-72 bg-white/5 rounded-full translate-x-16 translate-y-16 -z-10 blur-2xl"></div>
         </div>
     </header>
 
-    <main class="container">
+    <main class="container mx-auto px-4">
 
-        <span id="layanan" class="anchor-target"></span>
+        <section id="layanan" class="py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-neutral-dark mb-12"> Informasi <span class="gradient-text">Kesehatan & Penyakit</span> </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/jantung.png" alt="Ilustrasi Penyakit Jantung" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Jantung</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-danger mb-2">Penyakit Jantung</h3> <p class="text-neutral text-sm mb-3 flex-grow">Berbagai kondisi yang memengaruhi jantung, seperti penyakit koroner, aritmia, dll.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="jantungPercentage" class="percentage-value">Memuat...</span></p> <a href="jantung.html" class="mt-auto inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-red-600 hover:to-pink-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/ginjal.png" alt="Ilustrasi Penyakit Ginjal" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Ginjal</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-warning mb-2">Penyakit Ginjal</h3> <p class="text-neutral text-sm mb-3 flex-grow">Kondisi yang menyebabkan penurunan fungsi ginjal, bisa akut atau kronis.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ginjalPercentage" class="percentage-value">Memuat...</span></p> <a href="ginjal.html" class="mt-auto inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-purple-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/hipertensi.png" alt="Ilustrasi Hipertensi" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Hipertensi</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-danger mb-2">Hipertensi</h3> <p class="text-neutral text-sm mb-3 flex-grow">Tekanan darah tinggi (≥140/90 mmHg). Perlu pemantauan dan gaya hidup sehat.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="hipertensiPercentage" class="percentage-value">Memuat...</span></p> <a href="hipertensi.html" class="mt-auto inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-red-600 hover:to-pink-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
+                  <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/ISPA.jpg" alt="Ilustrasi ISPA" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar ISPA</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-accent mb-2">ISPA</h3> <p class="text-neutral text-sm mb-3 flex-grow">Infeksi Saluran Pernapasan Akut, bisa disebabkan virus atau bakteri.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ispaPercentage" class="percentage-value">Memuat...</span></p> <a href="ispa.html" class="mt-auto inline-block bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-yellow-600 hover:to-orange-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/diabetes.png" alt="Ilustrasi Diabetes" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Diabetes</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-info mb-2">Diabetes Melitus</h3> <p class="text-neutral text-sm mb-3 flex-grow">Penyakit metabolik kronis ditandai dengan kadar gula darah tinggi.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="diabetesPercentage" class="percentage-value">Memuat...</span></p> <a href="diabetes.html" class="mt-auto inline-block bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-blue-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div class="icon-placeholder"> <i class="fas fa-notes-medical text-6xl text-gray-400"></i> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-gray-700 mb-2">Info Kesehatan Lainnya</h3> <p class="text-neutral text-sm mb-3 flex-grow">Temukan artikel, tips, dan informasi umum seputar gaya hidup sehat.</p> <p class="text-neutral text-sm mb-4 invisible">.</p> <a href="#kontak" class="mt-auto inline-block bg-gradient-to-r from-gray-500 to-gray-600 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-gray-600 hover:to-gray-700 transition duration-300 text-sm"> Hubungi Kami <i class="fas fa-phone-alt ml-1 text-xs"></i> </a> </div> </div>
+            </div>
 
-         <section>
-            <div class="row align-items-center section-content">
-                <div class="col-md-6">
-                     <h2 class="section-title">FLU (Influenza)</h2>
-                     <p>Infeksi virus yang menyerang hidung, tenggorokan, dan paru-paru. Menyebar cepat melalui udara saat batuk atau bersin.</p>
-                     <p>Persentase kasus: <span id="fluPercentage" class="percentage-value">Loading...</span> (berdasarkan data kami)</p>
-                     <a href="flu.html">
-                        <button class="btn btn-custom">
-                            <i class="fas fa-notes-medical me-1"></i> Detail Gejala Flu
-                        </button>
-                     </a>
-                </div>
-                 <div class="col-md-6 text-center">
-                     <img src="/component/batuk.png" alt="Ilustrasi Flu" class="img-fluid">
-                </div>
+            <div class="mt-16 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6 text-center shadow-sm">
+                 <div class="flex justify-center items-center mb-3"> <img src="/component/logo.png" alt="Logo KonsulSehat" class="h-12 w-auto mr-3" onerror="this.style.display='none'"> <h3 class="text-xl font-semibold text-neutral-dark">Layanan Cepat & Terpercaya</h3> </div>
+                <p class="text-neutral max-w-2xl mx-auto mb-3">Analisis gejala dan saran medis awal kami didukung teknologi AI. Akses mudah kapan pun Anda butuhkan.</p>
+                <p class="text-neutral text-sm italic">*Layanan ini bersifat informatif dan tidak menggantikan diagnosis atau konsultasi langsung dengan dokter profesional.</p>
             </div>
         </section>
 
-        <section class="section-alt"> <div class="container">
-                 <div class="row align-items-center section-content flex-md-row-reverse"> <div class="col-md-6">
-                         <h2 class="section-title">Diare</h2>
-                         <p>Kondisi buang air besar (BAB) cair lebih dari 3 kali sehari. Bisa disebabkan infeksi, intoleransi makanan, atau lainnya.</p>
-                         <p>Persentase kasus: <span id="DiarePercentage" class="percentage-value">Loading...</span> (berdasarkan data kami)</p>
-                         <a href="diare.html">
-                            <button class="btn btn-custom">
-                                <i class="fas fa-notes-medical me-1"></i> Detail Gejala Diare
-                            </button>
-                         </a>
-                    </div>
-                    <div class="col-md-6 text-center">
-                         <img src="/component/diare.png" alt="Ilustrasi Diare" class="img-fluid">
-                    </div>
+        <section id="statistik-section" class="py-16 stats-bg-pattern rounded-2xl shadow-lg my-16 relative overflow-hidden border border-gray-200">
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-neutral-dark mb-6"> Tren Penyakit <span class="gradient-text">Berdasarkan Data Kami</span> </h2>
+                <div class="flex justify-center flex-wrap gap-2 mb-6">
+                    <button data-type="bar" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-chart-bar mr-1.5 text-xs"></i> Batang </button>
+                    <button data-type="doughnut" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-chart-pie mr-1.5 text-xs"></i> Donat </button>
+                    <button data-type="pie" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-chart-pie mr-1.5 text-xs"></i> Pai </button>
+                    <button data-type="line" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-chart-line mr-1.5 text-xs"></i> Garis </button>
+                    <button data-type="polarArea" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-circle-notch mr-1.5 text-xs"></i> Polar </button>
+                    <button data-type="radar" class="chart-type-btn bg-white text-blue-600 hover:bg-gray-100 text-sm font-medium py-1.5 px-3 rounded-md transition duration-200 shadow-sm border border-gray-200 flex items-center"> <i class="fas fa-spider mr-1.5 text-xs"></i> Radar </button>
                 </div>
-            </div>
-        </section>
-
-        <section>
-            <div class="row align-items-center section-content">
-                 <div class="col-md-6">
-                     <h2 class="section-title">Hipertensi (Tekanan Darah Tinggi)</h2>
-                     <p>Kondisi tekanan darah sistolik ≥ 140 mmHg atau diastolik ≥ 90 mmHg. Perlu dikontrol untuk mencegah komplikasi serius.</p>
-                     <p>Persentase kasus: <span id="HipertensiPercentage" class="percentage-value">Loading...</span> (berdasarkan data kami)</p>
-                     <a href="hipertensi.html"> <button class="btn btn-custom">
-                             <i class="fas fa-notes-medical me-1"></i> Detail Gejala Hipertensi
-                        </button>
-                     </a>
-                 </div>
-                 <div class="col-md-6 text-center">
-                     <img src="/component/hipertensi.png" alt="Ilustrasi Hipertensi" class="img-fluid">
-                 </div>
-            </div>
-        </section>
-
-        <section class="section-alt">
-             <div class="container">
-                 <div class="row align-items-center section-content flex-md-row-reverse">
-                     <div class="col-md-6">
-                         <h2 class="section-title">ISPA (Infeksi Saluran Pernapasan Akut)</h2>
-                         <p>Infeksi pada saluran napas (atas/bawah) oleh virus atau bakteri. Gejala bervariasi tergantung lokasi infeksi.</p>
-                         <p>Persentase kasus: <span id="IspaPercentage" class="percentage-value">Loading...</span> (berdasarkan data kami)</p>
-                         <a href="ispa.html"> <button class="btn btn-custom">
-                                <i class="fas fa-notes-medical me-1"></i> Detail Gejala ISPA
-                            </button>
-                         </a>
-                     </div>
-                     <div class="col-md-6 text-center">
-                         <img src="/component/ISPA.jpg" alt="Ilustrasi ISPA" class="img-fluid">
-                     </div>
-                 </div>
-             </div>
-        </section>
-
-         <section>
-             <div class="row align-items-center section-content bg-light"> <div class="col-md-6 text-center">
-                      <img src="/component/logo.png" alt="Logo Layanan Cepat" class="img-fluid w-75"> </div>
-                 <div class="col-md-6">
-                     <h2 class="section-title">Layanan Medis Cepat & Terpercaya</h2>
-                     <p>Dapatkan analisis gejala dan saran medis awal menggunakan teknologi canggih kami. Akses mudah kapan pun Anda butuhkan.</p>
-                     <p class="text-muted small">*Layanan ini bersifat informatif dan tidak menggantikan konsultasi dokter profesional.</p>
-                 </div>
-             </div>
-         </section>
-
-        <section id="statistik-section" class="anchor-target">
-            <div id="statistik">
-                <h2>Statistik Penyakit Terpopuler</h2>
-                <div class="chart-container">
+                <div id="chartContainer" class="max-w-3xl mx-auto mb-4 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100">
                     <canvas id="statistikChart"></canvas>
                 </div>
-                <p class="mt-3 text-muted">Data berdasarkan hasil konsultasi di platform kami.</p>
+                <p class="text-neutral-dark font-medium italic">Data agregat berdasarkan hasil konsultasi anonim.</p>
             </div>
         </section>
 
-        <span id="kontak" class="anchor-target"></span>
-        </main>
+    </main>
 
-    <button id="floating-button" title="Butuh Bantuan?">
-        <i class="fas fa-question"></i>
-    </button>
+    <button id="floating-button" title="Butuh Bantuan?" class="fixed bottom-6 right-6 bg-gradient-to-br from-green-500 to-blue-500 text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center text-2xl hover:from-green-600 hover:to-blue-600 hover:scale-110 transform transition duration-300 ease-in-out z-40"> <i class="fas fa-question"></i> </button>
 
-    <footer class="mt-5">
-        <div class="container">
-            <p>&copy; 2024 Konsultasi Penyakit dengan NLP by Bagus Satrio. Hak Cipta Dilindungi.</p>
-            <p>
-                 <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                 <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                 <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
-             </p>
+    <div id="kontak" class="scroll-mt-20"></div>
+
+    <footer class="bg-neutral-dark text-gray-300 py-10 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4"> <a class="text-xl font-bold flex items-center justify-center text-white" href="#"> <i class="fas fa-heart-pulse mr-2"></i> KonsulSehat </a> </div>
+            <p class="text-sm mb-4">&copy; 2024 Konsultasi Penyakit dengan NLP by Bagus Satrio. Hak Cipta Dilindungi.</p>
+            <div class="flex justify-center space-x-5"> <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white text-xl transition duration-300"><i class="fab fa-facebook-f"></i></a> <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-white text-xl transition duration-300"><i class="fab fa-twitter"></i></a> <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-white text-xl transition duration-300"><i class="fab fa-instagram"></i></a> <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-white text-xl transition duration-300"><i class="fab fa-linkedin-in"></i></a> </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="statistik.js"></script>
-    <script src="notif.js"></script>
+    <script src="statistik.js" defer></script>
     <script>
-        // Contoh script untuk mengaktifkan notifikasi saat tombol cek gejala ditekan
-        const cekGejalaButton = document.getElementById('cek-gejala-button');
-        if(cekGejalaButton) {
-            cekGejalaButton.addEventListener('click', function() {
-                Swal.fire({
-                    title: 'Mulai Konsultasi',
-                    text: 'Anda akan diarahkan ke halaman pemeriksaan gejala.',
-                    icon: 'info',
-                    confirmButtonText: 'Mulai',
-                    // showCancelButton: true, // Jika ingin ada tombol batal
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Arahkan ke halaman konsultasi (ganti URL jika perlu)
-                         window.location.href = '#'; // Ganti '#' dengan URL halaman konsultasi
-                         console.log("Navigasi ke halaman konsultasi...");
-                    }
-                });
-            });
-        }
-
-         // Script untuk floating button (contoh: menampilkan modal bantuan)
-         const floatingButton = document.getElementById('floating-button');
-         if(floatingButton) {
-             floatingButton.addEventListener('click', () => {
-                 Swal.fire({
-                     title: 'Butuh Bantuan?',
-                     html: `
-                         <p>Gunakan tombol <strong>Cek Gejala Anda</strong> untuk memulai konsultasi.</p>
-                         <p>Jelajahi bagian penyakit untuk informasi lebih lanjut.</p>
-                         <p>Lihat statistik untuk data tren penyakit.</p>
-                     `,
-                     icon: 'question',
-                     confirmButtonText: 'Mengerti'
-                 });
+         // Fungsi Logout Placeholder (Arahkan ke login.html)
+         function logoutUser() {
+             console.log("Logout action triggered!");
+             Swal.fire({
+                 title: 'Logout Berhasil',
+                 text: 'Anda akan diarahkan ke halaman login.',
+                 icon: 'success',
+                 timer: 2000, // Auto close
+                 showConfirmButton: false,
+                 willClose: () => {
+                     // Redirect ke halaman login setelah SweetAlert tertutup
+                     window.location.href = 'login.html'; // Ganti dengan nama file login Anda jika berbeda
+                 }
              });
          }
+
+         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const menuButton = document.getElementById('mobile-menu-button'); const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) { menuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); const icon = menuButton.querySelector('i'); icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times'); }); mobileMenu.querySelectorAll('a, button').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); const icon = menuButton.querySelector('i'); icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }); }); }
+
+            // SweetAlert for 'Cek Gejala' button (Arahkan ke deteksi_konsultasi.html)
+            const cekGejalaButton = document.getElementById('cek-gejala-button');
+            if(cekGejalaButton) {
+                cekGejalaButton.addEventListener('click', function() {
+                    Swal.fire({
+                        title: 'Mulai Konsultasi',
+                        text: 'Anda akan diarahkan ke halaman deteksi konsultasi.', // Teks diperbarui
+                        icon: 'info',
+                        confirmButtonText: 'Lanjutkan',
+                        confirmButtonColor: '#4CAF50', // Green from gradient
+                        showCancelButton: true,
+                        cancelButtonText: 'Batal',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            console.log("Navigasi ke halaman deteksi konsultasi...");
+                            // Redirect ke halaman deteksi konsultasi
+                            window.location.href = 'deteksiPenyakit.html'; // Ganti nama file jika perlu
+                        }
+                    });
+                });
+            }
+
+            // SweetAlert for Floating Action Button (FAB)
+            const floatingButton = document.getElementById('floating-button'); if(floatingButton) { floatingButton.addEventListener('click', () => { Swal.fire({ title: 'Ada Pertanyaan?', html: `<div class="text-left space-y-3 text-neutral"><p><i class="fas fa-stethoscope mr-2 text-blue-500"></i> Klik <strong>Mulai Konsultasi</strong> u/ pemeriksaan gejala.</p><p><i class="fas fa-book-medical mr-2 text-green-500"></i> Jelajahi <strong>Info Kesehatan</strong> u/ detail.</p><p><i class="fas fa-chart-line mr-2 text-yellow-600"></i> Lihat <strong>Statistik</strong> u/ tren penyakit.</p><p class="mt-4 text-sm">Bantuan lain? Klik <strong>Hubungi Kami</strong> atau kontak di footer.</p></div>`, icon: 'question', confirmButtonText: 'Saya Mengerti', confirmButtonColor: '#4CAF50', }); }); }
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { const href = this.getAttribute('href'); if (href.length > 1 && href.startsWith('#')) { e.preventDefault(); const targetId = href; const targetElement = document.querySelector(targetId); if (targetElement) { const navbarHeight = document.querySelector('nav')?.offsetHeight || 70; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - navbarHeight - 20; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); } } }); });
+
+        }); // End DOMContentLoaded
     </script>
 
 </body>

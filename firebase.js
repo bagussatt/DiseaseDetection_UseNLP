@@ -10,3 +10,5 @@ admin.initializeApp({
 const db = admin.database();
 
 module.exports = db;
+
+

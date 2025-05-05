@@ -114,12 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     // SUKSES
                     console.log('Sukses:', result);
                     const nama = escapeHtml(dataToSend.nama);
-                    const telepon = escapeHtml(dataToSend.telepon);
+                    const telegram_id = escapeHtml(dataToSend.telegram_id);
                     confirmationDiv.innerHTML = `
                         <i class="fas fa-check-circle fa-lg text-success me-3"></i>
                         <div>
                             <strong>Permintaan Reservasi Berhasil Dikirim!</strong><br>
-                            <small>Terima kasih, ${nama}. Tim kami akan segera menghubungi Anda melalui nomor ${telepon} untuk konfirmasi.</small>
+                            <small>Terima kasih, ${nama}. Tim kami akan segera menghubungi Anda melalui telegram ${telegram_id} untuk Pemberitahuan Selengkapnya.</small>
                         </div>
                     `;
                     confirmationDiv.className = 'mt-4 alert alert-success d-flex align-items-center fade-in card-custom'; // Set class sukses

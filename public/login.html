@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin atau Masuk sebagai Pengunjung - KonsulSehat</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Styles */
+        body { font-family: 'Poppins', sans-serif; }
+        input { transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        input:focus { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); border-color: #3b82f6; }
+        #errorMessage { transition: opacity 0.3s ease-in-out; }
+        /* Animasi */
+        @keyframes fadeInUp { from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.98); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .animate-pulseIcon { animation: pulseIcon 0.8s ease-in-out 1; animation-delay: 0.2s; }
+        @keyframes wobble { 0%, 100% { transform: translateX(0%) rotate(0deg); } 15% { transform: translateX(-5px) rotate(-2deg); } 30% { transform: translateX(4px) rotate(1.5deg); } 45% { transform: translateX(-3px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(0.5deg); } 75% { transform: translateX(-1px) rotate(0deg); } }
+        .animate-wobble { animation: wobble 0.8s ease-in-out 1; animation-delay: 0.6s; }
+        /* Hover Tombol */
+        button { transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        button:hover { transform: scale(1.03); }
+        /* Style tombol submit saat loading */
+        button[type="submit"]:disabled { cursor: not-allowed; opacity: 0.7; }
+        button[type="submit"]:hover:disabled { transform: none; box-shadow: none; } /* Nonaktifkan hover saat disabled */
+        #guestLoginButton:hover { transform: scale(1.03); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); }
+        #registerButton:hover { transform: scale(1.03); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 via-blue-50 to-indigo-100 flex items-center justify-center min-h-screen px-4 py-8">
+
+    <div class="bg-white p-8 sm:p-10 md:p-12 rounded-2xl shadow-xl w-full max-w-md animate-fadeInUp animate-wobble">
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-block mb-4">
+                 <i class="fas fa-heart-pulse text-5xl text-blue-600 animate-pulseIcon"></i>
+            </a>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Selamat Datang!</h1>
+            <p class="text-gray-500 text-sm mt-2">Login Admin atau masuk sebagai pengunjung.</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="mb-5">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3"> <i class="fas fa-envelope text-gray-400"></i> </span>
+                    <input type="email" id="email" name="email" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="email.admin@konsulsehat.com">
+                </div>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                 <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3"> <i class="fas fa-lock text-gray-400"></i> </span>
+                    <input type="password" id="password" name="password" required class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Masukkan password Anda">
+                     <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none"> <i class="fas fa-eye" id="toggleIcon"></i> </button>
+                </div>
+                 <div class="text-right mt-2"> <a href="#" id="forgotPasswordLink" class="text-xs text-blue-600 hover:underline">Lupa Password?</a> </div>
+            </div>
+            <div id="errorMessage" class="mb-4 text-center text-sm text-red-600 bg-red-100 p-2 rounded-lg opacity-0" role="alert"></div>
+            <button type="submit" id="loginButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                 <span id="loginButtonText"> <i class="fas fa-sign-in-alt mr-2 mt-0.5"></i> Login Admin </span>
+            </button>
+        </form>
+
+        <div class="my-6 flex items-center justify-center"> <span class="border-t border-gray-300 flex-grow"></span> <span class="px-3 text-xs font-medium text-gray-500">ATAU</span> <span class="border-t border-gray-300 flex-grow"></span> </div>
+
+        <button id="guestLoginButton" class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out mb-4">
+            <i class="fas fa-user-circle mr-2 mt-0.5"></i> Masuk sebagai Pengunjung
+        </button>
+
+        <button id="registerButton" onclick="location.href='register.html'" class="w-full flex justify-center py-3 px-4 border border-blue-500 rounded-lg shadow-sm text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+            <i class="fas fa-user-plus mr-2 mt-0.5"></i> Buat Akun Baru (Registrasi)
+        </button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="login.js" defer></script>
+
+</body>
+</html>

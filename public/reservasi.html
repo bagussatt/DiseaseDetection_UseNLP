@@ -5,178 +5,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulir Reservasi Rumah Sakit - KonsulSehat</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Styles */
+        /* Custom Styles (Minimal) */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            padding-top: 20px;
-            padding-bottom: 50px;
         }
-        .gradient-header {
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
-            color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        /* Style for required fields */
+        label span.text-red-500 {
+            margin-left: 2px;
         }
-        .card-custom {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            border: none;
-            margin-bottom: 1.5rem;
+         /* Add subtle transition for focus */
+        .form-input, .form-select {
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        .form-label i {
-            margin-right: 0.5rem;
-            opacity: 0.75;
+        .form-input:focus, .form-select:focus {
+            --tw-ring-color: rgba(37, 99, 235, 0.5); /* Tailwind blue-600 with opacity */
+            border-color: #2563eb; /* Tailwind blue-600 */
+            box-shadow: 0 0 0 3px var(--tw-ring-color);
         }
-        .form-control:focus, .form-select:focus {
-            border-color: #2196F3;
-            box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25);
+        /* Style for the confirmation message fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .btn-submit-custom {
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
-            border: none;
-            color: white;
-            font-weight: 600;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
         }
-         .btn-submit-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-            color: white;
-         }
-         .btn-cancel-custom {
-            font-weight: 600;
-         }
-        @keyframes fadeIn { /* ... (definisi keyframes) ... */ }
+        /* Ensure preformatted text wraps */
         pre.whitespace-pre-wrap {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: inherit;
-            font-size: 0.9rem;
-            background-color: #f8f9fa; /* Sedikit bedakan latar <pre> */
+            white-space: pre-wrap;       /* Since CSS 2.1 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            font-family: inherit;        /* Use body font */
+            font-size: 0.9rem;           /* Slightly smaller */
+            background-color: #f9fafb; /* Tailwind gray-50 */
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 */
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800 pt-20 pb-16"> <nav class="bg-gradient-to-r from-teal-500 to-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a class="text-xl font-bold flex items-center" href="index.html">
+                <i class="fas fa-heartbeat mr-2"></i> KonsulSehat
+            </a>
+            <button class="md:hidden block text-white focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="hidden md:flex space-x-6">
+                <a class="hover:text-blue-200" href="index.html">Beranda</a>
+                <a class="font-semibold border-b-2 border-blue-300" href="#">Konsultasi</a>
+                <a class="hover:text-blue-200" href="index.html#layanan">Layanan</a>
+                <a class="hover:text-blue-200" href="index.html#statistik-section">Statistik</a>
+            </div>
+        </div>
+        <div class="md:hidden bg-blue-600 text-center hidden">
+             <a class="block py-2 px-4 hover:bg-blue-700" href="index.html">Beranda</a>
+             <a class="block py-2 px-4 font-semibold bg-blue-700" href="#">Konsultasi</a>
+             <a class="block py-2 px-4 hover:bg-blue-700" href="index.html#layanan">Layanan</a>
+             <a class="block py-2 px-4 hover:bg-blue-700" href="index.html#statistik-section">Statistik</a>
+        </div>
+    </nav>
 
-    <div class="container max-w-4xl">
-
-        <div class="gradient-header p-4 p-md-5 mb-4 card-custom text-center">
-            <h1 class="h2 font-weight-bold d-flex align-items-center justify-content-center">
-                <i class="fas fa-hospital-user me-3 fs-1"></i> Formulir Reservasi
+    <div class="container mx-auto px-4 max-w-6xl"> <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 md:p-8 mb-6 rounded-xl shadow-lg text-center">
+            <h1 class="text-2xl md:text-3xl font-bold flex items-center justify-center">
+                <i class="fas fa-hospital-user mr-3 text-4xl"></i> Formulir Reservasi
             </h1>
-            <p class="lead mt-2 opacity-90 mb-0">Lengkapi data di bawah ini untuk mengajukan permintaan reservasi Anda.</p>
+            <p class="mt-2 text-lg opacity-90">Lengkapi data di bawah ini untuk mengajukan permintaan reservasi Anda.</p>
         </div>
 
-        <div class="row g-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <div class="col-lg-5">
-                <div id="gejala-display" class="card card-custom h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h2 class="h5 card-title text-primary mb-3 d-flex align-items-center border-bottom pb-2">
-                            <i class="fas fa-stethoscope me-2"></i> Ringkasan Analisis Gejala
+            <div class="lg:col-span-5">
+                <div id="gejala-display" class="bg-white rounded-xl shadow-md h-full flex flex-col">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h2 class="text-lg font-semibold text-blue-600 mb-3 pb-2 border-b border-gray-200 flex items-center">
+                            <i class="fas fa-stethoscope mr-2"></i> Ringkasan Analisis Gejala
                         </h2>
-                        <div id="gejala-content" class="text-dark small flex-grow-1">
-                            <p class="text-muted fst-italic">Memeriksa data gejala...</p>
-                            </div>
-                        <p class="text-muted xsmall mt-3 mb-0 fst-italic">*Data ini akan disertakan dalam permintaan reservasi Anda.</p>
+                        <div id="gejala-content" class="text-gray-700 text-sm flex-grow">
+                            <p class="text-gray-500 italic">Memeriksa data gejala...</p>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-4 italic">*Data ini akan disertakan dalam permintaan reservasi Anda.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7">
-                <div class="card card-custom">
-                    <div class="card-body p-4 p-md-5">
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="p-5 md:p-8">
                         <form id="reservation-form">
-                            <h2 class="h4 card-title text-primary mb-4 border-bottom pb-3 d-flex align-items-center">
-                                <i class="fas fa-edit me-2"></i> Detail Permintaan Reservasi
+                            <h2 class="text-xl font-semibold text-blue-600 mb-5 pb-3 border-b border-gray-200 flex items-center">
+                                <i class="fas fa-edit mr-2"></i> Detail Permintaan Reservasi
                             </h2>
 
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label for="nama" class="form-label small fw-medium">
-                                        <i class="fas fa-user"></i> Nama Lengkap <span class="text-danger">*</span>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">
+                                        <i class="fas fa-user mr-1 text-gray-500"></i> Nama Lengkap <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="text" class="form-control form-control-sm" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+                                    <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda"
+                                           class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="telepon" class="form-label small fw-medium">
-                                        <i class="fas fa-phone"></i> Nomor Telepon Aktif <span class="text-danger">*</span>
+                                <div>
+                                    <label for="telepon" class="block text-sm font-medium text-gray-700 mb-1">
+                                        <i class="fas fa-phone mr-1 text-gray-500"></i> Nomor Telepon Aktif <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="tel" class="form-control form-control-sm" id="telepon" name="telepon" required pattern="[0-9]{10,15}" title="Masukkan 10-15 digit angka" placeholder="Contoh: 081234567890">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="telegram_id" class="form-label small fw-medium">
-                                    <i class="fab fa-telegram-plane"></i> ID Telegram (Opsional)
-                                </label>
-                                <input type="text" class="form-control form-control-sm" id="telegram_id" name="telegram_id" placeholder="Masukkan ID Telegram Anda (jika ada)">
-                                <div class="form-text xsmall">Jika diisi, notifikasi reservasi akan dikirim ke ID ini.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rumah_sakit" class="form-label small fw-medium">
-                                    <i class="fas fa-hospital"></i> Pilih Rumah Sakit Tujuan (Opsional)
-                                </label>
-                                <select class="form-select form-select-sm" id="rumah_sakit" name="rumah_sakit">
-                                    <option value="" selected disabled>-- Pilih Rumah Sakit --</option>
-                                    <option value="RS PKU Muhammadiyah Yogyakarta">RS PKU Muhammadiyah Yogyakarta</option>
-                                    <option value="Klinik Pratama Firdaus">RSUD Kota Yogyakarta</option>
-                                    <option value="Lainnya">Lainnya / Belum Tahu</option>
-                                </select>
-                                 <div class="form-text xsmall">Pilih rumah sakit jika Anda memiliki preferensi.</div>
-                            </div>
-
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label for="tanggal" class="form-label small fw-medium">
-                                         <i class="fas fa-calendar-alt"></i> Tanggal Preferensi <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal" required min="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="waktu" class="form-label small fw-medium">
-                                        <i class="fas fa-clock"></i> Perkiraan Waktu (Opsional)
-                                    </label>
-                                    <input type="time" class="form-control form-control-sm" id="waktu" name="waktu">
+                                    <input type="tel" id="telepon" name="telepon" required pattern="[0-9]{10,15}" title="Masukkan 10-15 digit angka" placeholder="Contoh: 081234567890"
+                                           class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
                                 </div>
                             </div>
 
                             <div class="mb-4">
-                                <label for="catatan" class="form-label small fw-medium">
-                                    <i class="fas fa-sticky-note"></i> Catatan Tambahan (Opsional)
+                                <label for="telegram_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fab fa-telegram-plane mr-1 text-gray-500"></i> ID Telegram <span class="text-gray-500 text-xs">(Opsional)</span>
                                 </label>
-                                <textarea class="form-control form-control-sm" id="catatan" name="catatan" rows="3" placeholder="Contoh: Riwayat alergi obat, preferensi dokter, dll."></textarea>
+                                <input type="text" id="telegram_id" name="telegram_id" placeholder="Masukkan ID Telegram Anda (jika ada)"
+                                       class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
+                                <p class="mt-1 text-xs text-gray-500">Jika diisi, notifikasi reservasi akan dikirim ke ID ini.</p>
                             </div>
 
-                            <input type="hidden" id="gejala-data" name="diagnosis"> <div class="text-center border-top pt-4 mt-2">
-                                <button type="submit" class="btn btn-submit-custom px-4 py-2 me-2">
-                                    <i class="fas fa-paper-plane me-2"></i> Kirim Permintaan
+                            <div class="mb-4">
+                                <label for="rumah_sakit" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-hospital mr-1 text-gray-500"></i> Pilih Rumah Sakit Tujuan <span class="text-gray-500 text-xs">(Opsional)</span>
+                                </label>
+                                <select id="rumah_sakit" name="rumah_sakit"
+                                        class="form-select block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none text-sm">
+                                    <option value="" selected disabled>-- Pilih Rumah Sakit --</option>
+                                    <option value="RS PKU Muhammadiyah Yogyakarta">RS PKU Muhammadiyah Yogyakarta</option>
+                                    <option value="RSUD Kota Yogyakarta">RSUD Kota Yogyakarta</option> <option value="Lainnya">Lainnya / Belum Tahu</option>
+                                </select>
+                                <p class="mt-1 text-xs text-gray-500">Pilih rumah sakit jika Anda memiliki preferensi.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">
+                                        <i class="fas fa-calendar-alt mr-1 text-gray-500"></i> Tanggal Preferensi <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" id="tanggal" name="tanggal" required
+                                           class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
+                                </div>
+                                <div>
+                                    <label for="waktu" class="block text-sm font-medium text-gray-700 mb-1">
+                                        <i class="fas fa-clock mr-1 text-gray-500"></i> Perkiraan Waktu <span class="text-gray-500 text-xs">(Opsional)</span>
+                                    </label>
+                                    <input type="time" id="waktu" name="waktu"
+                                           class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="catatan" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-sticky-note mr-1 text-gray-500"></i> Catatan Tambahan <span class="text-gray-500 text-xs">(Opsional)</span>
+                                </label>
+                                <textarea id="catatan" name="catatan" rows="3" placeholder="Contoh: Riwayat alergi obat, preferensi dokter, dll."
+                                          class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm"></textarea>
+                            </div>
+
+                            <input type="hidden" id="gejala-data" name="diagnosis">
+
+                            <div class="text-center border-t border-gray-200 pt-6 mt-4">
+                                <button type="submit"
+                                        class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mr-3">
+                                    <i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan
                                 </button>
-                                <button type="button" class="btn btn-secondary btn-cancel-custom px-4 py-2" onclick="window.location.href='index.html';"> <i class="fas fa-times me-2"></i> Batal
+                                <button type="button"
+                                        class="inline-flex items-center justify-center px-6 py-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                                        onclick="window.location.href='index.html';">
+                                    <i class="fas fa-times mr-2"></i> Batal
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div> <div id="confirmation-message" style="display: none;"
-             class="mt-4 alert alert-success d-flex align-items-center fade-in card-custom" role="alert">
-             </div>
+        </div>
 
-    </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <div id="confirmation-message" style="display: none;"
+             class="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow-md flex items-center fade-in" role="alert">
+             <i class="fas fa-check-circle mr-3 text-xl"></i>
+             <span id="confirmation-text"></span>
+        </div>
+
+    </div>
+
+    <script>
+        // Set minimum date for date input to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('tanggal');
+            if (dateInput) {
+                dateInput.setAttribute('min', today);
+            }
+
+            // Basic Mobile Menu Toggle (Example)
+            const menuButton = document.querySelector('.md\\:hidden.block'); // Target mobile button
+            const mobileMenu = document.querySelector('.md\\:hidden.bg-blue-600'); // Target mobile menu div
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
     <script src="reservasi.js" defer></script>
+
 </body>
 </html>

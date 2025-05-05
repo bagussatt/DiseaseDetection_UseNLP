@@ -17,6 +17,7 @@
     "express": "^4.21.2",
     "firebase-admin": "^13.2.0",
     "natural": "^8.0.1",
-    "node-nlp": "^3.10.2"
+    "node-nlp": "^3.10.2",
+    "node-telegram-bot-api": "^0.66.0"
   }
 }
