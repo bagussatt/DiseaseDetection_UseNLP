@@ -2,114 +2,151 @@ const natural = require('natural');
 const { WordTokenizer, PorterStemmer } = natural;
 const tokenizer = new WordTokenizer();
 
-const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke', 'itu', 'ini'];
-const keywords = {
+// Daftar stopwords dalam Bahasa Indonesia (bisa ditambahkan sesuai kebutuhan)
+const stopwords = ['saya', 'yang', 'dan', 'atau', 'adalah', 'pada', 'dari', 'ke', 'itu', 'ini', 'merasa', 'mengalami', 'rasanya', 'agak', 'sedikit', 'di', 'bagian', 'terasa', 'sekali', 'banget', 'juga', 'untuk', 'dengan', 'nya', 'punya', 'sudah', 'belum', 'sering', 'cepat', 'kadang'];
 
+// Basis data penyakit dan kata kunci gejala
+// Pastikan objek ini tersedia atau diimpor jika didefinisikan di file lain
+const keywords = {
     ispa: {
-        keywords: ['batuk', 'pilek', 'sakit tenggorokan', 'demam', 'sesak napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'],
+        name: "ISPA (Infeksi Saluran Pernapasan Akut)",
+        keywords: ['batuk', 'pilek', 'tenggorok', 'demam', 'sesak', 'napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'],
         saranObat: 'Paracetamol atau ibuprofen untuk demam, diphenhydramine dan pseudoephedrine untuk hidung tersumbat, guaifenesin untuk batuk, dan antibiotik jika diresepkan oleh dokter.',
         saranDokter: 'Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/mengenali-gejala-ispa-dan-tindakan-yang-perlu-dilakukan)'
     },
     hipertensi: {
-        keywords: ['tekanan darah tinggi', 'pusing', 'sakit kepala', 'sesak napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'],
+        name: "Hipertensi (Tekanan Darah Tinggi)",
+        keywords: ['darah tinggi', 'pusing', 'sakit kepala', 'sesak', 'napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'],
         saranObat: 'Obat antihipertensi seperti amlodipin atau sesuai resep dokter.',
         saranDokter: 'Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/topik-penyakit/pencegahan-infeksi-pada-usia-produktif/hipertensi-tekanan-darah-tinggi). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diabetes: {
-        keywords: ['sering kencing', 'cepat lapar', 'sering haus', 'berat badan menurun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'cepat lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi', 'haus'],
+        name: "Diabetes Melitus",
+        keywords: ['kencing', 'lapar', 'haus', 'berat badan turun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi'],
         saranObat: 'Insulin atau obat antidiabetes oral sesuai resep dokter.',
         saranDokter: 'Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.',
         sumber: '[Kementerian Kesehatan RI](https://upk.kemkes.go.id/new/mengenal-gejala-diabetes-melitus). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diare: {
-        keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'dehidrasi', 'demam', 'lemas'],
-        saranObat: 'Loperamide untuk mengurangi frekuensi buang air besar.',
-        saranDokter: 'Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit.',
+        name: "Diare",
+        keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'bab cair', 'dehidrasi', 'demam', 'lemas', 'mencret'],
+        saranObat: 'Loperamide untuk mengurangi frekuensi buang air besar, Oralit untuk mengganti cairan.',
+        saranDokter: 'Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit. Segera ke dokter jika diare parah atau disertai darah.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/penyakit/diare). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     ginjalkronis: {
-        keywords: ['sering kencing malam', 'bengkak kaki', 'mudah lelah', 'mual', 'muntah', 'nafsu makan menurun', 'tekanan darah tinggi', 'darah dalam urin', 'gatal', 'sakit kepala', 'sesak napas'],
+        name: "Penyakit Ginjal Kronis",
+        keywords: ['kencing malam', 'bengkak kaki', 'bengkak mata', 'lelah', 'mual', 'muntah', 'nafsu makan turun', 'darah tinggi', 'darah urin', 'gatal', 'sakit kepala', 'sesak napas'],
         saranObat: 'Tidak ada penanganan obat mandiri. Konsultasikan dengan dokter.',
         saranDokter: 'Jaga pola makan sehat, batasi asupan cairan sesuai anjuran dokter, dan lakukan pemeriksaan ginjal secara rutin jika berisiko.',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/gejala-penyakit-ginjal-kronis-yang-harus-diwaspadai). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     }
-}
+    // Tambahkan penyakit lain di sini
+};
 
+/**
+ * Menghapus stopwords dari array token.
+ * @param {string[]} tokens - Array token kata.
+ * @returns {string[]} Array token setelah stopwords dihapus.
+ */
 function removeStopwords(tokens) {
     return tokens.filter(token => !stopwords.includes(token));
 }
 
+/**
+ * Mendeteksi penyakit berdasarkan input teks gejala menggunakan sistem poin.
+ * @param {string} input - Teks keluhan atau gejala yang dimasukkan pengguna.
+ * @returns {object[]} Array objek hasil deteksi (hanya yang skor >= 3), diurutkan berdasarkan skor.
+ */
 function detectPenyakit(input) {
-    const tokens = tokenizer.tokenize(input.toLowerCase());
-    const filteredTokens = removeStopwords(tokens);
-    const stemmedTokens = filteredTokens.map(token => PorterStemmer.stem(token));
+    // 1. Tokenisasi
+    const originalTokens = tokenizer.tokenize(input.toLowerCase());
+    console.log("\n--- Proses NLP Dimulai ---");
+    console.log("[NLP] 1. Original Tokens:", originalTokens);
 
-    const hasil = [];
-    for (const [penyakit, data] of Object.entries(keywords)) {
-        let foundKeywords = [];
-        for (const keyword of data.keywords) {
-            const stemmedKeyword = PorterStemmer.stem(keyword);
-            if (stemmedTokens.includes(stemmedKeyword)) {
-                foundKeywords.push(keyword);
-            }
-        }
-        if (foundKeywords.length > 1) {
-            hasil.push({
-                penyakit: penyakit,
-                gejala: foundKeywords,
-                saranDokter: data.saranDokter,
-                saranObat: data.saranObat,
-            });
-        }
-    }
+    // 2. Hapus Stopwords
+    const filteredTokens = removeStopwords(originalTokens);
+    console.log("[NLP] 2. Filtered Tokens (No Stopwords):", filteredTokens);
 
-    // Deteksi frasa kata kunci (n-gram)
-    for (const [penyakit, data] of Object.entries(keywords)) {
-        let foundKeywords = [];
-        for (const keyword of data.keywords) {
-            const stemmedKeyword = PorterStemmer.stem(keyword);
-            if (keyword.split(' ').length > 1) { // Jika kata kunci adalah frasa
-                const stemmedKeywordParts = keyword.split(' ').map(PorterStemmer.stem);
-                for (let i = 0; i <= stemmedTokens.length - stemmedKeywordParts.length; i++) {
-                    const nGram = stemmedTokens.slice(i, i + stemmedKeywordParts.length).join(' ');
-                    if (nGram === stemmedKeywordParts.join(' ')) {
-                        foundKeywords.push(keyword);
-                        break;
-                    }
-                }
-            }
-        }
-        // Gabungkan kata kunci tunggal dan frasa yang ditemukan
-        const allFoundKeywords = [...(hasil.find(h => h.penyakit === penyakit)?.gejala || []), ...foundKeywords];
-        // Perbarui atau tambahkan hasil jika ada lebih dari 2 gejala
-        if (allFoundKeywords.length > 2) {
-            const existingResultIndex = hasil.findIndex(h => h.penyakit === penyakit);
-            if (existingResultIndex !== -1) {
-                hasil[existingResultIndex].gejala = [...new Set([...hasil[existingResultIndex].gejala, ...allFoundKeywords])];
+    // 3. Stemming
+    const stemmedTokensSet = new Set(filteredTokens.map(token => PorterStemmer.stem(token)));
+    console.log("[NLP] 3. Stemmed Tokens (Unique):", Array.from(stemmedTokensSet));
+
+    const diseaseScores = {};
+    const matchedSymptoms = {};
+
+    // 4. Pencocokan & Skoring
+    console.log("[NLP] 4. Matching Keywords and Scoring:");
+    for (const [diseaseKey, diseaseData] of Object.entries(keywords)) {
+        diseaseScores[diseaseKey] = 0;
+        matchedSymptoms[diseaseKey] = new Set();
+        let diseaseMatchedKeywordsLog = [];
+
+        for (const keyword of diseaseData.keywords) {
+            const keywordParts = keyword.split(' ');
+            let matchFound = false;
+            if (keywordParts.length === 1) {
+                 const stemmedKeyword = PorterStemmer.stem(keyword);
+                 if (stemmedTokensSet.has(stemmedKeyword)) { matchFound = true; }
             } else {
-                hasil.push({
-                    penyakit: penyakit,
-                    gejala: [...new Set(allFoundKeywords)],
-                    saranDokter: data.saranDokter,
-                    saranObat: data.saranObat,
-                });
+                 const stemmedKeywordParts = keywordParts.map(part => PorterStemmer.stem(part));
+                 if (stemmedKeywordParts.every(part => stemmedTokensSet.has(part))) { matchFound = true; }
             }
+            if (matchFound) {
+                if (!matchedSymptoms[diseaseKey].has(keyword)) {
+                     diseaseScores[diseaseKey]++;
+                }
+                matchedSymptoms[diseaseKey].add(keyword);
+                diseaseMatchedKeywordsLog.push(keyword);
+            }
+        }
+        if(diseaseScores[diseaseKey] > 0) {
+             console.log(`   - ${diseaseData.name}: Score = ${diseaseScores[diseaseKey]}, Matched (internal set): [${Array.from(matchedSymptoms[diseaseKey]).join(', ')}]`);
         }
     }
 
+    // 5. Format Hasil Akhir & Filter Skor
+    const hasil = [];
+    for (const diseaseKey in diseaseScores) {
+        // PERUBAHAN UTAMA: Filter berdasarkan skor minimal 3
+        if (diseaseScores[diseaseKey] >= 3) {
+            hasil.push({
+                penyakit: keywords[diseaseKey].name,
+                skor: diseaseScores[diseaseKey],
+                gejala: Array.from(matchedSymptoms[diseaseKey]), // Nama properti 'gejala'
+                saranDokter: keywords[diseaseKey].saranDokter,
+                saranObat: keywords[diseaseKey].saranObat,
+                sumber: keywords[diseaseKey].sumber,
+            });
+        } else if (diseaseScores[diseaseKey] > 0) {
+             // Log penyakit yang terdeteksi tapi skornya < 3 (opsional)
+             console.log(`[NLP] Penyakit "${keywords[diseaseKey].name}" terdeteksi tetapi skor (${diseaseScores[diseaseKey]}) di bawah threshold (3).`);
+        }
+    }
 
+    // 6. Urutkan Hasil
+    hasil.sort((a, b) => b.skor - a.skor);
+
+    // 7. Tangani Jika Tidak Ada Hasil yang Memenuhi Skor Minimal
     if (hasil.length === 0) {
+        console.log("[NLP] Tidak ditemukan penyakit yang cocok dengan skor minimal 3.");
+        // Kembalikan pesan yang sedikit berbeda untuk kasus ini
         return [{
-            penyakit: 'Tidak ada penyakit yang terdeteksi.',
-            gejala: [],
-            saranDokter: 'Silakan konsultasikan dengan dokter.',
-            saranObat: 'Tidak ada obat yang disarankan.',
+            penyakit: 'Tidak ada indikasi penyakit spesifik yang cukup kuat terdeteksi dari gejala yang Anda masukkan.',
+            skor: 0,
+            gejala: [], // Kembalikan array kosong
+            saranDokter: 'Gejala yang Anda sebutkan mungkin kurang spesifik atau tidak cukup untuk mengarah pada satu diagnosis. Disarankan untuk berkonsultasi langsung dengan dokter.',
+            saranObat: 'Tidak ada rekomendasi obat tanpa diagnosis dokter.',
+            sumber: null
         }];
     }
 
+    console.log("[NLP] Final Sorted Detection Results (Score >= 3):", JSON.stringify(hasil, null, 2));
+    console.log("--- Proses NLP Selesai ---");
     return hasil;
 }
 
-module.exports = { detectPenyakit };
+// Ekspor fungsi dan keywords
+module.exports = { detectPenyakit, keywords };

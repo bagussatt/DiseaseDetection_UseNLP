@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // dan juga cocok dengan kunci dalam objek JSON yang akan dibuat untuk grafik.
     const percentageElementMapping = {
         'diarePercentage': 'diare', // Nama penyakit dalam huruf kecil untuk URL API
-        'ginjalPercentage': 'ginjalkronis',
-        'hipertensiPercentage': 'hipertensi',
-        'ispaPercentage': 'ispa',
-        'diabetesPercentage': 'diabetes'
+        'ginjalPercentage': 'Penyakit Ginjal Kronis',
+        'hipertensiPercentage': 'Hipertensi (Tekanan Darah Tinggi)',
+        'ispaPercentage': 'ISPA (Infeksi Saluran Pernapasan Akut)',
+        'diabetesPercentage': 'Diabetes Melitus'
         // Tambahkan penyakit lain di sini jika ada di HTML dan API
     };
 
