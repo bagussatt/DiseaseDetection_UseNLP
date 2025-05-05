@@ -6,9 +6,7 @@
     <title>Konsultasi Kesehatan Modern | KonsulSehat (Gradient)</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +15,13 @@
         /* Custom Styles */
         body { font-family: 'Poppins', sans-serif; font-size: 16px; line-height: 1.6; }
         .percentage-value { font-size: 1.3rem; font-weight: 600; margin-left: 6px; }
-        #jantungPercentage { color: #dc2626; } #ginjalPercentage { color: #9333ea; } #hipertensiPercentage { color: #b91c1c; } #ispaPercentage { color: #d97706; } #diabetesPercentage { color: #4f46e5; }
+        /* Updated Percentage colors - ID diarePercentage ditambahkan */
+        #diarePercentage { color: #16a34a; } /* green-600 - Warna untuk Diare */
+        #ginjalPercentage { color: #9333ea; } /* purple-600 */
+        #hipertensiPercentage { color: #b91c1c; } /* red-700 */
+        #ispaPercentage { color: #d97706; } /* amber-600 */
+        #diabetesPercentage { color: #4f46e5; } /* indigo-600 */
+
         section[id], div[id] { scroll-margin-top: 80px; }
         .placeholder-img { background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.875rem; max-height: 200px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
         .placeholder-div { background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.875rem; width: 100%; min-height: 200px; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
@@ -75,12 +79,53 @@
         <section id="layanan" class="py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-neutral-dark mb-12"> Informasi <span class="gradient-text">Kesehatan & Penyakit</span> </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/jantung.png" alt="Ilustrasi Penyakit Jantung" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Jantung</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-danger mb-2">Penyakit Jantung</h3> <p class="text-neutral text-sm mb-3 flex-grow">Berbagai kondisi yang memengaruhi jantung, seperti penyakit koroner, aritmia, dll.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="jantungPercentage" class="percentage-value">Memuat...</span></p> <a href="jantung.html" class="mt-auto inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-red-600 hover:to-pink-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
-                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/ginjal.png" alt="Ilustrasi Penyakit Ginjal" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Ginjal</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-warning mb-2">Penyakit Ginjal</h3> <p class="text-neutral text-sm mb-3 flex-grow">Kondisi yang menyebabkan penurunan fungsi ginjal, bisa akut atau kronis.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ginjalPercentage" class="percentage-value">Memuat...</span></p> <a href="ginjal.html" class="mt-auto inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-purple-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
-                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/hipertensi.png" alt="Ilustrasi Hipertensi" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Hipertensi</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-danger mb-2">Hipertensi</h3> <p class="text-neutral text-sm mb-3 flex-grow">Tekanan darah tinggi (≥140/90 mmHg). Perlu pemantauan dan gaya hidup sehat.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="hipertensiPercentage" class="percentage-value">Memuat...</span></p> <a href="hipertensi.html" class="mt-auto inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-red-600 hover:to-pink-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
-                  <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/ISPA.jpg" alt="Ilustrasi ISPA" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar ISPA</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-accent mb-2">ISPA</h3> <p class="text-neutral text-sm mb-3 flex-grow">Infeksi Saluran Pernapasan Akut, bisa disebabkan virus atau bakteri.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ispaPercentage" class="percentage-value">Memuat...</span></p> <a href="ispa.html" class="mt-auto inline-block bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-yellow-600 hover:to-orange-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
-                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div> <img src="/component/diabetes.png" alt="Ilustrasi Diabetes" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Diabetes</div>';"> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-info mb-2">Diabetes Melitus</h3> <p class="text-neutral text-sm mb-3 flex-grow">Penyakit metabolik kronis ditandai dengan kadar gula darah tinggi.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="diabetesPercentage" class="percentage-value">Memuat...</span></p> <a href="diabetes.html" class="mt-auto inline-block bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-blue-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div> </div>
-                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col"> <div class="icon-placeholder"> <i class="fas fa-notes-medical text-6xl text-gray-400"></i> </div> <div class="p-6 flex flex-col flex-grow"> <h3 class="text-xl font-semibold text-gray-700 mb-2">Info Kesehatan Lainnya</h3> <p class="text-neutral text-sm mb-3 flex-grow">Temukan artikel, tips, dan informasi umum seputar gaya hidup sehat.</p> <p class="text-neutral text-sm mb-4 invisible">.</p> <a href="#kontak" class="mt-auto inline-block bg-gradient-to-r from-gray-500 to-gray-600 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-gray-600 hover:to-gray-700 transition duration-300 text-sm"> Hubungi Kami <i class="fas fa-phone-alt ml-1 text-xs"></i> </a> </div> </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div>
+                        <img src="/component/diare.png" alt="Ilustrasi Diare" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Diare</div>';">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-green-600 mb-2">Diare</h3> <p class="text-neutral text-sm mb-3 flex-grow">Kondisi buang air besar (BAB) cair lebih dari 3 kali sehari. Waspadai dehidrasi.</p> <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="diarePercentage" class="percentage-value">Memuat...</span><span class="text-xs text-gray-500 ml-1">(dari hasil konsultasi di web kami)</span></p> <a href="diare.html" class="mt-auto inline-block bg-gradient-to-r from-green-500 to-emerald-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-green-600 hover:to-emerald-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a> </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div> <img src="/component/ginjal.png" alt="Ilustrasi Penyakit Ginjal" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Ginjal</div>';"> </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-warning mb-2">Penyakit Ginjal</h3>
+                        <p class="text-neutral text-sm mb-3 flex-grow">Kondisi yang menyebabkan penurunan fungsi ginjal, bisa akut atau kronis.</p>
+                        <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ginjalPercentage" class="percentage-value">Memuat...</span><span class="text-xs text-gray-500 ml-1">(dari hasil konsultasi di web kami)</span></p> <a href="ginjal.html" class="mt-auto inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-purple-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div> <img src="/component/hipertensi.png" alt="Ilustrasi Hipertensi" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Hipertensi</div>';"> </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-danger mb-2">Hipertensi</h3>
+                        <p class="text-neutral text-sm mb-3 flex-grow">Tekanan darah tinggi (≥140/90 mmHg). Perlu pemantauan dan gaya hidup sehat.</p>
+                        <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="hipertensiPercentage" class="percentage-value">Memuat...</span><span class="text-xs text-gray-500 ml-1">(dari hasil konsultasi di web kami)</span></p> <a href="hipertensi.html" class="mt-auto inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-red-600 hover:to-pink-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div> <img src="/component/ISPA.jpg" alt="Ilustrasi ISPA" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar ISPA</div>';"> </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-accent mb-2">ISPA</h3>
+                        <p class="text-neutral text-sm mb-3 flex-grow">Infeksi Saluran Pernapasan Akut, bisa disebabkan virus atau bakteri.</p>
+                        <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="ispaPercentage" class="percentage-value">Memuat...</span><span class="text-xs text-gray-500 ml-1">(dari hasil konsultasi di web kami)</span></p> <a href="ispa.html" class="mt-auto inline-block bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-yellow-600 hover:to-orange-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div> <img src="/component/diabetes.png" alt="Ilustrasi Diabetes" class="w-full placeholder-img" onerror="this.onerror=null; this.parentElement.innerHTML = '<div class=\'placeholder-div\'>Gambar Diabetes</div>';"> </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-info mb-2">Diabetes Melitus</h3>
+                        <p class="text-neutral text-sm mb-3 flex-grow">Penyakit metabolik kronis ditandai dengan kadar gula darah tinggi.</p>
+                        <p class="text-neutral text-sm mb-4">Persentase kasus: <span id="diabetesPercentage" class="percentage-value">Memuat...</span><span class="text-xs text-gray-500 ml-1">(dari hasil konsultasi di web kami)</span></p> <a href="diabetes.html" class="mt-auto inline-block bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-blue-600 hover:to-indigo-600 transition duration-300 text-sm"> Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i> </a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden feature-card flex flex-col">
+                    <div class="icon-placeholder"> <i class="fas fa-notes-medical text-6xl text-gray-400"></i> </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Info Kesehatan Lainnya</h3>
+                        <p class="text-neutral text-sm mb-3 flex-grow">Temukan artikel, tips, dan informasi umum seputar gaya hidup sehat.</p>
+                        <p class="text-neutral text-sm mb-4 invisible">.</p> <a href="#kontak" class="mt-auto inline-block bg-gradient-to-r from-gray-500 to-gray-600 text-white text-center font-medium py-2 px-4 rounded-md shadow hover:from-gray-600 hover:to-gray-700 transition duration-300 text-sm"> Hubungi Kami <i class="fas fa-phone-alt ml-1 text-xs"></i> </a>
+                    </div>
+                </div>
             </div>
 
             <div class="mt-16 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6 text-center shadow-sm">
@@ -127,55 +172,15 @@
     <script src="statistik.js" defer></script>
     <script>
          // Fungsi Logout Placeholder (Arahkan ke login.html)
-         function logoutUser() {
-             console.log("Logout action triggered!");
-             Swal.fire({
-                 title: 'Logout Berhasil',
-                 text: 'Anda akan diarahkan ke halaman login.',
-                 icon: 'success',
-                 timer: 2000, // Auto close
-                 showConfirmButton: false,
-                 willClose: () => {
-                     // Redirect ke halaman login setelah SweetAlert tertutup
-                     window.location.href = 'login.html'; // Ganti dengan nama file login Anda jika berbeda
-                 }
-             });
-         }
+         function logoutUser() { console.log("Logout action triggered!"); Swal.fire({ title: 'Logout Berhasil', text: 'Anda telah keluar.', icon: 'success', timer: 1500, showConfirmButton: false }).then(() => { window.location.href = 'login.html'; }); }
 
          document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu Toggle
-            const menuButton = document.getElementById('mobile-menu-button'); const mobileMenu = document.getElementById('mobile-menu');
-            if (menuButton && mobileMenu) { menuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); const icon = menuButton.querySelector('i'); icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times'); }); mobileMenu.querySelectorAll('a, button').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); const icon = menuButton.querySelector('i'); icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }); }); }
-
-            // SweetAlert for 'Cek Gejala' button (Arahkan ke deteksi_konsultasi.html)
-            const cekGejalaButton = document.getElementById('cek-gejala-button');
-            if(cekGejalaButton) {
-                cekGejalaButton.addEventListener('click', function() {
-                    Swal.fire({
-                        title: 'Mulai Konsultasi',
-                        text: 'Anda akan diarahkan ke halaman deteksi konsultasi.', // Teks diperbarui
-                        icon: 'info',
-                        confirmButtonText: 'Lanjutkan',
-                        confirmButtonColor: '#4CAF50', // Green from gradient
-                        showCancelButton: true,
-                        cancelButtonText: 'Batal',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            console.log("Navigasi ke halaman deteksi konsultasi...");
-                            // Redirect ke halaman deteksi konsultasi
-                            window.location.href = 'deteksiPenyakit.html'; // Ganti nama file jika perlu
-                        }
-                    });
-                });
-            }
-
-            // SweetAlert for Floating Action Button (FAB)
+            // Kode event listener lainnya (Mobile Menu, SweetAlert, Smooth Scroll) tetap sama
+            const menuButton = document.getElementById('mobile-menu-button'); const mobileMenu = document.getElementById('mobile-menu'); if (menuButton && mobileMenu) { menuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); const icon = menuButton.querySelector('i'); icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times'); }); mobileMenu.querySelectorAll('a, button').forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); const icon = menuButton.querySelector('i'); icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }); }); }
+            const cekGejalaButton = document.getElementById('cek-gejala-button'); if(cekGejalaButton) { cekGejalaButton.addEventListener('click', function() { Swal.fire({ title: 'Mulai Konsultasi', text: 'Anda akan diarahkan ke halaman deteksi konsultasi.', icon: 'info', confirmButtonText: 'Lanjutkan', confirmButtonColor: '#4CAF50', showCancelButton: true, cancelButtonText: 'Batal', }).then((result) => { if (result.isConfirmed) { window.location.href = 'deteksiPenyakit.html'; } }); }); }
             const floatingButton = document.getElementById('floating-button'); if(floatingButton) { floatingButton.addEventListener('click', () => { Swal.fire({ title: 'Ada Pertanyaan?', html: `<div class="text-left space-y-3 text-neutral"><p><i class="fas fa-stethoscope mr-2 text-blue-500"></i> Klik <strong>Mulai Konsultasi</strong> u/ pemeriksaan gejala.</p><p><i class="fas fa-book-medical mr-2 text-green-500"></i> Jelajahi <strong>Info Kesehatan</strong> u/ detail.</p><p><i class="fas fa-chart-line mr-2 text-yellow-600"></i> Lihat <strong>Statistik</strong> u/ tren penyakit.</p><p class="mt-4 text-sm">Bantuan lain? Klik <strong>Hubungi Kami</strong> atau kontak di footer.</p></div>`, icon: 'question', confirmButtonText: 'Saya Mengerti', confirmButtonColor: '#4CAF50', }); }); }
-
-            // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { const href = this.getAttribute('href'); if (href.length > 1 && href.startsWith('#')) { e.preventDefault(); const targetId = href; const targetElement = document.querySelector(targetId); if (targetElement) { const navbarHeight = document.querySelector('nav')?.offsetHeight || 70; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - navbarHeight - 20; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); } } }); });
-
-        }); // End DOMContentLoaded
+        });
     </script>
 
 </body>

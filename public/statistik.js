@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pastikan nama penyakit (value) cocok dengan path di API Anda (e.g., /api/.../jantung)
     // dan juga cocok dengan kunci dalam objek JSON yang akan dibuat untuk grafik.
     const percentageElementMapping = {
-        'jantungPercentage': 'diare', // Nama penyakit dalam huruf kecil untuk URL API
+        'diarePercentage': 'diare', // Nama penyakit dalam huruf kecil untuk URL API
         'ginjalPercentage': 'ginjalkronis',
         'hipertensiPercentage': 'hipertensi',
         'ispaPercentage': 'ispa',
