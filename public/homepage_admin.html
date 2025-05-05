@@ -1,11 +1,325 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="id" class=""> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Dashboard - Antrian Reservasi | KonsulSehat</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Definisi Variabel Warna CSS */
+        :root {
+            --bg-primary: #f9fafb; --bg-secondary: #ffffff; --bg-muted: #f3f4f6;
+            --text-primary: #1f2937; --text-secondary: #4b5563; --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+            --navbar-bg: #1f2937; --navbar-text: #f9fafb;
+        }
+        html.dark {
+            --bg-primary: #111827; --bg-secondary: #1f2937; --bg-muted: #374151;
+            --text-primary: #f9fafb; --text-secondary: #d1d5db; --text-muted: #9ca3af;
+            --border-color: #4b5563;
+            --card-shadow: 0 4px 6px -1px rgb(255 255 255 / 0.04), 0 2px 4px -2px rgb(255 255 255 / 0.04);
+            --card-shadow-hover: 0 10px 15px -3px rgb(255 255 255 / 0.05), 0 4px 6px -4px rgb(255 255 255 / 0.05);
+            --navbar-bg: #0f172a; --navbar-text: #e5e7eb;
+        }
+        /* Terapkan Variabel */
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-primary); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
+        nav { background: var(--navbar-bg); color: var(--navbar-text); border-bottom: 1px solid var(--border-color); }
+        main h1, main h2, main h3 { color: var(--text-primary); }
+        main p, main span, main label, main td, main th { color: var(--text-secondary); }
+        main p i, main span i { color: var(--text-muted); }
+        main pre { background-color: var(--bg-muted); border-color: var(--border-color); color: var(--text-primary); }
+        main input, main select, main textarea { background-color: var(--bg-secondary); border-color: var(--border-color); color: var(--text-primary); }
+        main input::placeholder { color: var(--text-muted); }
+        main .border-b { border-color: var(--border-color); }
+        .reservation-card-horizontal { background-color: var(--bg-secondary); border-color: var(--border-color); box-shadow: var(--card-shadow); transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out; }
+        .reservation-card-horizontal:hover { transform: translateY(-2px); box-shadow: var(--card-shadow-hover); background-color: var(--bg-muted); }
+        .reservation-card-horizontal h2 { color: var(--text-primary); }
+        .reservation-card-horizontal p { color: var(--text-secondary); }
+        .reservation-card-horizontal p i { color: var(--text-muted); }
+        .reservation-card-horizontal pre { background-color: var(--bg-primary); }
+        /* Status Chip Colors */
+        .status-chip { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 500; border-width: 1px; display: inline-flex; align-items: center; white-space: nowrap; }
+        .status-registrasi { background-color: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
+        .status-checkin { background-color: #fef3c7; color: #d97706; border-color: #fcd34d; }
+        .status-selesai { background-color: #dcfce7; color: #16a34a; border-color: #86efac; }
+        .status-dibatalkan { background-color: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+        html.dark .status-registrasi { background-color: #0f76a8; color: #e0f2fe; border-color: #38bdf8; }
+        html.dark .status-checkin { background-color: #b45309; color: #fef3c7; border-color: #fbbf24; }
+        html.dark .status-selesai { background-color: #15803d; color: #dcfce7; border-color: #4ade80; }
+        html.dark .status-dibatalkan { background-color: #b91c1c; color: #fee2e2; border-color: #f87171; }
+        /* Filter Buttons */
+        .filter-btn { border-width: 1px; }
+        .filter-btn:not(.active) { background-color: var(--bg-secondary); border-color: var(--border-color); color: var(--text-secondary); }
+        .filter-btn:not(.active):hover { background-color: var(--bg-muted); }
+        .filter-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
+        /* Loading & Error */
+        #loadingMessage p, #noReservationMessage p { color: var(--text-muted); }
+        #errorMessage { background-color: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        html.dark #errorMessage { background-color: #450a0a; border-color: #dc2626; color: #fecaca; }
+        /* Lain-lain */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: spin 2s linear infinite; }
+        pre.whitespace-pre-wrap { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:disabled:hover { background-color: initial; transform: none; box-shadow: none; }
+        button.checkin-disabled { background-color: #93c5fd !important; border-color: #bfdbfe !important; color: white !important; }
+        button.checkin-disabled:hover { background-color: #93c5fd !important; }
+        .card-middle-col { min-width: 0; }
+    </style>
 </head>
-<body>
-    
+<body class="min-h-screen pt-20">
+
+    <nav class="fixed top-0 left-0 right-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a class="text-xl font-bold flex items-center" href="#"> <i class="fas fa-user-shield mr-2"></i> Admin KonsulSehat </a>
+            <div class="flex items-center space-x-4">
+                 <button id="theme-toggle" type="button" class="text-gray-300 hover:text-white focus:outline-none text-lg p-1.5 rounded-lg hover:bg-gray-700">
+                     <i class="fas fa-moon" id="theme-toggle-dark-icon"></i>
+                     <i class="fas fa-sun hidden" id="theme-toggle-light-icon"></i>
+                 </button>
+                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-1.5 px-4 rounded-md transition duration-200 flex items-center"> <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-2 border-b">
+             <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-0">Antrian Reservasi Pasien</h1>
+             <div class="flex flex-wrap justify-center sm:justify-end gap-2">
+                 <button data-status="semua" class="filter-btn text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Semua</button>
+                 <button data-status="antrian" class="filter-btn active text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Antrian</button>
+                 <button data-status="registrasi" class="filter-btn text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Registrasi</button>
+                 <button data-status="checkin" class="filter-btn text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Check-in</button>
+                 <button data-status="selesai" class="filter-btn text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Selesai</button>
+                 <button data-status="dibatalkan" class="filter-btn text-xs font-medium py-1 px-3 rounded-full border transition duration-150">Dibatalkan</button>
+             </div>
+        </div>
+
+        <div id="loadingMessage" class="text-center py-10">
+            <i class="fas fa-spinner animate-spin-slow text-3xl mb-2"></i>
+            <p>Memuat data antrian...</p>
+        </div>
+        <div id="errorMessage" class="hidden px-4 py-3 rounded relative mb-6" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline" id="errorMessageText"></span>
+        </div>
+
+        <div id="reservationList" class="space-y-5"> </div>
+
+        <div id="noReservationMessage" class="hidden text-center py-10">
+            <i class="fas fa-folder-open text-3xl mb-2"></i>
+            <p>Belum ada reservasi dalam antrian (atau sesuai filter).</p>
+        </div>
+
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // --- Variabel Global ---
+        let firebaseApp; let firebaseAuth; let firebaseDb;
+        const reservationListDiv = document.getElementById('reservationList');
+        const loadingMessageDiv = document.getElementById('loadingMessage');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const errorMessageText = document.getElementById('errorMessageText');
+        const noReservationMessageDiv = document.getElementById('noReservationMessage');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        let currentFilter = 'antrian';
+        let allReservations = {};
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // --- Fungsi UI ---
+        function showLoading(isLoading) { /* ... sama ... */ if (loadingMessageDiv) loadingMessageDiv.style.display = isLoading ? 'block' : 'none'; }
+        function showErrorMessage(message) { /* ... sama ... */ if (errorMessageDiv && errorMessageText) { errorMessageText.textContent = message; errorMessageDiv.classList.remove('hidden'); showLoading(false); } else { console.error("Pesan error tidak bisa ditampilkan:", message); } }
+        function hideErrorMessage() { /* ... sama ... */ if (errorMessageDiv) errorMessageDiv.classList.add('hidden'); }
+        function showNoReservations(show) { /* ... sama ... */ if (noReservationMessageDiv) noReservationMessageDiv.style.display = show ? 'block' : 'none'; }
+
+        /** Membuat kartu reservasi */
+        function createReservationCard(reservationId, data, queueNumber, canCheckIn) {
+            // ... (Kode pembuatan elemen card dan badge sama) ...
+            const card = document.createElement('div');
+            card.className = 'reservation-card-horizontal rounded-xl shadow-lg hover:shadow-xl p-5 flex flex-col sm:flex-row items-stretch gap-5 border-l-4 min-h-[190px]';
+            card.setAttribute('data-id', reservationId);
+            const queueBadge = document.createElement('span');
+            queueBadge.className = 'absolute top-4 right-4 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow z-10';
+            queueBadge.textContent = `#${queueNumber}`;
+            card.appendChild(queueBadge);
+
+            let statusClass = 'status-registrasi border-sky-400';
+            let statusText = 'Registrasi';
+            let statusIcon = 'fas fa-edit';
+            const currentStatus = data.status || 'registrasi';
+            if (currentStatus === 'checkin') { statusClass = 'status-checkin border-amber-400'; statusText = 'Check-in'; statusIcon = 'fas fa-user-check'; }
+            else if (currentStatus === 'selesai') { statusClass = 'status-selesai border-green-500'; statusText = 'Selesai'; statusIcon = 'fas fa-check-double'; }
+            else if (currentStatus === 'dibatalkan') { statusClass = 'status-dibatalkan border-red-500'; statusText = 'Dibatalkan'; statusIcon = 'fas fa-times-circle'; }
+            card.classList.add(statusClass.split(' ')[1]);
+
+            let datePart = data.tanggal || 'Tanggal tidak ada';
+            let timePart = '';
+            if (data.waktu) { timePart = ` <span class="font-semibold">${data.waktu}</span>`; }
+            let dateTimeString = datePart + timePart;
+            let timestampString = '';
+            if (data.timestamp) { try { timestampString = new Date(data.timestamp).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }); } catch(e){} }
+            const diagnosisText = data.diagnosis || '-';
+            const catatanText = data.catatan || '-';
+
+            // Gunakan var() untuk warna teks dan background elemen internal
+            card.innerHTML = `
+                <div class="flex-shrink-0 flex items-center space-x-4 pb-4 sm:pb-0 sm:pr-5 border-b sm:border-b-0 sm:border-r" style="border-color: var(--border-color);">
+                    <span class="bg-blue-600 text-white text-2xl font-bold w-14 h-14 flex items-center justify-center rounded-full shadow-md flex-shrink-0">${queueNumber}</span>
+                    <div class="flex-grow min-w-0">
+                        <h2 class="text-xl font-semibold truncate" style="color: var(--text-primary);" title="${data.nama || 'Tanpa Nama'}">${data.nama || 'Tanpa Nama'}</h2>
+                        <p class="text-base mt-1 truncate" style="color: var(--text-secondary);"><i class="fas fa-phone-alt w-4 mr-1.5" style="color: var(--text-muted);"></i> ${data.telepon || '-'}</p>
+                        <p class="text-base truncate" style="color: var(--text-secondary);"><i class="fas fa-calendar-alt w-4 mr-1.5" style="color: var(--text-muted);"></i> ${dateTimeString}</p>
+                        <p class="text-base truncate" style="color: var(--text-secondary);"><i class="fas fa-hospital w-4 mr-1.5" style="color: var(--text-muted);"></i> ${data.rumah_sakit || '-'}</p>
+                    </div>
+                </div>
+                <div class="flex-grow card-middle-col py-4 sm:py-0 sm:px-5 border-b sm:border-b-0 sm:border-r" style="border-color: var(--border-color);">
+                     <div class="mb-3 h-full flex flex-col">
+                        <p class="text-base font-medium mb-1 flex-shrink-0" style="color: var(--text-muted);">Diagnosis/Gejala:</p>
+                        <div class="flex-grow overflow-hidden">
+                            <pre class="text-base whitespace-pre-wrap p-3 rounded border h-full overflow-y-auto" style="background-color: var(--bg-muted); border-color: var(--border-color); color: var(--text-primary);">${diagnosisText}</pre>
+                        </div>
+                    </div>
+                     ${data.catatan ? `
+                     <div class="mt-3 pt-3 border-t" style="border-color: var(--border-color);">
+                        <p class="text-base font-medium mb-1" style="color: var(--text-muted);">Catatan Pasien:</p>
+                        <p class="text-base p-3 rounded border" style="background-color: var(--bg-muted); border-color: var(--border-color); color: var(--text-primary);">${catatanText}</p>
+                    </div>` : ''}
+                </div>
+                <div class="flex-shrink-0 flex flex-col items-stretch sm:items-end justify-between space-y-3 w-full sm:w-auto pt-4 sm:pt-0">
+                     <span class="status-chip ${statusClass} self-end sm:self-auto"> <i class="${statusIcon} mr-1.5 text-xs"></i> ${statusText} </span>
+                     <div class="flex flex-col sm:flex-row sm:flex-wrap justify-end gap-2 w-full sm:w-auto">
+                         ${currentStatus === 'registrasi' ? `<button onclick="confirmUpdateStatus('${reservationId}', 'checkin', '${data.nama || 'pasien ini'}')" class="bg-blue-500 ${!canCheckIn ? 'opacity-50 cursor-not-allowed checkin-disabled' : 'hover:bg-blue-600'} text-white text-sm font-medium py-1.5 px-4 rounded transition duration-150 flex items-center justify-center" ${!canCheckIn ? 'disabled title="Hanya 3 antrian registrasi pertama yang bisa check-in"' : ''}> <i class="fas fa-user-check mr-1"></i> Check-in </button>` : ''}
+                         ${currentStatus === 'checkin' ? `<button onclick="confirmUpdateStatus('${reservationId}', 'selesai', '${data.nama || 'pasien ini'}')" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-1.5 px-4 rounded transition duration-150 flex items-center justify-center"> <i class="fas fa-check-double mr-1"></i> Selesai </button>` : ''}
+                         ${currentStatus !== 'selesai' && currentStatus !== 'dibatalkan' ? `<button onclick="confirmUpdateStatus('${reservationId}', 'dibatalkan', '${data.nama || 'pasien ini'}')" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium py-1.5 px-4 rounded transition duration-150 flex items-center justify-center"> <i class="fas fa-times mr-1"></i> Batalkan </button>` : ''}
+                         <button onclick="deleteReservation('${reservationId}', '${data.nama || 'ini'}')" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1.5 px-4 rounded transition duration-150 flex items-center justify-center"> <i class="fas fa-trash-alt mr-1"></i> Hapus </button>
+                    </div>
+                     ${timestampString ? `<p class="text-right text-sm mt-auto pt-2" style="color: var(--text-muted);">Dibuat: ${timestampString}</p>`: ''}
+                </div>
+            `;
+            return card;
+        }
+
+        /**
+         * Menampilkan konfirmasi sebelum mengupdate status.
+         * @param {string} reservationId - ID reservasi.
+         * @param {string} newStatus - Status baru ('checkin', 'selesai', 'dibatalkan').
+         * @param {string} patientName - Nama pasien untuk pesan konfirmasi.
+         */
+        function confirmUpdateStatus(reservationId, newStatus, patientName) {
+            let title = 'Konfirmasi Perubahan Status';
+            let text = `Yakin ingin mengubah status reservasi ${patientName} menjadi ${newStatus}?`;
+            let confirmButtonColor = '#3085d6'; // Default biru
+            let icon = 'question';
+
+            if (newStatus === 'checkin') {
+                title = 'Konfirmasi Check-in';
+                text = `Check-in pasien ${patientName}?`;
+                confirmButtonColor = '#2563eb'; // Biru (sesuai tombol)
+                icon = 'info';
+            } else if (newStatus === 'selesai') {
+                title = 'Konfirmasi Selesai';
+                text = `Tandai reservasi ${patientName} sebagai selesai?`;
+                confirmButtonColor = '#16a34a'; // Hijau
+                icon = 'success';
+            } else if (newStatus === 'dibatalkan') {
+                title = 'Konfirmasi Pembatalan';
+                text = `Batalkan reservasi ${patientName}?`;
+                confirmButtonColor = '#f59e0b'; // Kuning/Amber
+                icon = 'warning';
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                showCancelButton: true,
+                confirmButtonColor: confirmButtonColor,
+                cancelButtonColor: '#6b7280', // Abu-abu
+                confirmButtonText: 'Ya, Ubah Status!',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateStatus(reservationId, newStatus); // Panggil fungsi update jika dikonfirmasi
+                }
+            });
+        }
+
+
+        /** Mengupdate status reservasi di Firebase */
+        function updateStatus(reservationId, newStatus) {
+             if (!firebaseDb) { showErrorMessage("Koneksi database belum siap."); return; }
+             const allowedStatus = ['registrasi', 'checkin', 'selesai', 'dibatalkan'];
+             if (!allowedStatus.includes(newStatus)) { console.error(`Status tidak valid: ${newStatus}`); showErrorMessage("Status yang diminta tidak valid."); return; }
+             firebaseDb.ref(`reservasi/${reservationId}/status`).set(newStatus)
+                .then(() => {
+                    console.log(`Status ${reservationId} -> ${newStatus}`);
+                    // Opsional: Tampilkan notifikasi sukses singkat
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Status berhasil diubah',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                })
+                .catch(error => {
+                    console.error(`Gagal update status ${reservationId}:`, error);
+                    showErrorMessage("Gagal update status.");
+                    Swal.fire('Gagal!', 'Gagal mengubah status reservasi.', 'error');
+                });
+        }
+
+         /** Menghapus reservasi */
+        function deleteReservation(reservationId, patientName) { /* ... sama ... */ if (!firebaseDb) { showErrorMessage("Koneksi database belum siap."); return; } Swal.fire({ title: 'Hapus Reservasi?', text: `Yakin hapus reservasi ${patientName}?`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal' }).then((result) => { if (result.isConfirmed) { firebaseDb.ref(`reservasi/${reservationId}`).remove() .then(() => { console.log(`Reservasi ${reservationId} dihapus.`); Swal.fire('Dihapus!', 'Reservasi dihapus.', 'success'); }) .catch(error => { console.error(`Gagal hapus ${reservationId}:`, error); showErrorMessage("Gagal hapus reservasi."); Swal.fire('Gagal!', 'Gagal menghapus reservasi.', 'error'); }); } }); }
+
+        /** Mengambil konfigurasi Firebase dari backend */
+        async function fetchFirebaseConfig() { /* ... sama ... */ try { const response = await fetch('/api/firebase-config'); if (!response.ok) throw new Error(`Status ${response.status}`); return await response.json(); } catch (error) { console.error("Error fetch config:", error); showErrorMessage(`Gagal load config: ${error.message}`); return null; } }
+
+        /** Menginisialisasi Firebase */
+        function initializeFirebase(config) { /* ... sama ... */ if (!config) return false; try { if (typeof firebase === 'undefined') throw new Error("SDK Firebase belum dimuat."); firebaseApp = firebase.initializeApp(config); firebaseAuth = firebase.auth(); firebaseDb = firebase.database(); console.log("Firebase init sukses."); return true; } catch (error) { console.error("Gagal init Firebase:", error); showErrorMessage(`Gagal init: ${error.message}`); return false; } }
+
+         /** Memfilter dan menampilkan data reservasi */
+        function displayFilteredReservations() { /* ... sama ... */ if (!allReservations) { showNoReservations(true); reservationListDiv.innerHTML = ''; return; } reservationListDiv.innerHTML = ''; let queueCounter = 0; const dataArray = Object.entries(allReservations).map(([key, value]) => { if (value && typeof value === 'object') { const dateTimeString = `${value.tanggal || '0000-00-00'} ${value.waktu || '00:00'}`; return [key, { ...value, sortableDateTime: dateTimeString }]; } return [key, null]; }).filter(entry => entry[1] !== null); dataArray.sort(([, a], [, b]) => { if (a.sortableDateTime < b.sortableDateTime) return -1; if (a.sortableDateTime > b.sortableDateTime) return 1; return (b.timestamp || 0) - (a.timestamp || 0); }); const filterToApply = currentFilter === 'antrian' ? 'registrasi' : currentFilter; let displayedCount = 0; let registrasiCount = 0; dataArray.forEach(([key, value]) => { const currentStatus = value.status || 'registrasi'; const matchesFilter = (filterToApply === 'semua' || currentStatus === filterToApply); if (matchesFilter) { queueCounter++; const queueNumber = queueCounter; let canCheckIn = false; if (currentStatus === 'registrasi') { registrasiCount++; if (registrasiCount <= 3) { canCheckIn = true; } } const card = createReservationCard(key, value, queueNumber, canCheckIn); reservationListDiv.appendChild(card); displayedCount++; } }); if (displayedCount === 0) { showNoReservations(true); } else { showNoReservations(false); } }
+
+        /** Memulai listener untuk data reservasi */
+        function listenReservations() { /* ... sama ... */ if (!firebaseDb) { showErrorMessage("DB tidak siap."); showLoading(false); return; } const reservationsRef = firebaseDb.ref('reservasi'); reservationsRef.on('value', (snapshot) => { hideErrorMessage(); allReservations = snapshot.val() || {}; console.log("Data reservasi diterima/diperbarui:", Object.keys(allReservations).length); displayFilteredReservations(); showLoading(false); }, (error) => { console.error("Error listener reservasi:", error); showErrorMessage(`Gagal load data: ${error.message}`); showLoading(false); allReservations = {}; displayFilteredReservations(); }); }
+
+        // --- Fungsi Logout Global ---
+        window.logoutUser = function() { /* ... sama ... */ console.log("Logout action triggered!"); if (firebaseAuth && firebaseAuth.currentUser) { firebaseAuth.signOut().then(() => { console.log("Logout sukses."); window.location.href = 'login.html'; }).catch((error) => { console.error("Error logout:", error); alert('Gagal logout.'); }); } else { window.location.href = 'login.html'; } }
+
+        // --- Fungsi Tema ---
+        function applyTheme(theme) { /* ... sama ... */ if (theme === 'dark') { document.documentElement.classList.add('dark'); if(themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden'); if(themeToggleDarkIcon) themeToggleDarkIcon.classList.add('hidden'); } else { document.documentElement.classList.remove('dark'); if(themeToggleLightIcon) themeToggleLightIcon.classList.add('hidden'); if(themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden'); } }
+        function toggleTheme() { /* ... sama ... */ const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); const newTheme = currentTheme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', newTheme); applyTheme(newTheme); console.log(`Tema diubah ke: ${newTheme}`); }
+        function initializeTheme() { /* ... sama ... */ const savedTheme = localStorage.getItem('theme'); const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; if (savedTheme) { applyTheme(savedTheme); } else if (systemPrefersDark) { applyTheme('dark'); } else { applyTheme('light'); } }
+
+        // --- Event Listener untuk Tombol Filter ---
+        filterButtons.forEach(button => { button.addEventListener('click', () => { filterButtons.forEach(btn => { btn.classList.remove('active'); }); button.classList.add('active'); currentFilter = button.getAttribute('data-status'); console.log(`Filter diubah menjadi: ${currentFilter}`); displayFilteredReservations(); }); });
+
+         // --- Event Listener untuk Tombol Tema ---
+         if (themeToggleButton) { themeToggleButton.addEventListener('click', toggleTheme); } else { console.warn("Tombol ganti tema (#theme-toggle) tidak ditemukan."); }
+
+        // --- Alur Utama ---
+        async function main() { /* ... sama ... */ initializeTheme(); showLoading(true); const config = await fetchFirebaseConfig(); if (config && initializeFirebase(config)) { firebaseAuth.onAuthStateChanged(async (user) => { if (user) { try { const idTokenResult = await user.getIdTokenResult(true); if (idTokenResult.claims.admin === true) { console.log("Admin terverifikasi."); listenReservations(); } else { console.warn("Bukan admin."); logoutUser(); } } catch (error) { console.error("Error cek claim:", error); showErrorMessage("Gagal verifikasi admin."); logoutUser(); } } else { console.log("Tidak login."); window.location.href = 'login.html'; } }); } else { showLoading(false); } }
+
+        main(); // Jalankan
+
+    </script>
+
 </body>
 </html>

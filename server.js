@@ -28,7 +28,7 @@ app.use(express.static('public'));
 
 // Rute utama
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/login.html');
 });
 app.get('/speech-to-text', (req, res) => {
     res.sendFile(__dirname + '/public/deteksiPenyakit.html');
@@ -170,8 +170,8 @@ app.get('/api/firebase-config', (req, res) => {
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
         appId: process.env.FIREBASE_APP_ID,
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID, // Opsional
-        databaseURL: process.env.FIREBASE_DATABASE_URL // Opsional, jika frontend perlu akses DB langsung
+        measurementId: process.env.FIREBASE_MEASUREMENT_ID, 
+        databaseURL: process.env.FIREBASE_DATABASE_URL 
     };
 
     // Validasi sederhana apakah variabel lingkungan penting sudah diatur
@@ -189,7 +189,7 @@ app.get('/api/firebase-config', (req, res) => {
         messagingSenderId: firebaseConfigPublic.messagingSenderId,
         appId: firebaseConfigPublic.appId,
         measurementId: firebaseConfigPublic.measurementId,
-        // databaseURL: firebaseConfigPublic.databaseURL // Kirim jika perlu
+        databaseURL: firebaseConfigPublic.databaseURL // Kirim jika perlu
     });
 });
 
