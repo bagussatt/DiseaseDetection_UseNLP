@@ -14,6 +14,7 @@ admin.initializeApp({
 const app = express();
 const port = 3000;
 
+app.use(express.json()); // Tambahkan ini jika belum ada
 // Middleware untuk parsing data formulir
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -56,6 +57,45 @@ app.get('/api/nearby-hospitals', async (req, res) => {
     } catch (error) {
         console.error('Error fetching hospitals from Overpass API:', error);
         res.status(500).json({ error: 'Gagal mengambil data rumah sakit terdekat.' });
+    }
+});
+// Middleware untuk parsing JSON body (jika Anda mengirim data sebagai JSON dari frontend)
+
+// Rute untuk menangani submit formulir reservasi
+app.post('/api/reservasi', async (req, res) => {
+    console.log('Menerima permintaan reservasi:', req.body); // Log data yang diterima
+
+    try {
+        const reservasiData = {
+            nama: req.body.nama,
+            telepon: req.body.telepon,
+            telegram_id: req.body.telegram_id || null, // Handle opsional
+            rumah_sakit: req.body.rumah_sakit || null, // Handle opsional
+            tanggal: req.body.tanggal,
+            status : 'registrasi',
+            waktu: req.body.waktu || null, // Handle opsional
+            catatan: req.body.catatan || null, // Handle opsional
+            diagnosis: req.body.diagnosis || null, // Data dari input hidden
+            timestamp: admin.database.ServerValue.TIMESTAMP // Waktu server saat data disimpan
+        };
+
+        // Validasi sederhana (bisa ditambahkan validasi lebih detail)
+        if (!reservasiData.nama || !reservasiData.telepon || !reservasiData.tanggal) {
+            console.error("Data tidak lengkap:", reservasiData);
+            return res.status(400).json({ success: false, message: 'Data tidak lengkap. Nama, telepon, tanggal, dan diagnosis wajib diisi.' });
+        }
+
+        // Simpan data ke Firebase Realtime Database di path 'reservasi'
+        const db = admin.database();
+        const reservasiRef = db.ref('reservasi'); // Tentukan path penyimpanan
+        await reservasiRef.push(reservasiData); // Gunakan push() untuk ID unik
+
+        console.log('Data reservasi berhasil disimpan ke Firebase:', reservasiData);
+        res.status(201).json({ success: true, message: 'Permintaan reservasi berhasil dikirim dan disimpan!' });
+
+    } catch (error) {
+        console.error('Error saat menyimpan reservasi ke Firebase:', error);
+        res.status(500).json({ success: false, message: 'Terjadi kesalahan internal saat memproses permintaan Anda.' });
     }
 });
 // Jalankan server
