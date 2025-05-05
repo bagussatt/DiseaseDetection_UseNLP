@@ -89,7 +89,7 @@ function setup() {
     // Listener untuk tombol Reservasi
     if (reservationButton) {
         reservationButton.mousePressed(handleReservationClick);
-        reservationButton.html('Lanjut ke Reservasi');
+        reservationButton.html('    Reservasi');
         reservationButton.style('display', 'none');
         console.log("Reservation button (#showMapBtn) listener attached.");
     } else {
@@ -424,7 +424,7 @@ function speakDetectionResults(penyakit, gejala, diagnosisDitemukan) {
         if (gejala && gejala !== "N/A" && gejala.toLowerCase() !== 'n/a' && gejala.trim() !== '') {
             textToSpeak += `Gejala yang cocok: ${gejala}. `;
         }
-        textToSpeak += `Jika ingin melanjutkan, silakan klik tombol Reservasi yang sudah muncul.`;
+        textToSpeak += `silakan klik tombol Reservasi yang sudah muncul.`;
         // lastDetectionResult & lastDetectedDisease sudah di set di displayDetectionResults
     } else {
         // Ini terjadi jika diagnosis ditemukan tapi tidak valid (misal, nama penyakit kosong)
