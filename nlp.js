@@ -115,7 +115,7 @@ function detectPenyakit(input) {
             hasil.push({
                 penyakit: keywords[diseaseKey].name,
                 skor: diseaseScores[diseaseKey],
-                gejala: Array.from(matchedSymptoms[diseaseKey]), // Nama properti 'gejala'
+                gejala: Array.from(matchedSymptoms[diseaseKey]), 
                 saranDokter: keywords[diseaseKey].saranDokter,
                 saranObat: keywords[diseaseKey].saranObat,
                 sumber: keywords[diseaseKey].sumber,

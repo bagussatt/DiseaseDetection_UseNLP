@@ -6,23 +6,18 @@
     <title>Formulir Reservasi Rumah Sakit - KonsulSehat</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Styles (Minimal) */
         body {
             font-family: 'Poppins', sans-serif;
         }
-        /* Style for required fields */
         label span.text-red-500 {
             margin-left: 2px;
         }
-         /* Add subtle transition for focus */
         .form-input, .form-select {
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
@@ -31,7 +26,6 @@
             border-color: #2563eb; /* Tailwind blue-600 */
             box-shadow: 0 0 0 3px var(--tw-ring-color);
         }
-        /* Style for the confirmation message fade-in */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -39,15 +33,14 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
-        /* Ensure preformatted text wraps */
         pre.whitespace-pre-wrap {
-            white-space: pre-wrap;       /* Since CSS 2.1 */
-            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-            white-space: -pre-wrap;      /* Opera 4-6 */
-            white-space: -o-pre-wrap;    /* Opera 7 */
-            word-wrap: break-word;       /* Internet Explorer 5.5+ */
-            font-family: inherit;        /* Use body font */
-            font-size: 0.9rem;           /* Slightly smaller */
+            white-space: pre-wrap;    /* CSS 2.1 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            white-space: -pre-wrap;     /* Opera 4-6 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            word-wrap: break-word;      /* Internet Explorer 5.5+ */
+            font-family: inherit;
+            font-size: 0.9rem;
             background-color: #f9fafb; /* Tailwind gray-50 */
             padding: 10px;
             border-radius: 5px;
@@ -55,22 +48,23 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800 pt-20 pb-16"> <nav class="bg-gradient-to-r from-teal-500 to-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
+<body class="bg-gray-100 text-gray-800 pt-20 pb-16">
+    <nav class="bg-gradient-to-r from-teal-500 to-blue-600 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a class="text-xl font-bold flex items-center" href="index.html">
                 <i class="fas fa-heartbeat mr-2"></i> KonsulSehat
             </a>
-            <button class="md:hidden block text-white focus:outline-none">
+            <button id="mobileMenuToggle" class="md:hidden block text-white focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="hidden md:flex space-x-6">
+            <div class="hidden md:flex space-x-6" id="desktopMenu">
                 <a class="hover:text-blue-200" href="index.html">Beranda</a>
                 <a class="font-semibold border-b-2 border-blue-300" href="#">Konsultasi</a>
                 <a class="hover:text-blue-200" href="index.html#layanan">Layanan</a>
                 <a class="hover:text-blue-200" href="index.html#statistik-section">Statistik</a>
             </div>
         </div>
-        <div class="md:hidden bg-blue-600 text-center hidden">
+        <div id="mobileMenu" class="md:hidden bg-blue-600 text-center hidden">
              <a class="block py-2 px-4 hover:bg-blue-700" href="index.html">Beranda</a>
              <a class="block py-2 px-4 font-semibold bg-blue-700" href="#">Konsultasi</a>
              <a class="block py-2 px-4 hover:bg-blue-700" href="index.html#layanan">Layanan</a>
@@ -78,7 +72,8 @@
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 max-w-6xl"> <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 md:p-8 mb-6 rounded-xl shadow-lg text-center">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 md:p-8 mb-6 rounded-xl shadow-lg text-center">
             <h1 class="text-2xl md:text-3xl font-bold flex items-center justify-center">
                 <i class="fas fa-hospital-user mr-3 text-4xl"></i> Formulir Reservasi
             </h1>
@@ -86,7 +81,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
             <div class="lg:col-span-5">
                 <div id="gejala-display" class="bg-white rounded-xl shadow-md h-full flex flex-col">
                     <div class="p-5 flex flex-col flex-grow">
@@ -137,14 +131,12 @@
 
                             <div class="mb-4">
                                 <label for="rumah_sakit" class="block text-sm font-medium text-gray-700 mb-1">
-                                    <i class="fas fa-hospital mr-1 text-gray-500"></i> Pilih Rumah Sakit Tujuan <span class="text-gray-500 text-xs">(Opsional)</span>
+                                    <i class="fas fa-hospital mr-1 text-gray-500"></i> Pilih Rumah Sakit Tujuan <span class="text-red-500">*</span>
                                 </label>
-                                <select id="rumah_sakit" name="rumah_sakit"
+                                <select id="rumah_sakit" name="rumah_sakit" required
                                         class="form-select block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none text-sm">
-                                    <option value="" selected disabled>-- Pilih Rumah Sakit --</option>
-                                    <option value="RS PKU Muhammadiyah Yogyakarta">RS PKU Muhammadiyah Yogyakarta</option>
-                                    <option value="RSUD Kota Yogyakarta">RSUD Kota Yogyakarta</option> <option value="Lainnya">Lainnya / Belum Tahu</option>
-                                </select>
+                                    <option value="" selected disabled>-- Memuat daftar rumah sakit... --</option>
+                                    </select>
                                 <p class="mt-1 text-xs text-gray-500">Pilih rumah sakit jika Anda memiliki preferensi.</p>
                             </div>
 
@@ -176,7 +168,7 @@
                             <input type="hidden" id="gejala-data" name="diagnosis">
 
                             <div class="text-center border-t border-gray-200 pt-6 mt-4">
-                                <button type="submit"
+                                <button type="submit" id="submitButton"
                                         class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mr-3">
                                     <i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan
                                 </button>
@@ -197,28 +189,12 @@
              <i class="fas fa-check-circle mr-3 text-xl"></i>
              <span id="confirmation-text"></span>
         </div>
-
     </div>
 
-    <script>
-        // Set minimum date for date input to today
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            const dateInput = document.getElementById('tanggal');
-            if (dateInput) {
-                dateInput.setAttribute('min', today);
-            }
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            // Basic Mobile Menu Toggle (Example)
-            const menuButton = document.querySelector('.md\\:hidden.block'); // Target mobile button
-            const mobileMenu = document.querySelector('.md\\:hidden.bg-blue-600'); // Target mobile menu div
-            if (menuButton && mobileMenu) {
-                menuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-        });
-    </script>
     <script src="reservasi.js" defer></script>
 
 </body>
