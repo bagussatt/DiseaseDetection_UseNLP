@@ -422,7 +422,7 @@ function speakDetectionResults(penyakit, gejala, diagnosisDitemukan) {
     if (validPenyakit) {
         textToSpeak = `Baik, berdasarkan analisis, kemungkinan penyakit Anda adalah ${penyakit}. `;
         if (gejala && gejala !== "N/A" && gejala.toLowerCase() !== 'n/a' && gejala.trim() !== '') {
-            textToSpeak += `Gejala yang cocok: ${gejala}. `;
+           ;
         }
         textToSpeak += `silakan klik tombol Reservasi yang sudah muncul.`;
         // lastDetectionResult & lastDetectedDisease sudah di set di displayDetectionResults

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -34,7 +34,7 @@
             animation: fadeIn 0.5s ease-out forwards;
         }
         pre.whitespace-pre-wrap {
-            white-space: pre-wrap;    /* CSS 2.1 */
+            white-space: pre-wrap;      /* CSS 2.1 */
             white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
             white-space: -pre-wrap;     /* Opera 4-6 */
             white-space: -o-pre-wrap;   /* Opera 7 */
@@ -140,22 +140,40 @@
                                 <p class="mt-1 text-xs text-gray-500">Pilih rumah sakit jika Anda memiliki preferensi.</p>
                             </div>
 
+                        
+                            <div id="doctor-selection-section" class="mb-4 hidden">
+                                <label for="dokter" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-user-md mr-1 text-gray-500"></i> Pilih Dokter <span class="text-red-500">*</span>
+                                </label>
+                                <select id="dokter" name="dokter_id" required disabled
+                                        class="form-select block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none text-sm">
+                                    <option value="" selected disabled>-- Pilih Dokter --</option>
+                                </select>
+         
+                                <p id="doctor-schedule-display" class="mt-2 text-sm text-gray-600 italic hidden"></p>
+                            </div>
+  
+
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">
                                         <i class="fas fa-calendar-alt mr-1 text-gray-500"></i> Tanggal Preferensi <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="date" id="tanggal" name="tanggal" required
+                                    <input type="date" id="tanggal" name="tanggal" required disabled
                                            class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
                                 </div>
                                 <div>
                                     <label for="waktu" class="block text-sm font-medium text-gray-700 mb-1">
-                                        <i class="fas fa-clock mr-1 text-gray-500"></i> Perkiraan Waktu <span class="text-gray-500 text-xs">(Opsional)</span>
+                                        <i class="fas fa-clock mr-1 text-gray-500"></i> Perkiraan Waktu <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="time" id="waktu" name="waktu"
+                                    <input type="time" id="waktu" name="waktu" required disabled
                                            class="form-input block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm">
                                 </div>
                             </div>
+
+                             <div id="availability-message" class="mt-4 p-3 text-sm rounded-md hidden" role="alert"></div>
+
 
                             <div class="mb-6">
                                 <label for="catatan" class="block text-sm font-medium text-gray-700 mb-1">
@@ -166,10 +184,13 @@
                             </div>
 
                             <input type="hidden" id="gejala-data" name="diagnosis">
+                      
+                            <input type="hidden" id="selected-doctor-name" name="dokter_nama">
+
 
                             <div class="text-center border-t border-gray-200 pt-6 mt-4">
-                                <button type="submit" id="submitButton"
-                                        class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mr-3">
+                                <button type="submit" id="submitButton" disabled
+                                        class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mr-3 disabled:opacity-50 disabled:cursor-not-allowed">
                                     <i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan
                                 </button>
                                 <button type="button"

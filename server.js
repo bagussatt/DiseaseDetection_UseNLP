@@ -74,7 +74,7 @@ app.post('/api/reservasi', async (req, res) => {
         nama: req.body.nama,
         telepon: req.body.telepon,
         telegram_id: req.body.telegram_id || null, // ID Telegram dari form
-        rumah_sakit: req.body.rumah_sakit || null,
+        rumah_sakit: req.body.rumah_sakit_nama || null,
         tanggal: req.body.tanggal,
         waktu: req.body.waktu || null,
         catatan: req.body.catatan || null,

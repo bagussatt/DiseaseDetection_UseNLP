@@ -29,7 +29,7 @@
             --active-filter-bg: #3498db;
             --active-filter-text: #ffffff;
             --accent-color: #3498db;
-            --success-color: #2ecc71;
+            --success-color: #2ecc71; /* Hijau */
             --warning-color: #f39c12;
             --danger-color: #e74c3c;
             --info-color: #3498db;
@@ -134,6 +134,26 @@
         button.checkin-disabled { background-color: #a6cff7 !important; border-color: #a6cff7 !important; color: white !important; opacity: 0.7; }
         html.dark button.checkin-disabled { background-color: #4a5568 !important; border-color: #4a5568 !important; opacity: 0.7;}
 
+        /* MODIFICATION: Styling untuk tombol Kelola Dokter */
+        .btn-kelola-dokter {
+            background-color: var(--success-color); /* Menggunakan warna hijau */
+            color: white;
+            border-color: var(--success-color);
+        }
+        .btn-kelola-dokter:hover {
+            background-color: #27ae60; /* Warna hijau sedikit lebih gelap saat hover */
+            border-color: #27ae60;
+        }
+        html.dark .btn-kelola-dokter {
+            background-color: #38a169; /* Warna hijau untuk dark mode */
+            border-color: #38a169;
+        }
+        html.dark .btn-kelola-dokter:hover {
+            background-color: #2f855a; /* Warna hijau lebih gelap saat hover di dark mode */
+            border-color: #2f855a;
+        }
+
+
         /* Animasi & Lain-lain (Sama seperti sebelumnya) */
         @keyframes spin { to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spin 1.5s linear infinite; }
@@ -226,12 +246,14 @@
                 </div>
             </div>
 
-            <div class="mt-auto pt-6 border-t" style="border-color: var(--border-color);">
-                 <h3 class="text-xs font-semibold mb-3 tracking-wider uppercase" style="color: var(--text-muted);">Pengaturan</h3>
+            <div class="mt-auto pt-6 border-t flex flex-col space-y-2" style="border-color: var(--border-color);"> <h3 class="text-xs font-semibold mb-3 tracking-wider uppercase" style="color: var(--text-muted);">Pengaturan</h3>
                  <button id="openHospitalCrudModalBtn" class="filter-btn !bg-indigo-500 !text-white !border-indigo-500 hover:!bg-indigo-600">
                      <i class="fas fa-hospital-user"></i> Kelola Rumah Sakit
                  </button>
-            </div>
+                 <a href="kelola_dokter.html" class="filter-btn btn-kelola-dokter">
+                     <i class="fas fa-user-md"></i> Kelola Dokter
+                 </a>
+                 </div>
         </aside>
 
         <main id="mainContent" class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out md:ml-[var(--sidebar-width)]">
@@ -401,11 +423,11 @@
         function escapeHtml(unsafe) {
             if (unsafe === null || typeof unsafe === 'undefined') return "";
             return unsafe.toString()
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
+                   .replace(/&/g, "&amp;")
+                   .replace(/</g, "&lt;")
+                   .replace(/>/g, "&gt;")
+                   .replace(/"/g, "&quot;")
+                   .replace(/'/g, "&#039;");
         }
 
         // --- Fungsi Inti Aplikasi (Antrian Reservasi) ---
@@ -642,8 +664,8 @@
         /** Menginisialisasi Firebase */
         function initializeFirebase(config) {
             if (!config) {
-                 console.error("Konfigurasi Firebase tidak valid.");
-                 return false;
+                console.error("Konfigurasi Firebase tidak valid.");
+                return false;
             }
             try {
                 if (typeof firebase === 'undefined' || typeof firebase.initializeApp === 'undefined') {
@@ -835,28 +857,28 @@
         window.confirmDeleteHospital = (id, name) => {
              if (!firebaseDb) { Swal.fire('Error Koneksi', 'Koneksi database belum siap.', 'error'); return; }
              Swal.fire({
-                title: 'Hapus Rumah Sakit?',
-                html: `Anda yakin ingin menghapus <strong>${escapeHtml(name)}</strong>? Tindakan ini tidak dapat diurungkan.`,
-                icon: 'warning', showCancelButton: true,
-                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger-color').trim(),
-                cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
-                confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    console.log(`Menghapus RS ID: ${id}`);
-                    try {
-                        await firebaseDb.ref(`daftar_rumah_sakit/${id}`).remove();
-                        Swal.fire('Dihapus!', `Rumah sakit "${escapeHtml(name)}" telah dihapus.`, 'success');
-                        await loadAndDisplayHospitals();
-                        if (hospitalEditIdInput.value === id) { // Jika yang dihapus sedang diedit
-                            resetHospitalForm();
-                        }
-                    } catch (error) {
-                         console.error(`Gagal menghapus RS ID ${id}:`, error);
-                         Swal.fire('Gagal!', `Gagal menghapus rumah sakit: ${error.message}`, 'error');
-                    }
-                }
-            });
+                 title: 'Hapus Rumah Sakit?',
+                 html: `Anda yakin ingin menghapus <strong>${escapeHtml(name)}</strong>? Tindakan ini tidak dapat diurungkan.`,
+                 icon: 'warning', showCancelButton: true,
+                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger-color').trim(),
+                 cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                 confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal'
+             }).then(async (result) => {
+                 if (result.isConfirmed) {
+                     console.log(`Menghapus RS ID: ${id}`);
+                     try {
+                         await firebaseDb.ref(`daftar_rumah_sakit/${id}`).remove();
+                         Swal.fire('Dihapus!', `Rumah sakit "${escapeHtml(name)}" telah dihapus.`, 'success');
+                         await loadAndDisplayHospitals();
+                         if (hospitalEditIdInput.value === id) { // Jika yang dihapus sedang diedit
+                             resetHospitalForm();
+                         }
+                     } catch (error) {
+                          console.error(`Gagal menghapus RS ID ${id}:`, error);
+                          Swal.fire('Gagal!', `Gagal menghapus rumah sakit: ${error.message}`, 'error');
+                     }
+                 }
+             });
         }
 
         // --- Event Listener UI ---
@@ -902,10 +924,10 @@
             if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', () => {
                      if (window.innerWidth < 768) { // Hanya berlaku di mobile
-                        filterSidebar.classList.remove('open-mobile');
-                        sidebarOverlay.classList.add('hidden');
-                        document.body.classList.remove('overflow-hidden-custom');
-                        console.log("Mobile sidebar closed via overlay click.");
+                         filterSidebar.classList.remove('open-mobile');
+                         sidebarOverlay.classList.add('hidden');
+                         document.body.classList.remove('overflow-hidden-custom');
+                         console.log("Mobile sidebar closed via overlay click.");
                      }
                 });
             }
@@ -951,7 +973,7 @@
          // Listener untuk tombol batal di form modal
          if (cancelHospitalEditBtn) {
              cancelHospitalEditBtn.addEventListener('click', resetHospitalForm); // Tombol batal edit mereset form
-        }
+         }
 
         // Listener untuk klik overlay modal
         if (hospitalModalOverlay) {
