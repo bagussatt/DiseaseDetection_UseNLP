@@ -57,7 +57,7 @@
         nav { background: var(--navbar-bg); color: var(--navbar-text); }
         main h1, main h2, main h3, aside h3 { color: var(--text-primary); font-weight: 600; }
         main p, main span, main label, main td, main th, aside p, aside span, aside label { color: var(--text-secondary); }
-        main p i, main span i, aside p i, aside span i { color: var(--text-muted); }
+        main p i, main span i, aside p i, aside span i { color: var(--text-muted); width: 1rem; text-align: center; }
         main pre { background-color: var(--bg-muted); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 0.375rem; padding: 0.5rem; font-size: 0.875rem;}
         main input, main select, main textarea, aside input, .modal input { background-color: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 0.375rem; padding: 0.5rem 0.75rem; }
         main input::placeholder, aside input::placeholder, .modal input::placeholder { color: var(--text-muted); }
@@ -167,7 +167,7 @@
         main { transition: margin-left 0.3s ease-in-out; }
         main.sidebar-open { margin-left: var(--sidebar-width); }
         main.sidebar-collapsed { margin-left: 0; }
-        @media (max-width: 767px) { #filterSidebar { transform: translateX(-100%); width: var(--sidebar-width); } #filterSidebar.open-mobile { transform: translateX(0); } #filterSidebar.collapsed { transform: translateX(-100%); } main.sidebar-open, main.sidebar-collapsed { margin-left: 0; } }
+        @media (max-width: 767px) { #filterSidebar { position: fixed; top: 4rem; bottom: 0; left: 0; transform: translateX(-100%); width: var(--sidebar-width); height: calc(100vh - 4rem); padding: 1.25rem; } #filterSidebar.open-mobile { transform: translateX(0); } #filterSidebar.collapsed { transform: translateX(-100%); } main.sidebar-open, main.sidebar-collapsed { margin-left: 0; } }
         html.dark #filterSidebar { box-shadow: 2px 0 15px -3px rgba(0,0,0,0.2); }
 
         /* Modal Styling */
@@ -267,9 +267,9 @@
     <div class="flex pt-16">
         <aside id="filterSidebar"
                class="fixed inset-y-0 left-0 z-40 transition-transform duration-300 ease-in-out
-                     md:relative md:translate-x-0 md:sticky md:top-16
-                     h-screen md:h-[calc(100vh-4rem)] overflow-y-auto
-                     p-5 flex flex-col">
+                      md:relative md:translate-x-0 md:sticky md:top-16
+                      h-screen md:h-[calc(100vh-4rem)] overflow-y-auto
+                      p-5 flex flex-col">
             <div class="mb-6">
                 <h3 class="text-xs font-semibold mb-3 tracking-wider uppercase" style="color: var(--text-muted);">Filter Status</h3>
                 <div class="flex flex-col space-y-1.5 status-filter-buttons-container">
@@ -295,8 +295,9 @@
         </aside>
 
         <main id="mainContent" class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out md:ml-[var(--sidebar-width)]">
-            <div id="reservationSection"> <div class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b" style="border-color: var(--border-color);">
-                    <h1 class="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-0">Antrian Reservasi Pasien</h1>
+            <div id="reservationSection">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b" style="border-color: var(--border-color);">
+                     <h1 class="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-0">Antrian Reservasi Pasien</h1>
                 </div>
 
                 <div id="loadingMessage" class="text-center py-12 flex flex-col items-center justify-center">
@@ -309,7 +310,7 @@
                 </div>
 
                 <div id="reservationList" class="space-y-6">
-                    </div>
+                </div>
 
                 <div id="noReservationMessage" class="hidden text-center py-12 flex-col items-center justify-center">
                     <i class="fas fa-folder-open"></i>
@@ -318,7 +319,8 @@
                 </div>
             </div>
 
-            <div id="detectionHistorySection" class="hidden"> <h2 class="text-xl font-semibold mb-4">Histori Deteksi Penyakit</h2>
+            <div id="detectionHistorySection" class="hidden">
+                <h2 class="text-xl font-semibold mb-4">Histori Deteksi Penyakit</h2>
                  <div id="detectionHistoryTableContainer" class="table-container">
                      <table id="detectionHistoryTable">
                          <thead>
@@ -375,12 +377,12 @@
                     <div>
                         <label for="hospitalNameInput" class="block">Nama Lengkap RS <span class="text-red-500">*</span></label>
                         <input type="text" id="hospitalNameInput" placeholder="Contoh: RS Sehat Sentosa" required
-                                class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
+                                 class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
                     </div>
                     <div>
                         <label for="hospitalAbbrInput" class="block">Singkatan (untuk Opsi) <span class="text-red-500">*</span></label>
                         <input type="text" id="hospitalAbbrInput" placeholder="Contoh: RS Sentosa" required
-                                class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
+                                 class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
                     </div>
                     <div class="flex justify-end pt-4 space-x-3 border-t mt-5" style="border-color: var(--border-color);">
                          <button type="button" id="cancelHospitalEditBtn" class="action-btn px-4 py-2 hidden">
@@ -493,11 +495,11 @@
         function escapeHtml(unsafe) {
             if (unsafe === null || typeof unsafe === 'undefined') return "";
             return unsafe.toString()
-                   .replace(/&/g, "&amp;")
-                   .replace(/</g, "&lt;")
-                   .replace(/>/g, "&gt;")
-                   .replace(/"/g, "&quot;")
-                   .replace(/'/g, "&#039;");
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
         }
 
          /** Mengambil teks diagnosis dari array hasil deteksi */
@@ -550,7 +552,7 @@
                 catch(e){ console.warn("Gagal format timestamp:", data.timestamp, e); }
             }
             // Menggunakan fungsi helper untuk mendapatkan teks diagnosis/gejala
-            const diagnosisText = getDiagnosisText(data.hasil);
+            const diagnosisText = getDiagnosisText(data.diagnosis || data.hasil); // Prefer 'diagnosis' if present, fallback to 'hasil'
             const catatanText = data.catatan || 'Tidak ada catatan.';
 
             // Struktur HTML kartu dengan basis tetap di lg
@@ -558,10 +560,11 @@
                 <div class="flex-shrink-0 flex items-start space-x-4 pb-4 lg:pb-0 lg:pr-6 lg:border-r lg:border-b-0 border-b lg:basis-[30%]" style="border-color: var(--border-color);">
                     <span class="bg-blue-600 text-white text-3xl font-bold w-16 h-16 flex items-center justify-center rounded-lg shadow-md flex-shrink-0">${queueNumber}</span>
                     <div class="flex-grow min-w-0 pt-0.5">
-                        <h2 class="text-lg sm:text-xl font-semibold truncate" style="color: var(--text-primary);" title="${escapeHtml(data.nama || 'Tanpa Nama')}">${escapeHtml(data.nama || 'Tanpa Nama')}</h2>
+                        <h2 class="text-lg sm:text-xl font-semibold truncate" style="color: var(--text-primary);" title="${escapeHtml(data.nama || 'Pasien')}">${escapeHtml(data.nama || 'Pasien Tidak Dikenal')}</h2>
                         <p class="text-sm mt-1 truncate"><i class="fas fa-phone-alt"></i> ${escapeHtml(data.telepon || '-')}</p>
                         <p class="text-sm truncate"><i class="fas fa-calendar-alt"></i> ${dateTimeString}</p>
                         <p class="text-sm truncate"><i class="fas fa-hospital"></i> ${escapeHtml(data.rumah_sakit || 'RS Tidak diketahui')}</p>
+                        ${data.dokter_nama ? `<p class="text-sm truncate"><i class="fas fa-user-md"></i> ${escapeHtml(data.dokter_nama)}</p>` : ''}
                     </div>
                 </div>
                 <div class="flex-grow card-middle-col py-4 lg:py-0 lg:px-6 lg:border-r lg:border-b-0 border-b lg:basis-[45%]" style="border-color: var(--border-color);">
@@ -715,7 +718,7 @@
                 });
                 showNoReservations(displayedCount === 0);
                 showLoading(false);
-            }, 100); // Jeda singkat untuk animasi loading
+            }, 100); // Jeda singkat untuk feedback loading
         }
 
 
@@ -731,13 +734,9 @@
                 hideErrorMessage();
                 allReservations = snapshot.val() || {};
                 console.log("Data reservasi diterima/diperbarui:", Object.keys(allReservations).length + " item");
-                // Hanya tampilkan reservasi jika section reservasi sedang aktif
-                if (!detectionHistorySection.classList.contains('hidden')) {
-                     displayFilteredReservations(); // Tampilkan ulang dengan data baru
-                } else {
-                     console.log("Reservation section is hidden, not displaying reservations.");
-                }
-
+                // Tampilkan reservasi setiap kali data berubah, terlepas dari section mana yang aktif
+                // Filter status akan diterapkan di displayFilteredReservations
+                displayFilteredReservations();
             }, (error) => {
                 console.error("Error saat mendengarkan data reservasi:", error);
                 showErrorMessage(`Gagal memuat data reservasi secara real-time: ${error.message}`);
@@ -847,33 +846,52 @@
 
                 if (snapshot.exists()) {
                     let hospitalsExist = false;
+                    const hospitalsArray = [];
                     snapshot.forEach((childSnapshot) => {
-                        hospitalsExist = true;
-                        const hospitalId = childSnapshot.key;
-                        const hospitalData = childSnapshot.val();
-
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${escapeHtml(hospitalData.nama)}</td>
-                            <td>${escapeHtml(hospitalData.singkatan)}</td>
-                            <td class="text-right action-buttons whitespace-nowrap">
-                                <button onclick="editHospital('${hospitalId}', '${escapeHtml(hospitalData.nama)}', '${escapeHtml(hospitalData.singkatan)}')" class="action-btn btn-checkin" title="Edit">
-                                    <i class="fas fa-pencil-alt !mr-0"></i>
-                                </button>
-                                <button onclick="confirmDeleteHospital('${hospitalId}', '${escapeHtml(hospitalData.nama)}')" class="action-btn btn-hapus" title="Hapus">
-                                    <i class="fas fa-trash-alt !mr-0"></i>
-                                </button>
-                            </td>
-                        `;
-                        hospitalListTableBody.appendChild(tr);
+                         hospitalsExist = true;
+                         const hospitalId = childSnapshot.key;
+                         const hospitalData = childSnapshot.val();
+                         if (hospitalData && typeof hospitalData === 'object') {
+                              hospitalsArray.push({ id: hospitalId, ...hospitalData });
+                         } else {
+                             console.warn("Mengabaikan entri rumah sakit tidak valid:", hospitalId, hospitalData);
+                         }
                     });
-                     noHospitalDataMsg.classList.toggle('hidden', !hospitalsExist); // Toggle berdasarkan flag
+
+                    // Optional: Sort hospitals if needed, e.g., by name
+                    hospitalsArray.sort((a, b) => {
+                         const nameA = (a.nama || '').toLowerCase();
+                         const nameB = (b.nama || '').toLowerCase();
+                         if (nameA < nameB) return -1;
+                         if (nameA > nameB) return 1;
+                         return 0;
+                    });
+
+
+                    hospitalsArray.forEach(hospital => {
+                         const tr = document.createElement('tr');
+                         tr.innerHTML = `
+                             <td>${escapeHtml(hospital.nama || '-')}</td>
+                             <td>${escapeHtml(hospital.singkatan || '-')}</td>
+                             <td class="text-right action-buttons whitespace-nowrap">
+                                 <button onclick="editHospital('${hospital.id}', '${escapeHtml(hospital.nama || '')}', '${escapeHtml(hospital.singkatan || '')}')" class="action-btn btn-checkin" title="Edit">
+                                     <i class="fas fa-pencil-alt !mr-0"></i>
+                                 </button>
+                                 <button onclick="confirmDeleteHospital('${hospital.id}', '${escapeHtml(hospital.nama || '')}')" class="action-btn btn-hapus" title="Hapus">
+                                     <i class="fas fa-trash-alt !mr-0"></i>
+                                 </button>
+                             </td>
+                         `;
+                         hospitalListTableBody.appendChild(tr);
+                    });
+
+                    noHospitalDataMsg.classList.toggle('hidden', hospitalsExist); // Toggle berdasarkan flag
                 } else {
                     noHospitalDataMsg.classList.remove('hidden');
                 }
             } catch (error) {
                 console.error("Gagal memuat daftar rumah sakit:", error);
-                hospitalListTableBody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-red-500">Gagal memuat data. Coba lagi nanti.</td></tr>`;
+                hospitalListTableBody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-red-500">Koneksi database gagal.</td></tr>`;
                 noHospitalDataMsg.classList.add('hidden');
                  Swal.fire('Error', 'Gagal memuat daftar rumah sakit.', 'error');
             }
@@ -972,15 +990,16 @@
                           Swal.fire('Dihapus!', `Rumah sakit "${escapeHtml(name)}" telah dihapus.`, 'success');
                           await loadAndDisplayHospitals();
                           if (hospitalEditIdInput.value === id) { // Jika yang dihapus sedang diedit
-                              resetHospitalForm();
-                          }
+                               resetHospitalForm();
+                           }
                       } catch (error) {
                            console.error(`Gagal menghapus RS ID ${id}:`, error);
                            Swal.fire('Gagal!', `Gagal menghapus rumah sakit: ${error.message}`, 'error');
                       }
                   }
               });
-        }
+          }
+
 
         // --- Fungsi Histori Deteksi ---
 
@@ -1008,13 +1027,13 @@
                          // Pastikan entri memiliki properti yang diharapkan
                          if (entry && entry.timestamp) {
                               historyDataArray.push({
-                                   id: childSnapshot.key,
-                                   timestamp: entry.timestamp,
-                                   inputText: entry.inputText || 'Tidak ada input teks',
-                                   hasil: entry.hasil || [] // Pastikan hasil adalah array, default kosong
+                                  id: childSnapshot.key,
+                                  timestamp: entry.timestamp,
+                                  inputText: entry.inputText || 'Tidak ada input teks',
+                                  hasil: entry.hasil || [] // Pastikan hasil adalah array, default kosong
                               });
                          } else {
-                             console.warn("Mengabaikan entri histori deteksi tidak valid:", childSnapshot.key, entry);
+                              console.warn("Mengabaikan entri histori deteksi tidak valid:", childSnapshot.key, entry);
                          }
                     });
 
@@ -1022,18 +1041,19 @@
                     historyDataArray.sort((a, b) => {
                          const parseDate = (dateStr) => {
                               if (!dateStr) return new Date(0);
-                              const parts = dateStr.split('/'); // Asumsi DD/MM/YYYY dari log
+                              const parts = dateStr.split('/');
                               if (parts.length === 3) {
                                    const [day, month, year] = parts.map(Number);
                                    return new Date(year, month - 1, day);
                               }
-                              return new Date(dateStr); // Fallback
+                              const dateObj = new Date(dateStr);
+                              return isNaN(dateObj.getTime()) ? new Date(0) : dateObj;
                          };
 
                          const dateA = parseDate(a.timestamp);
                          const dateB = parseDate(b.timestamp);
 
-                         if (dateA < dateB) return 1;
+                         if (dateA < dateB) return 1; // Sort descending by date
                          if (dateA > dateB) return -1;
                          if (a.id < b.id) return -1;
                          if (a.id > b.id) return 1;
@@ -1046,25 +1066,20 @@
 
                          let displayTimestamp = entry.timestamp || '-';
                          try {
-                              const parts = displayTimestamp.split('/');
-                              if (parts.length === 3) {
-                                   const [day, month, year] = parts;
-                                   displayTimestamp = `${day}/${month}/${year}`;
-                              } else {
-                                   const dateObj = new Date(entry.timestamp);
-                                    if (!isNaN(dateObj.getTime())) {
-                                         displayTimestamp = dateObj.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
-                                    }
-                               }
+                              const dateObj = new Date(entry.timestamp);
+                              if (!isNaN(dateObj.getTime())) {
+                                   displayTimestamp = dateObj.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+                              }
                          } catch(e) {
                               console.warn("Gagal format timestamp histori:", entry.timestamp, e);
                               displayTimestamp = entry.timestamp || '-';
                          }
 
+
                          const diagnosisText = getDiagnosisText(entry.hasil);
                          const gejalaText = entry.hasil && Array.isArray(entry.hasil) && entry.hasil.length > 0 && Array.isArray(entry.hasil[0].gejala)
-                                            ? entry.hasil.map(item => Array.isArray(item.gejala) ? item.gejala.join(', ') : '-').join('; ')
-                                            : 'Tidak terdeteksi';
+                              ? entry.hasil.map(item => Array.isArray(item.gejala) ? item.gejala.join(', ') : '-').join('; ')
+                              : 'Tidak terdeteksi';
 
 
                          tr.innerHTML = `
@@ -1112,7 +1127,7 @@
                  // Muat dan tampilkan histori deteksi
                  loadAndDisplayDetectionHistory();
              }
-        }
+         }
 
 
         // --- Event Listener UI ---
@@ -1136,7 +1151,7 @@
         if (themeToggleButton) {
             themeToggleButton.addEventListener('click', toggleTheme);
         } else {
-            console.warn("Tombol tema tidak ditemukan.");
+             console.warn("Tombol tema tidak ditemukan.");
         }
 
         /** Event Listener dan Logika untuk Toggle Sidebar */
@@ -1159,12 +1174,12 @@
             if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', () => {
                      if (window.innerWidth < 768) {
-                          filterSidebar.classList.remove('open-mobile');
-                          sidebarOverlay.classList.add('hidden');
-                          document.body.classList.remove('overflow-hidden-custom');
-                          console.log("Mobile sidebar closed via overlay click.");
+                         filterSidebar.classList.remove('open-mobile');
+                         sidebarOverlay.classList.add('hidden');
+                         document.body.classList.remove('overflow-hidden-custom');
+                         console.log("Mobile sidebar closed via overlay click.");
                      }
-                });
+                 });
             }
         } else {
             console.warn("Elemen penting untuk toggle sidebar tidak ditemukan.");
@@ -1243,7 +1258,7 @@
                      filterSidebar.classList.remove('open-mobile');
                      sidebarOverlay.classList.add('hidden');
                      document.body.classList.remove('overflow-hidden-custom');
-                }
+                 }
                  // Update active state for sidebar buttons (optional but good practice)
                  document.querySelectorAll('#filterSidebar .filter-btn').forEach(btn => btn.classList.remove('active'));
                  scrollToDetectionHistoryBtn.classList.add('active');
@@ -1257,7 +1272,7 @@
         /** Fungsi utama yang dijalankan saat halaman dimuat */
         async function main() {
             initializeTheme(); // Terapkan tema
-            // showLoading(true); // Loading is handled by displayFilteredReservations initially
+            showLoading(true); // Tampilkan loading di awal
 
             const firebaseConfig = await fetchFirebaseConfig(); // Ambil config
 

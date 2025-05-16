@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dokter | KonsulSehat</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global styles using Poppins font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6; /* Light background */
+            color: #212529; /* Dark text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Container for main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            flex-grow: 1; /* Allow container to grow and fill space */
+        }
+        /* Navbar styles */
+        nav {
+            background-color: #2c3e50; /* Dark navbar */
+            color: #ecf0f1; /* Light text */
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        /* Card styles for content sections */
+        .card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        /* Loading spinner animation */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6; /* Blue spinner */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Hide sections by default */
+        .content-section {
+            display: none;
+        }
+        /* Show active section */
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+
+    <nav>
+        <div class="container flex justify-between items-center">
+            <a href="#" class="text-xl font-bold flex items-center">
+                 <i class="fas fa-user-md mr-2"></i> Dashboard Dokter
+            </a>
+            <div>
+                <span id="doctorName" class="mr-4 text-sm sm:text-base">Memuat...</span>
+                <button onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-md transition duration-200 flex items-center shadow-md hover:shadow-lg">
+                    <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-8">
+        <h1 class="text-2xl font-semibold mb-6">Selamat Datang, <span id="greetingName">Dokter</span>!</h1>
+
+        <div id="loadingState" class="flex flex-col items-center justify-center py-12 content-section active">
+            <div class="loading-spinner"></div>
+            <p class="mt-4 text-gray-600">Memuat data dashboard...</p>
+        </div>
+
+        <div id="doctorContent" class="content-section">
+            <div class="card mb-8">
+                <h2 class="text-xl font-semibold mb-4">Jadwal Praktik Anda</h2>
+                <p id="scheduleInfo" class="text-gray-700">Memuat jadwal...</p>
+                </div>
+
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4">Antrian Pasien Mendatang</h2>
+                <div id="appointmentListContainer">
+                     <ul id="appointmentList" class="list-disc list-inside text-gray-700 space-y-2">
+                         <li>Memuat antrian...</li>
+                     </ul>
+                </div>
+                <p id="noAppointmentsMsg" class="text-gray-600 italic hidden mt-4">Tidak ada antrian pasien mendatang.</p>
+            </div>
+
+            </div>
+
+        <div id="errorState" class="content-section text-center py-12 text-red-600">
+             <i class="fas fa-exclamation-circle text-4xl mb-4"></i>
+             <p id="errorMessage" class="text-lg">Terjadi kesalahan saat memuat halaman.</p>
+             <button onclick="logoutUser()" class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
+                 Kembali ke Halaman Login
+             </button>
+         </div>
+
+    </main>
+
+    <footer class="mt-auto py-4 text-center text-gray-600 text-sm">
+        <p>&copy; 2023 KonsulSehat. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Firebase instances (will be initialized after config fetch)
+        let firebaseApp;
+        let firebaseAuth;
+        let firebaseDb;
+
+        // --- DOM References ---
+        const loadingState = document.getElementById('loadingState');
+        const doctorContent = document.getElementById('doctorContent');
+        const errorState = document.getElementById('errorState');
+        const errorMessageElement = document.getElementById('errorMessage'); // Renamed to avoid conflict
+        const doctorNameSpan = document.getElementById('doctorName'); // Span in navbar
+        const greetingNameSpan = document.getElementById('greetingName'); // Span in greeting
+        const scheduleInfoP = document.getElementById('scheduleInfo'); // Paragraph for schedule
+        const appointmentListUl = document.getElementById('appointmentList'); // UL for appointments list
+        const noAppointmentsMsgP = document.getElementById('noAppointmentsMsg'); // Message for no appointments
+
+
+        // --- Utility Functions ---
+
+        /**
+         * Shows an error message using SweetAlert2 and logs to console.
+         * @param {string} message - The error message to display.
+         */
+        function showNotificationError(message) { // Renamed to avoid conflict with errorState div
+            console.error("Error:", message);
+            Swal.fire('Error', message, 'error');
+        }
+
+        /**
+         * Displays the specified section (loading, doctor content, or error) and hides others.
+         * @param {'loading'|'content'|'error'} state - The state to display.
+         * @param {string} [message] - Optional message for the error state.
+         */
+        function displayState(state, message = '') {
+            // Hide all state sections first
+            loadingState.classList.add('hidden');
+            doctorContent.classList.add('hidden');
+            errorState.classList.add('hidden');
+
+            // Remove active class from all content sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the target state section and add active class
+            if (state === 'loading') {
+                loadingState.classList.remove('hidden');
+                loadingState.classList.add('active');
+            } else if (state === 'content') {
+                doctorContent.classList.remove('hidden');
+                doctorContent.classList.add('active');
+            } else if (state === 'error') {
+                errorState.classList.remove('hidden');
+                errorState.classList.add('active');
+                if (errorMessageElement) {
+                     errorMessageElement.textContent = message || 'Terjadi kesalahan yang tidak diketahui.';
+                }
+            }
+        }
+
+
+        // --- Firebase Initialization and Config Fetch ---
+
+        /**
+         * Fetches Firebase configuration from the backend API.
+         * @returns {Promise<object|null>} Promise resolving with config object or null on failure.
+         */
+        async function fetchFirebaseConfig() {
+            try {
+                console.log("Mengambil konfigurasi Firebase dari backend...");
+                // Endpoint ini harus tersedia di server.js Anda
+                const response = await fetch('/api/firebase-config');
+                if (!response.ok) {
+                     let errorDetail = `Status ${response.status}`;
+                     try { const errJson = await response.json(); errorDetail = errJson.message || errorDetail; } catch(e) {}
+                     throw new Error(`Network response was not ok: ${errorDetail}`);
+                }
+                const config = await response.json();
+                 if (!config || !config.apiKey || !config.authDomain || !config.projectId) {
+                     throw new Error("Konfigurasi Firebase yang diterima dari API tidak lengkap/valid.");
+                 }
+                console.log("Konfigurasi Firebase berhasil diambil dari API.");
+                return config;
+            } catch (error) {
+                console.error("Error fetching Firebase config:", error);
+                displayState('error', `Gagal memuat konfigurasi layanan: ${error.message}.`);
+                return null;
+            }
+        }
+
+        /**
+         * Initializes Firebase App, Auth, and Database instances.
+         * @param {object} config - Firebase configuration object.
+         * @returns {boolean} True if initialization was successful, false otherwise.
+         */
+        function initializeFirebase(config) {
+            if (!config) {
+                console.error("Inisialisasi dibatalkan: Konfigurasi Firebase tidak valid.");
+                displayState('error', 'Gagal menginisialisasi Firebase: Konfigurasi tidak valid.');
+                return false;
+            }
+            try {
+                // Check if Firebase SDK is loaded (compat versions)
+                if (typeof firebase === 'undefined' || typeof firebase.initializeApp === 'undefined' || typeof firebase.auth === 'undefined' || typeof firebase.database === 'undefined') {
+                    throw new Error("Firebase SDK (compat) belum dimuat dengan benar di HTML. Periksa tag <script>.");
+                }
+
+                // Initialize Firebase App if not already initialized
+                if (!firebase.apps.length) {
+                    firebaseApp = firebase.initializeApp(config);
+                    console.log("Firebase App diinisialisasi.");
+                } else {
+                    firebaseApp = firebase.app();
+                    console.log("Menggunakan instance Firebase App yang sudah ada.");
+                }
+
+                // Get Auth and Database instances
+                firebaseAuth = firebase.auth();
+                firebaseDb = firebase.database();
+                console.log("Firebase Auth dan Database instance didapatkan.");
+                return true; // Initialization successful
+
+            } catch (error) {
+                console.error("Gagal inisialisasi Firebase:", error);
+                displayState('error', `Gagal menginisialisasi Firebase: ${error.message}`);
+                return false; // Initialization failed
+            }
+        }
+
+        /**
+         * Logs out the current user.
+         */
+        window.logoutUser = function() {
+            console.log("Fungsi logoutUser dipanggil.");
+            if (firebaseAuth && firebaseAuth.currentUser) {
+                firebaseAuth.signOut().then(() => {
+                    console.log("Logout berhasil.");
+                    // Redirect to login page after successful logout
+                    window.location.href = 'login.html';
+                }).catch((error) => {
+                    console.error("Error logout:", error);
+                    showNotificationError('Gagal logout: ' + error.message);
+                });
+            } else {
+                console.log("Tidak ada pengguna yang login atau Firebase Auth belum siap. Mengarahkan langsung ke login.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        // --- Data Loading Functions for Doctor Dashboard ---
+
+        /**
+         * Loads doctor's specific data and appointments from Realtime Database.
+         * @param {string} doctorUid - The UID of the logged-in doctor.
+         */
+        async function loadDoctorData(doctorUid) {
+            if (!firebaseDb) {
+                console.error("Database belum siap untuk memuat data dokter.");
+                // Update UI to show error state
+                if (scheduleInfoP) scheduleInfoP.textContent = "Gagal memuat jadwal.";
+                if (appointmentListUl) appointmentListUl.innerHTML = '<li>Gagal memuat antrian.</li>';
+                if (noAppointmentsMsgP) noAppointmentsMsgP.classList.add('hidden');
+                displayState('error', 'Koneksi database belum siap.');
+                return;
+            }
+
+            console.log(`Memuat data untuk dokter UID: ${doctorUid}`);
+
+            try {
+                // 1. Load doctor's profile data (like name, specialization, schedule)
+                const doctorProfileRef = firebaseDb.ref(`daftar_dokter/${doctorUid}`);
+                const profileSnapshot = await doctorProfileRef.once('value');
+
+                let doctorName = 'Dokter'; // Default name
+                let hospitalId = null;
+                let specialization = null;
+
+                if (profileSnapshot.exists()) {
+                    const profileData = profileSnapshot.val();
+                    console.log("Data profil dokter dimuat:", profileData);
+
+                    doctorName = profileData.nama || 'Dokter';
+                    hospitalId = profileData.rumah_sakit_id || null;
+                    specialization = profileData.spesialisasi || null;
+
+                    // Update UI with doctor's name and schedule
+                    if (doctorNameSpan) doctorNameSpan.textContent = `Login sebagai ${doctorName}`;
+                    if (greetingNameSpan) greetingNameSpan.textContent = doctorName;
+                    if (scheduleInfoP) {
+                         scheduleInfoP.textContent = `Jadwal: ${profileData.hari_praktik || '-'}, Pukul: ${profileData.jam_mulai || '-'} - ${profileData.jam_selesai || '-'}`;
+                    }
+
+                } else {
+                    console.warn(`Data profil dokter untuk UID ${doctorUid} tidak ditemukan di database.`);
+                    if (doctorNameSpan) doctorNameSpan.textContent = 'Login sebagai Dokter (Data Profil Tidak Ditemukan)';
+                    if (greetingNameSpan) greetingNameSpan.textContent = 'Dokter';
+                    if (scheduleInfoP) scheduleInfoP.textContent = "Data jadwal tidak ditemukan.";
+                    // Don't stop here, still try to load appointments if possible
+                }
+
+                // 2. Load upcoming appointments related to this doctor
+                // This requires your 'reservasi' node to contain data linking back to the doctor.
+                // The most reliable way is to store the doctor's UID in each reservation entry.
+                // Example: Assuming each reservation has a 'doctor_uid' field.
+
+                const appointmentsRef = firebaseDb.ref('reservasi');
+                // Query reservations where 'doctor_uid' matches the logged-in doctor's UID
+                const appointmentsSnapshot = await appointmentsRef.orderByChild('dokter_id').equalTo(doctorUid).once('value');
+
+                // Clear previous list items
+                if (appointmentListUl) appointmentListUl.innerHTML = '';
+
+                if (appointmentsSnapshot.exists()) {
+                    let hasAppointments = false;
+                    console.log("Data antrian pasien dimuat.");
+                    // Iterate through appointments and display them
+                    appointmentsSnapshot.forEach(appointmentSnapshot => {
+                         hasAppointments = true;
+                         const reservationId = appointmentSnapshot.key;
+                         const appointment = appointmentSnapshot.val();
+
+                         // Create list item for each appointment
+                         const li = document.createElement('li');
+                         // Display relevant reservation details (adjust based on your data structure)
+                         li.innerHTML = `
+                             <strong>${appointment.nama || 'Pasien Tidak Dikenal'}</strong>
+                             (${appointment.tanggal} ${appointment.waktu || ''})
+                             <br>
+                             <span class="text-gray-500 text-sm">RS: ${appointment.rumah_sakit || '-'}, Catatan: ${appointment.catatan || '-'}</span>
+                             `;
+                         if (appointmentListUl) appointmentListUl.appendChild(li);
+                    });
+
+                    // Show/hide "no data" message
+                    if (noAppointmentsMsgP) noAppointmentsMsgP.classList.toggle('hidden', hasAppointments);
+
+                } else {
+                     console.log("Tidak ada antrian pasien mendatang untuk dokter ini.");
+                     // No appointments found
+                     if (noAppointmentsMsgP) noAppointmentsMsgP.classList.remove('hidden');
+                }
+
+
+                displayState('content'); // Show the content section after loading profile and appointments
+
+            } catch (error) {
+                console.error("Error saat memuat data dokter atau antrian:", error);
+                displayState('error', `Gagal memuat data dashboard: ${error.message}.`);
+            }
+        }
+
+
+        // --- Main Initialization Logic ---
+
+        /**
+         * Main asynchronous initialization function for the doctor dashboard.
+         * Fetches config, initializes Firebase, checks auth state and doctor claim, and loads data.
+         */
+        async function main() {
+            console.log("DOM Content Loaded. Memulai proses inisialisasi halaman dokter...");
+            displayState('loading'); // Show loading state initially
+
+            // Fetch Firebase config from backend
+            const firebaseConfig = await fetchFirebaseConfig();
+
+            // If config is successfully fetched, initialize Firebase
+            if (firebaseConfig && initializeFirebase(firebaseConfig)) {
+                console.log("Firebase berhasil diinisialisasi. Memeriksa status autentikasi...");
+
+                // Check authentication state
+                firebaseAuth.onAuthStateChanged(async (user) => {
+                    if (user) {
+                        console.log("Pengguna terautentikasi:", user.email, "UID:", user.uid);
+                        try {
+                            // Get ID token result to check custom claims
+                            // Passing true forces a token refresh to get latest claims
+                            const idTokenResult = await user.getIdTokenResult(true);
+                            console.log("Custom Claims:", idTokenResult.claims);
+
+                            // Check if user has 'doctor: true' claim
+                            if (idTokenResult.claims.doctor === true) {
+                                console.log("Pengguna terverifikasi sebagai dokter.");
+
+                                // Load doctor's specific data and appointments
+                                await loadDoctorData(user.uid);
+
+                                // Display content state is handled inside loadDoctorData upon success
+
+                            } else {
+                                console.warn("Akses ditolak: Pengguna", user.uid, "bukan dokter.");
+                                displayState('error', "Anda tidak memiliki hak akses sebagai dokter untuk halaman ini. Anda akan diarahkan ke halaman login.");
+                                // Redirect non-doctor users to login after a delay
+                                setTimeout(logoutUser, 4000);
+                            }
+                        } catch (error) {
+                            console.error("Error saat memeriksa custom claims dokter:", error);
+                            displayState('error', `Gagal melakukan verifikasi status dokter: ${error.message}. Silakan coba login kembali.`);
+                            // Redirect on error during claim check
+                            setTimeout(logoutUser, 4000);
+                        }
+                    } else {
+                        console.log("Tidak ada pengguna yang login. Mengarahkan ke halaman login.");
+                        // Redirect unauthenticated users to login page
+                        window.location.href = 'login.html';
+                    }
+                });
+            } else {
+                console.error("Inisialisasi Firebase gagal. Halaman tidak dapat dimuat.");
+                // Error message already shown in fetchFirebaseConfig or initializeFirebase
+                displayState('error', 'Gagal memuat halaman karena masalah inisialisasi.');
+            }
+        }
+
+        // Start the main initialization process when the DOM is ready
+        document.addEventListener('DOMContentLoaded', main);
+
+    </script>
+</body>
+</html>

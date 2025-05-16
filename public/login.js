@@ -1,11 +1,3 @@
-/**
- * login.js
- *
- * Script untuk halaman login, menangani interaksi pengguna,
- * mengambil konfigurasi Firebase dari backend, menginisialisasi Firebase Client SDK,
- * melakukan login, dan memeriksa peran admin menggunakan Custom Claims.
- */
-
 document.addEventListener('DOMContentLoaded', () => {
     // --- Referensi Elemen DOM ---
     const loginForm = document.getElementById('loginForm');

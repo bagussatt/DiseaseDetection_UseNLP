@@ -24,7 +24,101 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Middleware untuk menyajikan file statis dari folder 'public'
 app.use(express.static('public'));
 
+async function verifyIdToken(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ success: false, message: 'Authorization token required.' });
+    }
 
+    const idToken = authHeader.split('Bearer ')[1];
+
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = decodedToken; // Simpan decoded token di objek request
+        next(); // Lanjutkan ke middleware atau rute berikutnya
+    } catch (error) {
+        console.error('Error verifying Firebase ID token:', error);
+        res.status(401).json({ success: false, message: 'Unauthorized. Invalid or expired token.' });
+    }
+}
+async function verifyDoctor(req, res, next) {
+     // Middleware verifyIdToken harus dijalankan sebelum ini untuk mengisi req.user
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Authentication required.' });
+    }
+
+    console.log('Memeriksa klaim dokter untuk UID:', req.user.uid);
+    console.log('Klaim dalam Token (verifyDoctor):', req.user); // Log klaim untuk debugging
+
+    // Periksa apakah token memiliki klaim 'doctor: true'
+    if (req.user.doctor === true) {
+        // Pengguna adalah dokter, lanjutkan ke rute berikutnya
+        next();
+    } else {
+        // Pengguna bukan dokter
+        console.warn('Akses ditolak: Pengguna', req.user.uid, 'bukan dokter.');
+        res.status(403).json({ success: false, message: 'Akses ditolak. Diperlukan hak akses dokter.' });
+    }
+}
+async function verifyAdmin(req, res, next) {
+    // Middleware verifyIdToken harus dijalankan sebelum ini untuk mengisi req.user
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Authentication required.' });
+    }
+
+    console.log('Memeriksa klaim admin untuk UID:', req.user.uid);
+    console.log('Klaim dalam Token (verifyAdmin):', req.user); // Log klaim untuk debugging
+
+    // Periksa apakah token memiliki klaim 'admin: true'
+    if (req.user.admin === true) {
+        // Pengguna adalah admin, lanjutkan ke rute berikutnya
+        next();
+    } else {
+        // Pengguna bukan admin
+        console.warn('Akses ditolak: Pengguna', req.user.uid, 'bukan admin.');
+        res.status(403).json({ success: false, message: 'Akses ditolak. Diperlukan hak akses admin.' });
+    }
+}
+app.post('/api/set-doctor-claim', verifyIdToken, async (req, res) => { // Menghapus verifyAdmin
+    const { uid } = req.body; // Ambil UID pengguna target (UID user dokter yang baru dibuat)
+
+    if (!uid) {
+        return res.status(400).json({ success: false, message: 'UID pengguna target (dokter) wajib diisi.' });
+    }
+
+    // Opsional: Anda bisa menambahkan logika di sini untuk memeriksa apakah pengguna yang memanggil
+    // endpoint ini (req.user.uid) memiliki izin untuk menetapkan klaim dokter.
+    // Misalnya, hanya admin atau pengguna tertentu yang diizinkan.
+    // Tanpa logika tambahan, setiap pengguna yang login bisa memanggil ini.
+
+    try {
+        // Periksa apakah user dengan UID tersebut ada
+        const userRecord = await admin.auth().getUser(uid);
+        console.log(`Pengguna dengan UID ${uid} ditemukan. Menetapkan klaim dokter...`);
+
+        // Tetapkan custom claim { doctor: true } ke pengguna target
+        await admin.auth().setCustomUserClaims(uid, { doctor: true });
+         // Opsional: Simpan klaim di database jika perlu
+        // await admin.database().ref(`user_claims/${uid}/doctor`).set(true);
+
+
+        console.log(`Doctor claim berhasil ditetapkan untuk UID: ${uid} oleh pengguna ${req.user.uid} (bukan admin).`); // Sesuaikan log
+
+        // Kirim response sukses
+        res.status(200).json({ success: true, message: `Klaim dokter berhasil ditetapkan untuk pengguna ${uid}.` });
+
+    } catch (error) {
+        console.error(`Error saat menetapkan doctor claim untuk UID ${uid}:`, error);
+        let errorMessage = 'Gagal menetapkan klaim dokter.';
+        if (error.code === 'auth/user-not-found') {
+            errorMessage = `Pengguna dengan UID ${uid} tidak ditemukan di Authentication.`;
+            return res.status(404).json({ success: false, message: errorMessage });
+        }
+        // Tangani error lain dari Admin SDK
+        errorMessage = `Gagal menetapkan klaim dokter: ${error.message}`;
+        res.status(500).json({ success: false, message: errorMessage });
+    }
+});
 
 // Rute utama
 app.get('/', (req, res) => {
@@ -73,6 +167,7 @@ app.post('/api/reservasi', async (req, res) => {
     const reservasiData = {
         nama: req.body.nama,
         telepon: req.body.telepon,
+        dokter_id: req.body.dokter_id,
         telegram_id: req.body.telegram_id || null, // ID Telegram dari form
         rumah_sakit: req.body.rumah_sakit_nama || null,
         tanggal: req.body.tanggal,
@@ -219,7 +314,6 @@ app.post('/api/set-admin', async (req, res) => {
         res.status(500).json({ success: false, message: errorMessage });
     }
 });
-
 
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;

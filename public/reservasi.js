@@ -76,11 +76,11 @@ function initializeFirebase(config) {
 function escapeHtml(unsafe) {
     if (unsafe === null || typeof unsafe === 'undefined') return "";
     return unsafe.toString()
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 }
 
 /**
@@ -190,7 +190,7 @@ async function fetchDoctors() {
 
 /**
  * Fetches existing reservations for a specific doctor on a specific date.
- * @param {string} doctorId The ID of the doctor.
+ * @param {string} doctorId The ID (UID) of the doctor.
  * @param {string} date The date in 'DD/MM/YYYY' format.
  * @returns {Promise<Array<object>>} A promise resolving to an array of reservation objects.
  */
@@ -200,8 +200,9 @@ async function fetchReservationsForDoctorAndDate(doctorId, date) {
         return [];
     }
     try {
-        // Firebase query to filter by doctorId and date
+        // Firebase query to filter by doctor_id and date
         const reservationsRef = firebaseDb.ref('reservasi');
+        // This query requires .indexOn: ["dokter_id"] in your Firebase Rules
         const snapshot = await reservationsRef
             .orderByChild('dokter_id')
             .equalTo(doctorId)
@@ -211,16 +212,16 @@ async function fetchReservationsForDoctorAndDate(doctorId, date) {
         if (snapshot.exists()) {
             snapshot.forEach(childSnapshot => {
                 const res = childSnapshot.val();
-                // Manually filter by date after getting data for the doctor
+                // Manually filter by date after getting data for the doctor (Firebase can only orderByChild one field)
                 if (res.tanggal === date) {
-                     // Only include 'registrasi' and 'checkin' statuses as booked
-                     if (res.status === 'registrasi' || res.status === 'checkin') {
+                    // Only include 'registrasi' and 'checkin' statuses as booked
+                    if (res.status === 'registrasi' || res.status === 'checkin') {
                         reservations.push(res);
-                     }
+                    }
                 }
             });
         }
-        console.log(`Fetched ${reservations.length} relevant reservations for doctor ${doctorId} on ${date}.`);
+        console.log(`Workspaceed ${reservations.length} relevant reservations for doctor ${doctorId} on ${date}.`);
         return reservations;
     } catch (error) {
         console.error(`Error fetching reservations for doctor ${doctorId} on ${date}:`, error);
@@ -299,7 +300,7 @@ function populateDoctorSelect(selectedHospitalId) {
     if (doctorsInHospital.length > 0) {
         doctorsInHospital.forEach(([id, doctor]) => {
             const option = document.createElement('option');
-            option.value = id; // Use doctor ID as value
+            option.value = id; // Use doctor ID (which is UID) as value
             option.textContent = `${doctor.nama || 'Tanpa Nama'} (${doctor.spesialisasi || 'Umum'})`;
             // Store schedule data as data attributes
             option.dataset.hariPraktik = doctor.hari_praktik || '';
@@ -451,7 +452,7 @@ async function checkAvailability() {
         endTimeDate.setDate(endTimeDate.getDate() + 1);
         if (preferredTimeDate < startTimeDate) {
              preferredTimeDate.setDate(preferredTimeDate.getDate() + 1);
-         }
+          }
     }
 
 
@@ -663,16 +664,16 @@ async function handleFormSubmit(event) {
     // A more robust solution requires backend validation.
     // Check if selectedDoctorSchedule is available
     if (!selectedDoctorSchedule) {
-         console.warn("Validation failed: Doctor schedule not loaded.");
-         Swal.fire({
-             icon: 'error',
-             title: 'Kesalahan Validasi',
-             text: 'Jadwal dokter belum dimuat. Silakan coba lagi.',
-             confirmButtonColor: '#d33'
-         });
-         submitButton.disabled = false;
-         submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan';
-         return;
+        console.warn("Validation failed: Doctor schedule not loaded.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Kesalahan Validasi',
+            text: 'Jadwal dokter belum dimuat. Silakan coba lagi.',
+            confirmButtonColor: '#d33'
+        });
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan';
+        return;
     }
 
     // Re-run the core availability check logic
@@ -691,16 +692,16 @@ async function handleFormSubmit(event) {
 
     // Check if the selected time is still within practice hours
     if (preferredTimeDate < startTimeDate || preferredTimeDate >= endTimeDate) {
-         console.warn("Validation failed: Time outside practice hours.");
-         Swal.fire({
-             icon: 'error',
-             title: 'Waktu Tidak Valid',
-             text: `Waktu yang dipilih (${preferredTime}) di luar jam praktik dokter.`,
-             confirmButtonColor: '#d33'
-         });
-         submitButton.disabled = false;
-         submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan';
-         return;
+          console.warn("Validation failed: Time outside practice hours.");
+          Swal.fire({
+              icon: 'error',
+              title: 'Waktu Tidak Valid',
+              text: `Waktu yang dipilih (${preferredTime}) di luar jam praktik dokter.`,
+              confirmButtonColor: '#d33'
+          });
+          submitButton.disabled = false;
+          submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Kirim Permintaan';
+          return;
     }
 
 
@@ -756,8 +757,8 @@ async function handleFormSubmit(event) {
                 allowOutsideClick: false,
                 allowEscapeKey: false
             }).then(() => {
-                 // Redirect to homepage after user clicks the button
-                 window.location.href = 'index.html';
+                // Redirect to homepage after user clicks the button
+                window.location.href = 'index.html';
             });
 
         } else {
@@ -825,7 +826,7 @@ async function main() {
             } catch (e) {
                  console.error("Failed to decode diagnosis data:", e);
                  gejalaContentDiv.innerHTML = '<p class="text-red-500 italic text-sm">Failed to load symptom summary data from URL.</p>';
-                 if (gealaDataInput) gejalaDataInput.value = "Error: Failed to decode data";
+                 if (gejalaDataInput) gejalaDataInput.value = "Error: Failed to decode data";
             }
         } else {
             console.log("No 'diagnosis' data in URL parameters.");
@@ -868,7 +869,7 @@ async function main() {
     if (doctorSelect) {
         doctorSelect.addEventListener('change', handleDoctorChange);
     } else {
-         console.error("#dokter select not found.");
+        console.error("#dokter select not found.");
     }
 
     const tanggalInputListener = document.getElementById('tanggal'); // Use a different variable name

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin atau Masuk sebagai Pengunjung - KonsulSehat</title>
+    <title>Login Admin, Dokter, atau Pengunjung - KonsulSehat</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,22 +14,26 @@
     <style>
         /* Custom Styles */
         body { font-family: 'Poppins', sans-serif; }
+        /* Focus state for inputs */
         input { transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
         input:focus { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); border-color: #3b82f6; }
+        /* Error message transition */
         #errorMessage { transition: opacity 0.3s ease-in-out; }
-        /* Animasi */
+        /* Animations */
         @keyframes fadeInUp { from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.98); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
         .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
         @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         .animate-pulseIcon { animation: pulseIcon 0.8s ease-in-out 1; animation-delay: 0.2s; }
+        /* Wobble animation on load - consider if this is desired on every load */
         @keyframes wobble { 0%, 100% { transform: translateX(0%) rotate(0deg); } 15% { transform: translateX(-5px) rotate(-2deg); } 30% { transform: translateX(4px) rotate(1.5deg); } 45% { transform: translateX(-3px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(0.5deg); } 75% { transform: translateX(-1px) rotate(0deg); } }
         .animate-wobble { animation: wobble 0.8s ease-in-out 1; animation-delay: 0.6s; }
-        /* Hover Tombol */
+        /* Button Hover Effects */
         button { transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
         button:hover { transform: scale(1.03); }
-        /* Style tombol submit saat loading */
+        /* Style for disabled submit button */
         button[type="submit"]:disabled { cursor: not-allowed; opacity: 0.7; }
-        button[type="submit"]:hover:disabled { transform: none; box-shadow: none; } /* Nonaktifkan hover saat disabled */
+        button[type="submit"]:hover:disabled { transform: none; box-shadow: none; } /* Disable hover effect when disabled */
+        /* Specific hover effects for other buttons */
         #guestLoginButton:hover { transform: scale(1.03); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); }
         #registerButton:hover { transform: scale(1.03); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2); }
     </style>
@@ -42,7 +46,7 @@
                  <i class="fas fa-heart-pulse text-5xl text-blue-600 animate-pulseIcon"></i>
             </a>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Selamat Datang!</h1>
-            <p class="text-gray-500 text-sm mt-2">Login Admin atau masuk sebagai pengunjung.</p>
+            <p class="text-gray-500 text-sm mt-2">Login untuk Admin atau Dokter, atau masuk sebagai pengunjung.</p>
         </div>
 
         <form id="loginForm">
@@ -50,21 +54,24 @@
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3"> <i class="fas fa-envelope text-gray-400"></i> </span>
-                    <input type="email" id="email" name="email" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="email.admin@konsulsehat.com">
+                    <input type="email" id="email" name="email" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="email@example.com">
                 </div>
             </div>
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                 <div class="relative">
+                <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3"> <i class="fas fa-lock text-gray-400"></i> </span>
                     <input type="password" id="password" name="password" required class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Masukkan password Anda">
-                     <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none"> <i class="fas fa-eye" id="toggleIcon"></i> </button>
+                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
                 </div>
-                 <div class="text-right mt-2"> <a href="#" id="forgotPasswordLink" class="text-xs text-blue-600 hover:underline">Lupa Password?</a> </div>
+                <div class="text-right mt-2"> <a href="#" id="forgotPasswordLink" class="text-xs text-blue-600 hover:underline">Lupa Password?</a> </div>
             </div>
             <div id="errorMessage" class="mb-4 text-center text-sm text-red-600 bg-red-100 p-2 rounded-lg opacity-0" role="alert"></div>
+
             <button type="submit" id="loginButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                 <span id="loginButtonText"> <i class="fas fa-sign-in-alt mr-2 mt-0.5"></i> Login Admin </span>
+                 <span id="loginButtonText" class="flex items-center justify-center"> <i class="fas fa-sign-in-alt mr-2"></i> Login </span>
             </button>
         </form>
 
@@ -83,7 +90,400 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="login.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pastikan semua elemen DOM yang dibutuhkan ada sebelum mencoba mengaksesnya
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorMessageDiv = document.getElementById('errorMessage');
+            const togglePasswordButton = document.getElementById('togglePassword');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const guestLoginButton = document.getElementById('guestLoginButton');
+            const loginButton = document.getElementById('loginButton'); // Referensi tombol login
+            const loginButtonText = document.getElementById('loginButtonText'); // Referensi teks tombol login
+
+            // Variabel untuk Firebase Auth (diinisialisasi setelah config didapat)
+            let firebaseAuth = null;
+
+            // --- Fungsi Error Message ---
+            /**
+             * Menampilkan pesan error di div khusus.
+             * @param {string} message - Pesan error yang ingin ditampilkan.
+             */
+            function showErrorMessage(message) {
+                if (errorMessageDiv) {
+                    errorMessageDiv.textContent = message;
+                    // Pastikan div terlihat dengan menghapus kelas opacity-0
+                    errorMessageDiv.classList.remove('opacity-0');
+                    // Opsional: Tambahkan kelas untuk animasi fade-in jika diinginkan
+                    // errorMessageDiv.classList.add('animate-fadeIn');
+                } else {
+                    console.error("Pesan error tidak bisa ditampilkan, elemen #errorMessage tidak ditemukan.");
+                }
+            }
+
+            /**
+             * Menyembunyikan pesan error.
+             */
+            function hideErrorMessage() {
+                if (errorMessageDiv) {
+                    // Sembunyikan div dengan menambahkan kelas opacity-0
+                    errorMessageDiv.classList.add('opacity-0');
+                    errorMessageDiv.textContent = ''; // Kosongkan teks setelah disembunyikan
+                }
+            }
+
+            // --- Fungsi Loading State Tombol ---
+            /**
+             * Mengatur status loading pada tombol login.
+             * @param {boolean} isLoading - True untuk mode loading, false untuk normal.
+             */
+            function setLoginButtonLoading(isLoading) {
+                // Periksa apakah tombol dan teksnya ada sebelum dimanipulasi
+                if (!loginButton || !loginButtonText) {
+                    console.warn("Tombol login atau teksnya tidak ditemukan untuk set loading state.");
+                    return;
+                }
+
+                if (isLoading) {
+                    loginButton.disabled = true; // Nonaktifkan tombol
+                    // Ubah teks dan tambahkan spinner icon
+                    loginButtonText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
+                } else {
+                    loginButton.disabled = false; // Aktifkan kembali tombol
+                    // Kembalikan teks dan icon asli
+                    loginButtonText.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> Login'; // Generic login text
+                }
+            }
+
+            /**
+             * Mengambil konfigurasi Firebase dari backend.
+             * Endpoint `/api/firebase-config` harus mengembalikan JSON seperti:
+             * { apiKey: "...", authDomain: "...", projectId: "...", ... }
+             * @returns {Promise<object|null>} Promise yang resolve dengan objek config atau null jika gagal.
+             */
+            async function fetchFirebaseConfig() {
+                try {
+                    console.log("Mengambil konfigurasi Firebase dari backend...");
+                    // *** PASTIKAN ENDPOINT INI BENAR DAN SERVER BACKEND BERJALAN ***
+                    const response = await fetch('/api/firebase-config');
+
+                    if (!response.ok) {
+                        // Tangani error HTTP (misal: 404 Not Found, 500 Internal Server Error)
+                        let errorMsg = `Gagal mengambil config: Status ${response.status}`;
+                        try {
+                            // Coba baca body response jika ada pesan error dari server
+                            const errorData = await response.json();
+                            errorMsg = errorData.message || errorMsg;
+                        } catch (e) {
+                            /* Abaikan jika body bukan JSON */
+                            console.warn("Gagal parse error response body:", e);
+                        }
+                        throw new Error(errorMsg);
+                    }
+
+                    const config = await response.json();
+
+                    // Validasi dasar config yang diterima
+                    if (!config || !config.apiKey || !config.authDomain || !config.projectId) {
+                        throw new Error("Konfigurasi Firebase yang diterima dari API tidak lengkap/valid.");
+                    }
+
+                    console.log("Konfigurasi Firebase berhasil diambil.");
+                    return config;
+
+                } catch (error) {
+                    console.error("Error mengambil konfigurasi Firebase:", error);
+                    // Tampilkan pesan error ke pengguna
+                    showErrorMessage(`Gagal memuat konfigurasi layanan: ${error.message}. Coba muat ulang halaman.`);
+                    // Nonaktifkan tombol login jika config gagal dimuat
+                    setLoginButtonLoading(false); // Pastikan loading state mati
+                    if(loginButton) loginButton.disabled = true; // Nonaktifkan tombol secara permanen jika config gagal
+                    return null; // Kembalikan null untuk menandakan kegagalan
+                }
+            }
+
+            /**
+             * Menginisialisasi Firebase setelah mendapatkan konfigurasi.
+             * @param {object} firebaseConfig - Objek konfigurasi Firebase yang didapat dari backend.
+             */
+            function initializeFirebase(firebaseConfig) {
+                if (!firebaseConfig) {
+                    console.error("Inisialisasi dibatalkan: Konfigurasi Firebase tidak valid.");
+                    // Pesan error sudah ditampilkan di fetchFirebaseConfig
+                    return;
+                }
+
+                try {
+                    // Periksa apakah variabel 'firebase' dari SDK compat sudah dimuat
+                    // SDK compat harus dimuat di tag <script> sebelum script ini
+                    if (typeof firebase === 'undefined' || !firebase.initializeApp || !firebase.auth) {
+                         throw new Error("Firebase SDK (compat) belum dimuat dengan benar di HTML. Periksa tag <script>.");
+                    }
+
+                    // Inisialisasi Firebase App dan Auth menggunakan SDK compat
+                    const firebaseApp = firebase.initializeApp(firebaseConfig);
+                    firebaseAuth = firebaseApp.auth(); // Simpan instance Auth di variabel global (dalam scope DOMContentLoaded)
+
+                    console.log("Firebase Client SDK (compat) berhasil diinisialisasi dengan config dari API.");
+
+                    // Aktifkan form dan listener lainnya setelah inisialisasi berhasil
+                    enableLoginForm();
+                    enableForgotPasswordLink();
+
+                } catch (error) {
+                    console.error("Gagal menginisialisasi Firebase dengan config dari API:", error);
+                    showErrorMessage(`Gagal menginisialisasi layanan otentikasi: ${error.message}`);
+                    // Nonaktifkan tombol login jika inisialisasi gagal
+                    setLoginButtonLoading(false); // Pastikan loading state mati
+                    if(loginButton) loginButton.disabled = true; // Nonaktifkan tombol secara permanen jika init gagal
+                }
+            }
+
+            /**
+             * Mengaktifkan event listener pada form login setelah Firebase siap.
+             */
+            function enableLoginForm() {
+                // Periksa apakah elemen form dan instance Firebase Auth tersedia
+                if (!loginForm) { console.error("Elemen form login (#loginForm) tidak ditemukan."); return; }
+                if (!firebaseAuth) { console.error("Firebase Auth belum siap saat mencoba mengaktifkan form login."); return; return; } // Added return
+
+                // Hapus listener sebelumnya jika ada (untuk menghindari duplikasi jika fungsi dipanggil lebih dari sekali)
+                // Meskipun dalam kasus ini tidak mungkin karena dipanggil di DOMContentLoaded
+
+                loginForm.addEventListener('submit', async (e) => { // Gunakan async karena ada await di dalamnya
+                    e.preventDefault(); // Mencegah halaman refresh saat form disubmit
+
+                    hideErrorMessage(); // Sembunyikan pesan error lama
+                    setLoginButtonLoading(true); // Tampilkan status loading di tombol
+
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value;
+
+                    // Validasi input dasar
+                    if (!email || !password) {
+                        showErrorMessage("Email dan password wajib diisi.");
+                        setLoginButtonLoading(false); // Matikan loading
+                        return; // Hentikan proses jika input kosong
+                    }
+
+                    console.log(`Mencoba login (Client SDK) dengan email: ${email}`);
+
+                    try {
+                        // Proses login menggunakan Firebase Auth Client SDK
+                        const userCredential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+                        console.log("Autentikasi Firebase berhasil untuk:", userCredential.user.email);
+
+                        // Ambil ID Token Result untuk memeriksa Custom Claims
+                        // Argumen 'true' memaksa refresh token untuk mendapatkan klaim terbaru
+                        const idTokenResult = await userCredential.user.getIdTokenResult(true);
+                        console.log("ID Token Result (claims):", idTokenResult.claims);
+
+                        // Periksa custom claims untuk menentukan role pengguna
+                        if (idTokenResult.claims.admin === true) {
+                            console.log("Login Admin berhasil (Custom Claim). Mengarahkan ke homepage admin...");
+                            window.location.href = 'homepage_admin.html'; // Redirect Admin
+                        } else if (idTokenResult.claims.doctor === true) { // Check for doctor claim
+                            console.log("Login Dokter berhasil (Custom Claim). Mengarahkan ke halaman dokter...");
+                            window.location.href = 'dokter.html'; // Redirect Dokter
+                        } else {
+                            // Jika tidak memiliki klaim admin atau dokter
+                            console.warn("Login berhasil tapi tidak memiliki klaim admin atau dokter.");
+                            showErrorMessage("Akses ditolak. Akun ini bukan Admin atau Dokter.");
+                            // Logout pengguna yang tidak memiliki role yang diizinkan
+                            await firebaseAuth.signOut(); // Gunakan await untuk memastikan logout selesai
+                            setLoginButtonLoading(false); // Matikan loading state
+                        }
+                    } catch (error) {
+                        // Tangani error saat login atau saat getIdTokenResult
+                        console.error("Error login Firebase (Client SDK):", error.code, error.message);
+                        let msg = "Login gagal.";
+                        // Berikan pesan error yang lebih spesifik berdasarkan kode error Firebase
+                        switch (error.code) {
+                            case 'auth/invalid-login-credentials': // Firebase v9+
+                            case 'auth/user-not-found':
+                            case 'auth/wrong-password':
+                                msg = "Email atau password salah."; // Gabungkan pesan untuk kredensial tidak valid
+                                break;
+                            case 'auth/invalid-email':
+                                msg = "Format email tidak valid.";
+                                break;
+                            case 'auth/user-disabled':
+                                msg = "Akun ini dinonaktifkan.";
+                                break;
+                            case 'auth/network-request-failed':
+                                msg = "Kesalahan jaringan. Periksa koneksi Anda.";
+                                break;
+                            case 'auth/too-many-requests':
+                                msg = "Terlalu banyak percobaan login. Coba lagi nanti.";
+                                break;
+                            default:
+                                msg = `Terjadi kesalahan: ${error.message}`; // Tampilkan pesan error asli jika tidak dikenal
+                                break; // Added break
+                        }
+                        showErrorMessage(msg); // Tampilkan error di div khusus
+                        setLoginButtonLoading(false); // Matikan loading state jika error
+                    }
+                });
+                console.log("Event listener untuk form login telah diaktifkan.");
+                 // Pastikan tombol login aktif jika inisialisasi berhasil dan belum dinonaktifkan oleh error config
+                if(loginButton && !loginButton.disabled) {
+                     setLoginButtonLoading(false); // Pastikan tombol dalam keadaan normal setelah diaktifkan
+                }
+            }
+
+            /**
+             * Mengaktifkan event listener pada link lupa password.
+             */
+            function enableForgotPasswordLink() {
+                // Periksa apakah elemen link dan instance Firebase Auth tersedia
+                if (!forgotPasswordLink) { console.warn("Link lupa password (#forgotPasswordLink) tidak ditemukan."); return; }
+                if (!firebaseAuth) { console.error("Firebase Auth belum siap saat mencoba mengaktifkan link lupa password."); return; } // Added return
+
+                forgotPasswordLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const email = emailInput.value.trim();
+
+                    if (!email) {
+                        showErrorMessage("Masukkan email Anda pada kolom email di atas untuk reset password.");
+                        emailInput.focus(); // Fokuskan input email
+                        return; // Hentikan proses jika email kosong
+                    }
+
+                    // Tidak perlu cek role admin/dokter di frontend untuk lupa password
+                    hideErrorMessage(); // Sembunyikan pesan error sebelumnya jika ada
+
+                    console.log(`Meminta reset password untuk: ${email}`);
+
+                    // Gunakan SweetAlert untuk konfirmasi sebelum mengirim email reset
+                    Swal.fire({
+                        title: 'Reset Password?',
+                        text: `Kirim email reset password ke ${email}?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Kirim Email',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Kirim email reset jika pengguna mengkonfirmasi
+                            firebaseAuth.sendPasswordResetEmail(email)
+                                .then(() => {
+                                    // Tampilkan notifikasi sukses menggunakan SweetAlert
+                                    Swal.fire({ title: 'Email Terkirim', text: `Link reset password telah dikirim ke ${email}. Periksa inbox atau folder spam Anda.`, icon: 'success', confirmButtonColor: '#3b82f6' });
+                                })
+                                .catch((error) => {
+                                    // Tangani error saat mengirim email reset
+                                    console.error("Error kirim email reset:", error.code, error.message);
+                                    let msg = "Gagal mengirim email reset.";
+                                    // Berikan pesan error yang lebih spesifik
+                                    switch (error.code) {
+                                        case 'auth/invalid-email':
+                                            msg = "Format email tidak valid.";
+                                            break;
+                                        case 'auth/user-not-found':
+                                            msg = "Email tidak terdaftar.";
+                                            break;
+                                        case 'auth/network-request-failed':
+                                            msg = "Kesalahan jaringan. Periksa koneksi Anda.";
+                                            break;
+                                        default:
+                                            msg = `Error: ${error.message}`; // Tampilkan pesan error asli jika tidak dikenal
+                                            break; // Added break
+                                    }
+                                    // Tampilkan error menggunakan div pesan error biasa
+                                    showErrorMessage(msg);
+                                });
+                        }
+                    });
+                });
+                console.log("Event listener untuk lupa password telah diaktifkan.");
+            }
+
+
+            // --- Event Listener Toggle Password ---
+            // Periksa apakah semua elemen yang dibutuhkan ada sebelum menambahkan listener
+            if (togglePasswordButton && passwordInput && toggleIcon) {
+                togglePasswordButton.addEventListener('click', () => {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    // Ganti icon mata sesuai dengan tipe input
+                    toggleIcon.classList.toggle('fa-eye');
+                    toggleIcon.classList.toggle('fa-eye-slash');
+                });
+                 console.log("Event listener untuk toggle password telah diaktifkan.");
+            } else {
+                console.warn("Elemen toggle password tidak ditemukan sepenuhnya. Fitur toggle password dinonaktifkan.");
+            }
+
+            // --- Event Listener Tombol Pengunjung ---
+            // Periksa apakah tombol ada sebelum menambahkan listener
+            if (guestLoginButton) {
+                guestLoginButton.addEventListener('click', () => {
+                    console.log("Masuk sebagai pengunjung...");
+                    // Redirect ke halaman utama untuk pengunjung
+                    window.location.href = 'index.html';
+                });
+                 console.log("Event listener untuk tombol pengunjung telah diaktifkan.");
+            } else {
+                console.warn("Tombol masuk sebagai pengunjung (#guestLoginButton) tidak ditemukan.");
+            }
+
+            // --- Fungsi Logout (Dibuat Global) ---
+            // Fungsi ini mungkin lebih cocok diletakkan di file JS global atau di halaman setelah login
+            // Dibuat global agar bisa dipanggil dari mana saja jika diperlukan (misal: dari halaman admin/dokter)
+            window.logoutUser = function() {
+                console.log("Fungsi logoutUser dipanggil.");
+                // Pastikan instance Firebase Auth siap dan ada pengguna yang sedang login
+                if (firebaseAuth && firebaseAuth.currentUser) {
+                    firebaseAuth.signOut().then(() => {
+                        console.log("Logout Firebase berhasil.");
+                        // Tampilkan notifikasi sukses logout
+                        Swal.fire({ title: 'Logout Berhasil', text: 'Anda telah keluar dari akun Anda.', icon: 'success', timer: 1500, showConfirmButton: false })
+                            .then(() => {
+                                // Redirect ke halaman login setelah notifikasi hilang
+                                window.location.href = 'login.html';
+                            });
+                    }).catch((error) => {
+                        // Tangani error saat logout
+                        console.error("Error saat logout Firebase:", error);
+                        Swal.fire('Error Logout', 'Gagal melakukan logout, coba lagi.', 'error');
+                    });
+                } else {
+                    console.warn("Mencoba logout saat Firebase Auth tidak siap atau tidak ada pengguna login. Mengarahkan langsung ke halaman login.");
+                    // Fallback: langsung redirect jika tidak yakin status login
+                    window.location.href = 'login.html';
+                }
+            }
+
+
+            // --- Inisialisasi Utama ---
+            // Proses inisialisasi dimulai di sini saat DOM selesai dimuat.
+            // 1. Ambil konfigurasi Firebase dari backend secara asynchronous.
+            // 2. Jika konfigurasi berhasil didapat (config tidak null), inisialisasi Firebase Client SDK.
+            // 3. Jika inisialisasi Firebase berhasil, aktifkan form login dan link lupa password
+            //    (ini dilakukan di dalam fungsi initializeFirebase).
+            console.log("DOM Content Loaded. Memulai proses inisialisasi...");
+            fetchFirebaseConfig().then(config => {
+                if (config) {
+                    // Jika config berhasil diambil, lanjutkan inisialisasi Firebase
+                    initializeFirebase(config);
+                } else {
+                    // Jika config gagal diambil, pesan error sudah ditampilkan di fetchFirebaseConfig.
+                    // Form login tidak akan diaktifkan karena initializeFirebase tidak dipanggil.
+                    console.error("Inisialisasi Firebase tidak dapat dilanjutkan karena gagal mengambil konfigurasi.");
+                     // Pastikan tombol login tetap disabled jika config gagal
+                     if(loginButton) loginButton.disabled = true;
+                }
+            });
+            // -------------------------
+
+        }); // Akhir DOMContentLoaded event listener
+
+    </script>
 
 </body>
 </html>
