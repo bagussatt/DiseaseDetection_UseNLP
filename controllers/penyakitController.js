@@ -3,34 +3,43 @@ const { detectPenyakit } = require('../nlp');
 
 // API untuk memproses input teks dan mendeteksi penyakit
 exports.processText = async (req, res) => {
-    const inputText = req.body.inputText;
-    const hasil = detectPenyakit(inputText);
+    const inputText = req.body.inputText; // Input teks dari pengguna
+    const hasil = detectPenyakit(inputText); // Hasil deteksi dari fungsi NLP
 
     // Format tanggal DD-MM-YYYY
     const now = new Date();
     const timestamp = now.toLocaleDateString('id-ID');
 
+    const dataToSave = {
+        inputText: inputText,
+        hasil: hasil, 
+        timestamp: timestamp 
+    };
+    console.log("[Firebase Save] Data to be saved:", JSON.stringify(dataToSave, null, 2));
+    try {
+        await admin.database().ref('deteksiPenyakit').push(dataToSave);
+        console.log("[Firebase Save] Data successfully saved to Firebase.");
+    } catch (firebaseError) {
+        console.error("[Firebase Save] Error saving data to Firebase:", firebaseError);
+    }
+    // --- AKHIR BAGIAN KRITIS ---
+
+
+    let responseText = '';
     if (hasil.length > 0) {
-        hasil.forEach(item => {
-            item.timestamp = timestamp; // Pastikan timestamp ditambahkan ke setiap entri
-        });
-
-        // Simpan ke Firebase dengan format yang seragam
-        await admin.database().ref('deteksiPenyakit').push({ hasil });
-
-        let responseText = '';
-        hasil.forEach(item => {
+         hasil.forEach(item => {
             responseText += `Penyakit terdeteksi: ${item.penyakit}\n`;
-            responseText += `Gejala yang muncul: ${item.gejala.join(', ')}\n`;
+            responseText += `Gejala yang muncul: ${Array.isArray(item.gejala) ? item.gejala.join(', ') : 'N/A'}\n`;
             responseText += `Saran Dokter: ${item.saranDokter}\n`;
             responseText += `Saran Obat: ${item.saranObat}\n`;
-            // responseText += `Waktu Deteksi: ${item.timestamp}\n\n`;
         });
-
-        res.json({ hasilDeteksi: responseText }); // Kirim respons JSON
     } else {
-        res.json({ hasilDeteksi: 'Tidak ada penyakit yang terdeteksi.' }); // Kirim respons JSON
+ 
+         responseText = 'Tidak ada penyakit yang terdeteksi secara spesifik dari gejala yang Anda masukkan.';
     }
+
+
+    res.json({ hasilDeteksi: responseText });
 };
 
 // Fungsi untuk menghitung persentase penyakit secara keseluruhan
