@@ -102,7 +102,7 @@ app.post('/api/set-doctor-claim', verifyIdToken, async (req, res) => { // Mengha
         // await admin.database().ref(`user_claims/${uid}/doctor`).set(true);
 
 
-        console.log(`Doctor claim berhasil ditetapkan untuk UID: ${uid} oleh pengguna ${req.user.uid} (bukan admin).`); // Sesuaikan log
+        console.log(`Doctor claim berhasil ditetapkan untuk UID: ${uid} oleh pengguna ${req.user.uid}`); // Sesuaikan log
 
         // Kirim response sukses
         res.status(200).json({ success: true, message: `Klaim dokter berhasil ditetapkan untuk pengguna ${uid}.` });

@@ -51,7 +51,9 @@
                  <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#layanan">Layanan</a>
                  <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#statistik-section">Statistik</a>
                  <a class="hover:text-blue-200 transition duration-200 font-medium pb-1 border-b-2 border-transparent hover:border-blue-300/50" href="#kontak">Kontak</a>
-                 <button onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1.5 px-4 rounded-md transition duration-200 flex items-center"> <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout </button>
+                <button id="userIconButton" onclick="logoutUser()" aria-label="Logout">
+                     <i class="fas fa-user-circle"></i>
+                </button>
             </div>
         </div>
         <div id="mobile-menu" class="md:hidden bg-blue-600 text-left hidden border-t border-blue-500">

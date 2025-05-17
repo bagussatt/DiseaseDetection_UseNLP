@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,51 +12,271 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Global styles using Poppins font */
+        /* CSS Variables for Theming */
+        :root {
+            --font-primary: 'Poppins', sans-serif;
+            --bg-primary: #f8fbfd;
+            --bg-secondary: #ffffff;
+            --bg-muted: #eef3f6;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --text-muted: #6c757d;
+            --border-color: #e3e6ea;
+            --card-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.1), 0 5px 15px -5px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 18px 35px -10px rgba(0, 0, 0, 0.15), 0 8px 18px -8px rgba(0, 0, 0, 0.08);
+            --navbar-bg: #2c3e50;
+            --navbar-text: #ecf0f1;
+            --accent-color: #3b82f6;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #ef4444;
+            --countdown-color: #10b981;
+            --timer-color: #f39c12;
+            --prayer-time-color: #1d4ed8;
+            --sidebar-width: 16rem; /* Added sidebar width variable */
+            --active-nav-bg: #eef3f6; /* Background for active sidebar item */
+            --active-nav-text: #212529; /* Text for active sidebar item */
+            --active-filter-bg: #3b82f6; /* Background for active filter button */
+            --active-filter-text: #ffffff; /* Text for active filter button */
+        }
+        /* Dark Mode Variables */
+        html.dark {
+            --bg-primary: #1e293b;
+            --bg-secondary: #334155;
+            --bg-muted: #475569;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --card-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.25), 0 5px 15px -5px rgba(0, 0, 0, 0.18);
+            --card-shadow-hover: 0 18px 35px -10px rgba(0, 0, 0, 0.35), 0 8px 18px -8px rgba(0, 0, 0, 0.25);
+            --navbar-bg: #1a202c;
+            --navbar-text: #e2e8f0;
+            --accent-color: #3b82f6;
+            --info-color: #3b82f6;
+            --danger-color: #ef4444;
+            --countdown-color: #34d399;
+            --timer-color: #f39c12;
+            --prayer-time-color: #60a5fa;
+            --active-nav-bg: #475569;
+            --active-nav-text: #f1f5f9;
+            --active-filter-bg: #2563eb;
+            --active-filter-text: #ffffff;
+        }
+
+        /* Base Body Styles */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6; /* Light background */
-            color: #212529; /* Dark text */
+            font-family: var(--font-primary);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        /* Container for main content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            flex-grow: 1; /* Allow container to grow and fill space */
-        }
-        /* Navbar styles */
+
+        /* Navbar Styles */
         nav {
-            background-color: #2c3e50; /* Dark navbar */
-            color: #ecf0f1; /* Light text */
+            background-color: var(--navbar-bg);
+            color: var(--navbar-text);
             padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: fixed; /* Fixed navbar */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            height: 5rem; /* Increased height */
+            display: flex;
+            align-items: center;
+        }
+        nav .container { /* Adjust container padding for fixed navbar */
+             padding: 0 1.5rem;
         }
         nav a {
-            color: #ecf0f1;
+            color: var(--navbar-text);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s ease;
         }
         nav a:hover {
-            text-decoration: underline;
+            color: rgba(255, 255, 255, 0.9);
         }
-        /* Card styles for content sections */
-        .card {
-            background-color: #ffffff;
+        /* Sidebar Toggle Button */
+        #sidebarToggleBtn {
+             padding: 0.5rem;
+             border-radius: 0.375rem;
+             transition: background-color 0.2s ease;
+             margin-right: 1rem;
+        }
+        #sidebarToggleBtn:hover {
+             background-color: rgba(255, 255, 255, 0.1);
+        }
+        #sidebarToggleBtn i {
+             color: var(--navbar-text);
+        }
+
+
+        /* Layout with Sidebar */
+        .content-area {
+            display: flex;
+            flex-grow: 1;
+            padding-top: 5rem; /* Space for fixed navbar */
+        }
+
+        /* Sidebar Styles */
+        aside {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             padding: 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            position: fixed; /* Fixed position on desktop */
+            top: 5rem; /* Below navbar */
+            bottom: 0;
+            left: 0;
+            z-index: 40;
         }
+        aside.collapsed {
+            transform: translateX(-100%);
+            width: 0;
+            padding-left: 0;
+            padding-right: 0;
+            overflow: hidden;
+        }
+        aside h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        aside .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+        }
+        aside .nav-button i {
+             margin-right: 0.75rem;
+             width: 18px;
+             text-align: center;
+             color: var(--text-muted);
+        }
+        aside .nav-button:hover {
+            background-color: var(--bg-muted);
+            color: var(--text-primary);
+            transform: translateX(3px);
+        }
+        aside .nav-button.active {
+            background-color: var(--active-nav-bg);
+            color: var(--active-nav-text);
+            font-weight: 600;
+        }
+         aside .nav-button.active i {
+             color: var(--active-nav-text);
+         }
+
+        /* Main Content Area */
+        main {
+            flex-grow: 1;
+            padding: 1.5rem;
+            transition: margin-left 0.3s ease-in-out;
+            margin-left: var(--sidebar-width); /* Default margin for open sidebar */
+            overflow-y: auto; /* Allow scrolling */
+        }
+        main.sidebar-collapsed {
+            margin-left: 0; /* Remove margin when sidebar is collapsed */
+        }
+
+        /* Sidebar Overlay (for mobile) */
+        #sidebarOverlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 30;
+            display: none; /* Hidden by default */
+        }
+
+        /* Mobile Responsiveness for Sidebar */
+        @media (max-width: 767px) {
+            aside {
+                transform: translateX(-100%); /* Hidden by default on mobile */
+                top: 5rem; /* Below navbar */
+                height: calc(100vh - 5rem);
+                z-index: 40; /* Ensure sidebar is above overlay */
+            }
+            aside.open-mobile {
+                transform: translateX(0); /* Slide in on mobile */
+            }
+            main {
+                margin-left: 0; /* No margin on mobile */
+            }
+             body.overflow-hidden-custom { /* Prevent body scroll when mobile sidebar is open */
+                 overflow: hidden;
+             }
+        }
+         @media (min-width: 768px) { /* Desktop styles */
+             aside {
+                 position: sticky; /* Sticky on desktop */
+                 top: 5rem;
+                 height: calc(100vh - 5rem);
+                 transform: translateX(0) !important; /* Always visible on desktop */
+                 width: var(--sidebar-width);
+                 padding: 1.5rem;
+                 z-index: 10; /* Lower z-index on desktop */
+             }
+             aside.collapsed { /* Desktop collapsed state */
+                  width: 0;
+                  padding-left: 0;
+                  padding-right: 0;
+                  overflow: hidden;
+             }
+             main.sidebar-collapsed { /* Adjust main margin based on desktop collapsed state */
+                  margin-left: 0;
+             }
+              main:not(.sidebar-collapsed) { /* Default margin for open sidebar on desktop */
+                   margin-left: var(--sidebar-width);
+              }
+             #sidebarOverlay {
+                 display: none !important; /* Hide overlay on desktop */
+             }
+             body.overflow-hidden-custom {
+                 overflow: auto !important;
+             }
+         }
+
+
+        /* Card styles */
+        .card {
+            background-color: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            margin-bottom: 2rem; /* Space between cards */
+        }
+        .card:hover {
+             box-shadow: var(--card-shadow-hover);
+             transform: translateY(-3px);
+        }
+
         /* Loading spinner animation */
         .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #3b82f6; /* Blue spinner */
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent-color);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
@@ -70,62 +290,434 @@
         .content-section.active {
             display: block;
         }
+
+        /* Style for appointment list items */
+        #appointmentList li {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+            color: var(--text-secondary);
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             flex-wrap: wrap;
+        }
+         #appointmentList li:last-child {
+             border-bottom: none;
+             margin-bottom: 0;
+             padding-bottom: 0;
+         }
+         #appointmentList li .appointment-details {
+             flex-grow: 1;
+             margin-right: 1rem;
+             min-width: 150px;
+         }
+         #appointmentList li strong {
+             color: var(--text-primary);
+             font-weight: 600;
+             display: block;
+             margin-bottom: 0.25rem;
+         }
+         #appointmentList li span {
+             color: var(--text-muted);
+             font-size: 0.9em;
+             display: block;
+         }
+         #appointmentList li button {
+             background-color: var(--success-color);
+             color: white;
+             font-weight: 500;
+             padding: 0.5rem 1rem;
+             border-radius: 0.5rem;
+             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+             flex-shrink: 0;
+             margin-top: 0.5rem;
+         }
+          #appointmentList li button:hover {
+              background-color: #27ae60;
+              transform: translateY(-1px);
+              box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+          }
+          html.dark #appointmentList li button {
+               background-color: #2f855a;
+          }
+          html.dark #appointmentList li button:hover {
+               background-color: #276749;
+          }
+         #appointmentList li .status-completed {
+             color: var(--success-color);
+             font-weight: 600;
+             font-style: italic;
+             flex-shrink: 0;
+             margin-top: 0.5rem;
+         }
+
+        /* Style for schedule info */
+        #scheduleInfo {
+            color: var(--text-secondary);
+        }
+        #scheduleInfo strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Style for countdown timer */
+        #countdownTimer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--countdown-color);
+            margin-top: 1rem;
+            text-align: center;
+        }
+        #countdownTimer i {
+            margin-right: 0.5rem;
+        }
+
+        /* Style for custom reminder timer */
+        #customTimerSection h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        #customTimerControls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+         #customTimerControls input[type="time"] {
+             width: 120px;
+             padding: 0.5rem;
+             border-radius: 0.5rem;
+             border: 1px solid var(--border-color);
+             background-color: var(--bg-secondary);
+             color: var(--text-primary);
+             text-align: center;
+         }
+         #customTimerControls input[type="text"] {
+             flex-grow: 1;
+             min-width: 150px;
+             padding: 0.5rem;
+             border-radius: 0.5rem;
+             border: 1px solid var(--border-color);
+             background-color: var(--bg-secondary);
+             color: var(--text-primary);
+         }
+         #customTimerControls button {
+             background-color: var(--timer-color);
+             color: white;
+             font-weight: 500;
+             padding: 0.6rem 1.2rem;
+             border-radius: 0.5rem;
+             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+             flex-shrink: 0;
+         }
+         #customTimerControls button:hover {
+              background-color: #d98c0c;
+              transform: translateY(-1px);
+              box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+         }
+         html.dark #customTimerControls button {
+              background-color: var(--timer-color);
+         }
+          html.dark #customTimerControls button:hover {
+               background-color: #b87d0a;
+          }
+
+        #customTimerDisplay {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--timer-color);
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+         #customTimerDisplay i {
+             margin-right: 0.5rem;
+         }
+         #customTimerDisplay .timer-description {
+             font-size: 1rem;
+             font-weight: 500;
+             color: var(--text-secondary);
+             display: block;
+             margin-top: 0.5rem;
+         }
+         html.dark #customTimerDisplay .timer-description {
+             color: var(--text-secondary);
+         }
+
+        /* Style for Prayer Times Section */
+        #prayerTimesSection h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        #prayerTimesList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #prayerTimesList li {
+            padding: 0.75rem 0; /* Increased padding */
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Align items vertically */
+            flex-wrap: wrap; /* Allow wrapping */
+        }
+         #prayerTimesList li:last-child {
+             border-bottom: none;
+         }
+         #prayerTimesList li span { /* Prayer name */
+             flex-grow: 1;
+             margin-right: 1rem;
+             min-width: 80px; /* Ensure name has minimum width */
+         }
+         #prayerTimesList li strong { /* Prayer time */
+             color: var(--prayer-time-color);
+             font-weight: 600;
+             flex-shrink: 0; /* Prevent time from shrinking */
+         }
+          #prayerTimesList li button { /* Set Alarm button */
+              background-color: var(--accent-color);
+              color: white;
+              font-weight: 500;
+              padding: 0.3rem 0.75rem;
+              border-radius: 0.375rem;
+              transition: background-color 0.2s ease, transform 0.1s ease;
+              font-size: 0.8rem;
+              margin-left: 1rem; /* Space from time */
+              flex-shrink: 0;
+              margin-top: 0.5rem; /* Add margin top on wrap */
+          }
+           #prayerTimesList li button:hover {
+               background-color: #2563eb;
+               transform: translateY(-1px);
+           }
+            html.dark #prayerTimesList li button {
+                 background-color: #2563eb;
+            }
+             html.dark #prayerTimesList li button:hover {
+                  background-color: #1d4ed8;
+             }
+
+         #prayerTimesList .loading-prayer-times {
+             text-align: center;
+             color: var(--text-muted);
+             font-style: italic;
+         }
+         #prayerTimesList .error-prayer-times {
+             text-align: center;
+             color: var(--danger-color);
+             font-style: italic;
+         }
+
+
+        /* Style for error state */
+        #errorState {
+            color: var(--danger-color);
+        }
+        #errorState i {
+            color: var(--danger-color);
+        }
+        #errorState button {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: 500;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+         #errorState button:hover {
+             background-color: #2563eb;
+             transform: translateY(-2px);
+             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+         }
+         html.dark #errorState button {
+              background-color: #2563eb;
+         }
+         html.dark #errorState button:hover {
+              background-color: #1d4ed8;
+         }
+
+        /* Footer styles */
+        footer {
+            background-color: var(--bg-muted);
+            color: var(--text-muted);
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark Mode specific styles */
+        html.dark body {
+             background-color: var(--bg-primary);
+             color: var(--text-primary);
+        }
+        html.dark .card {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--card-shadow);
+        }
+        html.dark nav {
+            background-color: var(--navbar-bg);
+            color: var(--navbar-text);
+        }
+        html.dark nav a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        html.dark .loading-spinner {
+            border-left-color: var(--accent-color);
+        }
+        html.dark #appointmentList li {
+             border-bottom-color: var(--border-color);
+             color: var(--text-secondary);
+        }
+        html.dark #appointmentList li strong {
+             color: var(--text-primary);
+        }
+        html.dark #appointmentList li span {
+             color: var(--text-muted);
+        }
+        html.dark #errorState {
+             color: var(--danger-color);
+        }
+        html.dark #errorState i {
+             color: var(--danger-color);
+        }
+        html.dark footer {
+             background-color: var(--bg-muted);
+             color: var(--text-muted);
+        }
+        html.dark #countdownTimer {
+             color: var(--countdown-color);
+        }
+         html.dark #customTimerDisplay {
+             color: var(--timer-color);
+         }
+         html.dark #customTimerSection h3 {
+             color: var(--text-primary);
+         }
+         html.dark #prayerTimesList li strong {
+             color: var(--prayer-time-color);
+         }
+
+
     </style>
 </head>
 <body class="flex flex-col">
 
     <nav>
         <div class="container flex justify-between items-center">
-            <a href="#" class="text-xl font-bold flex items-center">
-                 <i class="fas fa-user-md mr-2"></i> Dashboard Dokter
+            <button id="sidebarToggleBtn" class="p-2 rounded-md hover:bg-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white mr-3" aria-label="Toggle Sidebar">
+                <i class="fas fa-bars text-xl text-white"></i>
+            </button>
+            <a href="#" class="text-xl font-bold flex items-center text-white mr-auto">
+                 <i class="fas fa-user-md mr-3 text-2xl" style="color: var(--accent-color);"></i>
+                 <span class="hidden sm:inline">Dashboard Dokter</span>
+                 <span class="inline sm:hidden">Dokter</span>
             </a>
-            <div>
-                <span id="doctorName" class="mr-4 text-sm sm:text-base">Memuat...</span>
-                <button onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-md transition duration-200 flex items-center shadow-md hover:shadow-lg">
+            <div class="flex items-center">
+                <span id="doctorName" class="mr-4 text-sm sm:text-base text-gray-300">Memuat...</span>
+                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-md transition duration-200 flex items-center shadow-md hover:shadow-lg">
                     <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout
                 </button>
             </div>
         </div>
     </nav>
 
-    <main class="container mt-8">
-        <h1 class="text-2xl font-semibold mb-6">Selamat Datang, <span id="greetingName">Dokter</span>!</h1>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-60 z-30 hidden md:hidden"></div>
 
-        <div id="loadingState" class="flex flex-col items-center justify-center py-12 content-section active">
-            <div class="loading-spinner"></div>
-            <p class="mt-4 text-gray-600">Memuat data dashboard...</p>
-        </div>
+    <div class="content-area">
 
-        <div id="doctorContent" class="content-section">
-            <div class="card mb-8">
-                <h2 class="text-xl font-semibold mb-4">Jadwal Praktik Anda</h2>
-                <p id="scheduleInfo" class="text-gray-700">Memuat jadwal...</p>
-                </div>
+        <aside id="mainSidebar">
+            <div class="mb-6">
+                <h3>Navigasi</h3>
+                <div class="flex flex-col space-y-2">
+                    <button class="nav-button active" data-target="schedulePrayerSection"><i class="fas fa-calendar-alt"></i> Jadwal & Sholat</button>
+                    <button class="nav-button" data-target="todayQueueSection"><i class="fas fa-users"></i> Antrian Pasien</button>
+                     </div>
+            </div>
+        </aside>
 
-            <div class="card">
-                <h2 class="text-xl font-semibold mb-4">Antrian Pasien Mendatang</h2>
-                <div id="appointmentListContainer">
-                     <ul id="appointmentList" class="list-disc list-inside text-gray-700 space-y-2">
-                         <li>Memuat antrian...</li>
-                     </ul>
-                </div>
-                <p id="noAppointmentsMsg" class="text-gray-600 italic hidden mt-4">Tidak ada antrian pasien mendatang.</p>
+        <main id="mainContent">
+
+            <h1 class="text-2xl sm:text-3xl font-bold mb-8" style="color: var(--text-primary);">Selamat Datang, <span id="greetingName">Dokter</span>!</h1>
+
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20 content-section active">
+                <div class="loading-spinner"></div>
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Memuat data dashboard...</p>
             </div>
 
+            <div id="doctorContent" class="content-section">
+
+                <div id="schedulePrayerSection" class="content-view active space-y-8"> <div class="card">
+                        <div class="flex justify-between items-center mb-4">
+                             <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Jadwal Praktik Anda</h2>
+                             <button id="editScheduleBtn" class="px-3 py-1 text-sm font-medium rounded-md transition-colors duration-200 bg-blue-500 text-white shadow-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">Ubah Jadwal</button>
+                        </div>
+                        <p id="scheduleInfo" class="text-gray-700 dark:text-gray-300 text-base">Memuat jadwal...</p>
+                        <div id="countdownTimer" class="hidden"> <i class="fas fa-clock"></i> <span id="countdownText"></span> </div>
+                    </div>
+
+                    <div class="card" id="customTimerSection">
+                         <h3 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Atur Pengingat Kustom</h3>
+                         <div id="customTimerControls" class="mt-4">
+                             <input type="time" id="targetTimeInput">
+                             <input type="text" id="timerDescription" placeholder="Keterangan pengingat (cth: Minum Obat)">
+                             <button id="startTimerBtn">Set Pengingat</button>
+                         </div>
+                         <div id="customTimerDisplay" class="hidden mt-4">
+                             <i class="fas fa-stopwatch"></i> <span id="timerCountdownText"></span><span id="timerDescriptionDisplay" class="timer-description"></span>
+                         </div>
+                    </div>
+
+                    <div class="card" id="prayerTimesSection">
+                         <h3 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Waktu Sholat Hari Ini</h3>
+                         <ul id="prayerTimesList">
+                             <li class="loading-prayer-times">Memuat waktu sholat...</li>
+                         </ul>
+                    </div>
+                </div>
+
+                <div id="todayQueueSection" class="content-view space-y-8"> <div class="card">
+                         <div class="flex justify-between items-center mb-4">
+                             <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Antrian Pasien</h2> <div class="flex space-x-2"> <button id="filterToday" class="px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200">Hari Ini</button>
+                                 <button id="filterAll" class="px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200">Semua</button>
+                             </div>
+                         </div>
+                         <div id="appointmentListContainer">
+                             <ul id="appointmentList" class="list-inside text-gray-700 dark:text-gray-300 space-y-3">
+                                 <li>Memuat antrian...</li>
+                             </ul>
+                         </div>
+                         <p id="noAppointmentsMsg" class="text-gray-600 dark:text-gray-400 italic hidden mt-6 text-center">Tidak ada antrian pasien untuk filter ini.</p>
+                     </div>
+                 </div>
+
             </div>
 
-        <div id="errorState" class="content-section text-center py-12 text-red-600">
-             <i class="fas fa-exclamation-circle text-4xl mb-4"></i>
-             <p id="errorMessage" class="text-lg">Terjadi kesalahan saat memuat halaman.</p>
-             <button onclick="logoutUser()" class="mt-6 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                 Kembali ke Halaman Login
-             </button>
-         </div>
 
-    </main>
+            <div id="errorState" class="content-section text-center py-20 text-red-600 dark:text-red-500">
+                 <i class="fas fa-exclamation-circle text-5xl mb-6"></i>
+                 <p id="errorMessage" class="text-xl sm:text-2xl mb-6">Terjadi kesalahan saat memuat halaman.</p>
+                 <button onclick="logoutUser()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 shadow-md">
+                     Kembali ke Halaman Login
+                 </button>
+            </div>
 
-    <footer class="mt-auto py-4 text-center text-gray-600 text-sm">
-        <p>&copy; 2023 KonsulSehat. All rights reserved.</p>
+        </main>
+    </div>
+
+
+    <footer class="mt-auto py-4 text-center text-gray-600 dark:text-gray-400 text-sm">
+        <p>&copy; 2025 KonsulSehat. All rights reserved.</p>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -138,17 +730,51 @@
         let firebaseApp;
         let firebaseAuth;
         let firebaseDb;
+        let allAppointments = []; // Array to store all fetched appointments
+        let currentFilter = 'today'; // Default filter for the queue view
+        let doctorSchedule = null; // To store doctor's schedule data
+        let scheduleCountdownInterval = null; // To store the interval ID for the schedule countdown
+        let customTimerInterval = null; // To store the interval ID for the custom timer
+        let customTimerEndTime = null; // To store the end time for the custom timer
+        let customTimerDescription = ''; // To store the description for the custom timer
 
         // --- DOM References ---
         const loadingState = document.getElementById('loadingState');
         const doctorContent = document.getElementById('doctorContent');
         const errorState = document.getElementById('errorState');
-        const errorMessageElement = document.getElementById('errorMessage'); // Renamed to avoid conflict
-        const doctorNameSpan = document.getElementById('doctorName'); // Span in navbar
-        const greetingNameSpan = document.getElementById('greetingName'); // Span in greeting
-        const scheduleInfoP = document.getElementById('scheduleInfo'); // Paragraph for schedule
-        const appointmentListUl = document.getElementById('appointmentList'); // UL for appointments list
-        const noAppointmentsMsgP = document.getElementById('noAppointmentsMsg'); // Message for no appointments
+        const errorMessageElement = document.getElementById('errorMessage');
+        const doctorNameSpan = document.getElementById('doctorName');
+        const greetingNameSpan = document.getElementById('greetingName');
+
+        // Schedule & Prayer DOM References
+        const schedulePrayerSection = document.getElementById('schedulePrayerSection');
+        const scheduleInfoP = document.getElementById('scheduleInfo');
+        const countdownTimerDiv = document.getElementById('countdownTimer');
+        const countdownTextSpan = document.getElementById('countdownText');
+        const customTimerSection = document.getElementById('customTimerSection');
+        const targetTimeInput = document.getElementById('targetTimeInput');
+        const timerDescriptionInput = document.getElementById('timerDescription');
+        const startTimerBtn = document.getElementById('startTimerBtn');
+        const customTimerDisplay = document.getElementById('customTimerDisplay');
+        const timerCountdownTextSpan = document.getElementById('timerCountdownText');
+        const timerDescriptionDisplaySpan = document.getElementById('timerDescriptionDisplay');
+        const prayerTimesSection = document.getElementById('prayerTimesSection');
+        const prayerTimesListUl = document.getElementById('prayerTimesList');
+        const editScheduleBtn = document.getElementById('editScheduleBtn'); // Button to edit schedule
+
+        // Today's Queue DOM References
+        const todayQueueSection = document.getElementById('todayQueueSection');
+        const appointmentListUl = document.getElementById('appointmentList');
+        const noAppointmentsMsgP = document.getElementById('noAppointmentsMsg');
+        const filterTodayButton = document.getElementById('filterToday'); // Re-added filter buttons
+        const filterAllButton = document.getElementById('filterAll'); // Re-added filter buttons
+
+
+        // Sidebar DOM References
+        const mainSidebar = document.getElementById('mainSidebar');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const navButtons = document.querySelectorAll('.nav-button');
 
 
         // --- Utility Functions ---
@@ -157,13 +783,23 @@
          * Shows an error message using SweetAlert2 and logs to console.
          * @param {string} message - The error message to display.
          */
-        function showNotificationError(message) { // Renamed to avoid conflict with errorState div
+        function showNotificationError(message) {
             console.error("Error:", message);
             Swal.fire('Error', message, 'error');
         }
 
+         /**
+         * Shows a success message using SweetAlert2.
+         * @param {string} message - The success message to display.
+         */
+        function showNotificationSuccess(message) {
+            console.log("Success:", message);
+            Swal.fire('Berhasil!', message, 'success');
+        }
+
+
         /**
-         * Displays the specified section (loading, doctor content, or error) and hides others.
+         * Displays the specified main section (loading, doctor content, or error) and hides others.
          * @param {'loading'|'content'|'error'} state - The state to display.
          * @param {string} [message] - Optional message for the error state.
          */
@@ -185,13 +821,136 @@
             } else if (state === 'content') {
                 doctorContent.classList.remove('hidden');
                 doctorContent.classList.add('active');
+                // Initial view is set in main()
             } else if (state === 'error') {
                 errorState.classList.remove('hidden');
                 errorState.classList.add('active');
                 if (errorMessageElement) {
-                     errorMessageElement.textContent = message || 'Terjadi kesalahan yang tidak diketahui.';
+                    errorMessageElement.textContent = message || 'Terjadi kesalahan yang tidak diketahui.';
                 }
             }
+        }
+
+        /**
+         * Shows a specific content view section within the main content area.
+         * @param {string} viewId - The ID of the content view section to show.
+         */
+        function showContentView(viewId) {
+             const views = document.querySelectorAll('.content-view');
+             views.forEach(view => {
+                 view.classList.remove('active');
+                 // Hide all content views explicitly when switching
+                 view.style.display = 'none';
+             });
+
+             const activeView = document.getElementById(viewId);
+             if (activeView) {
+                 activeView.classList.add('active');
+                 activeView.style.display = 'block'; // Show the active view
+
+                 // Perform actions specific to the view being shown
+                 if (viewId === 'todayQueueSection') {
+                     // When showing the queue section, ensure only the queue card is visible
+                     if(schedulePrayerSection) schedulePrayerSection.style.display = 'none';
+                     if(customTimerSection) customTimerSection.style.display = 'none';
+                     if(prayerTimesSection) prayerTimesSection.style.display = 'none';
+                     // Also, ensure the Antrian card itself is displayed
+                     if(todayQueueSection.querySelector('.card')) todayQueueSection.querySelector('.card').style.display = 'block';
+
+                     // Load and display appointments based on the current filter for the queue section
+                     displayAppointments(currentFilter); // Use the current filter state
+
+
+                 } else if (viewId === 'schedulePrayerSection') {
+                     // When showing the schedule/prayer section, ensure its cards are visible
+                     if(schedulePrayerSection) schedulePrayerSection.style.display = 'block';
+                     if(customTimerSection) customTimerSection.style.display = 'block';
+                     if(prayerTimesSection) prayerTimesSection.style.display = 'block';
+                     // Hide the queue section card
+                     if(todayQueueSection.querySelector('.card')) todayQueueSection.querySelector('.card').style.display = 'none';
+                 }
+             }
+
+             // Update active state for sidebar navigation buttons
+             navButtons.forEach(button => {
+                 if (button.getAttribute('data-target') === viewId) {
+                     button.classList.add('active');
+                 } else {
+                     button.classList.remove('active');
+                 }
+             });
+        }
+
+
+        /**
+         * Formats a Date object into Paribas-MM-DD string.
+         * @param {Date} date - The Date object.
+         * @returns {string} Formatted date string.
+         */
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            return `${year}-${month}-${day}`;
+        }
+
+         /**
+         * Formats a Date object into a readable time string (HH:MM).
+         * @param {Date} date - The Date object.
+         * @returns {string} Formatted time string.
+         */
+        function formatTime(date) {
+            const hours = ('0' + date.getHours()).slice(-2);
+            const minutes = ('0' + date.getMinutes()).slice(-2);
+            return `${hours}:${minutes}`;
+        }
+
+         /**
+         * Calculates the time difference between two dates and formats it as H jam M menit S detik.
+         * @param {Date} startDate - The starting date.
+         * @param {Date} endDate - The ending date.
+         * @returns {string} Formatted time difference string.
+         */
+        function formatTimeDifference(startDate, endDate) {
+            let diff = (endDate.getTime() - startDate.getTime()) / 1000; // Difference in seconds
+
+            if (diff < 0) {
+                return "Waktu telah berlalu.";
+            }
+
+            const days = Math.floor(diff / (24 * 3600));
+            diff -= days * 24 * 3600;
+            const hours = Math.floor(diff / 3600);
+            diff -= hours * 3600;
+            const minutes = Math.floor(diff / 60);
+            diff -= minutes * 60;
+            const seconds = Math.floor(diff);
+
+            let parts = [];
+            if (days > 0) parts.push(`${days} hari`);
+            if (hours > 0) parts.push(`${hours} jam`);
+            if (minutes > 0) parts.push(`${minutes} menit`);
+            if (seconds > 0 || parts.length === 0) parts.push(`${seconds} detik`); // Show seconds if difference is less than a minute
+
+            return parts.join(' ');
+        }
+
+        /**
+         * Converts day names in Indonesian to numbers (0 for Minggu, 1 for Senin, etc.)
+         * @param {string} dayName - The name of the day in Indonesian.
+         * @returns {number|null} The day number (0-6) or null if invalid.
+         */
+        function getDayNumber(dayName) {
+            const dayMap = {
+                'Minggu': 0,
+                'Senin': 1,
+                'Selasa': 2,
+                'Rabu': 3,
+                'Kamis': 4,
+                'Jumat': 5,
+                'Sabtu': 6
+            };
+            return dayMap[dayName];
         }
 
 
@@ -207,14 +966,14 @@
                 // Endpoint ini harus tersedia di server.js Anda
                 const response = await fetch('/api/firebase-config');
                 if (!response.ok) {
-                     let errorDetail = `Status ${response.status}`;
-                     try { const errJson = await response.json(); errorDetail = errJson.message || errorDetail; } catch(e) {}
-                     throw new Error(`Network response was not ok: ${errorDetail}`);
+                    let errorDetail = `Status ${response.status}`;
+                    try { const errJson = await response.json(); errorDetail = errJson.data?.message || errorDetail; } catch(e) {}
+                    throw new Error(`Network response was not ok: ${errorDetail}`);
                 }
                 const config = await response.json();
-                 if (!config || !config.apiKey || !config.authDomain || !config.projectId) {
-                     throw new Error("Konfigurasi Firebase yang diterima dari API tidak lengkap/valid.");
-                 }
+                if (!config || !config.apiKey || !config.authDomain || !config.projectId) {
+                    throw new Error("Konfigurasi Firebase yang diterima dari API tidak lengkap/valid.");
+                }
                 console.log("Konfigurasi Firebase berhasil diambil dari API.");
                 return config;
             } catch (error) {
@@ -283,17 +1042,17 @@
             }
         }
 
-        // --- Data Loading Functions for Doctor Dashboard ---
+        // --- Data Loading and Display Functions for Doctor Dashboard ---
 
         /**
          * Loads doctor's specific data and appointments from Realtime Database.
+         * Stores all appointments in `allAppointments` array.
          * @param {string} doctorUid - The UID of the logged-in doctor.
          */
         async function loadDoctorData(doctorUid) {
             if (!firebaseDb) {
                 console.error("Database belum siap untuk memuat data dokter.");
-                // Update UI to show error state
-                if (scheduleInfoP) scheduleInfoP.textContent = "Gagal memuat jadwal.";
+                if (scheduleInfoP) scheduleInfoP.innerHTML = "Gagal memuat jadwal.";
                 if (appointmentListUl) appointmentListUl.innerHTML = '<li>Gagal memuat antrian.</li>';
                 if (noAppointmentsMsgP) noAppointmentsMsgP.classList.add('hidden');
                 displayState('error', 'Koneksi database belum siap.');
@@ -308,80 +1067,457 @@
                 const profileSnapshot = await doctorProfileRef.once('value');
 
                 let doctorName = 'Dokter'; // Default name
-                let hospitalId = null;
-                let specialization = null;
+                doctorSchedule = null; // Reset schedule data
 
                 if (profileSnapshot.exists()) {
                     const profileData = profileSnapshot.val();
                     console.log("Data profil dokter dimuat:", profileData);
 
                     doctorName = profileData.nama || 'Dokter';
-                    hospitalId = profileData.rumah_sakit_id || null;
-                    specialization = profileData.spesialisasi || null;
+                    doctorSchedule = profileData; // Store the entire schedule data
 
                     // Update UI with doctor's name and schedule
                     if (doctorNameSpan) doctorNameSpan.textContent = `Login sebagai ${doctorName}`;
                     if (greetingNameSpan) greetingNameSpan.textContent = doctorName;
                     if (scheduleInfoP) {
-                         scheduleInfoP.textContent = `Jadwal: ${profileData.hari_praktik || '-'}, Pukul: ${profileData.jam_mulai || '-'} - ${profileData.jam_selesai || '-'}`;
+                         // Make day and time more visible
+                         scheduleInfoP.innerHTML = `Jadwal: <strong>${profileData.hari_praktik || '-'}</strong>, Pukul: <strong>${profileData.jam_mulai || '-'} - ${profileData.jam_selesai || '-'}</strong>`;
                     }
+
+                    // Start schedule countdown if schedule data is available
+                    startScheduleCountdown();
+
 
                 } else {
                     console.warn(`Data profil dokter untuk UID ${doctorUid} tidak ditemukan di database.`);
                     if (doctorNameSpan) doctorNameSpan.textContent = 'Login sebagai Dokter (Data Profil Tidak Ditemukan)';
                     if (greetingNameSpan) greetingNameSpan.textContent = 'Dokter';
-                    if (scheduleInfoP) scheduleInfoP.textContent = "Data jadwal tidak ditemukan.";
-                    // Don't stop here, still try to load appointments if possible
+                    if (scheduleInfoP) scheduleInfoP.innerHTML = "Data jadwal tidak ditemukan.";
+                    if (countdownTimerDiv) countdownTimerDiv.classList.add('hidden'); // Hide countdown if no schedule
                 }
 
-                // 2. Load upcoming appointments related to this doctor
-                // This requires your 'reservasi' node to contain data linking back to the doctor.
-                // The most reliable way is to store the doctor's UID in each reservation entry.
-                // Example: Assuming each reservation has a 'doctor_uid' field.
-
+                // 2. Load all appointments related to this doctor
+                // We load all first, then filter for display
                 const appointmentsRef = firebaseDb.ref('reservasi');
-                // Query reservations where 'doctor_uid' matches the logged-in doctor's UID
                 const appointmentsSnapshot = await appointmentsRef.orderByChild('dokter_id').equalTo(doctorUid).once('value');
 
-                // Clear previous list items
-                if (appointmentListUl) appointmentListUl.innerHTML = '';
+                allAppointments = []; // Clear previous data
 
                 if (appointmentsSnapshot.exists()) {
-                    let hasAppointments = false;
                     console.log("Data antrian pasien dimuat.");
-                    // Iterate through appointments and display them
                     appointmentsSnapshot.forEach(appointmentSnapshot => {
-                         hasAppointments = true;
-                         const reservationId = appointmentSnapshot.key;
-                         const appointment = appointmentSnapshot.val();
-
-                         // Create list item for each appointment
-                         const li = document.createElement('li');
-                         // Display relevant reservation details (adjust based on your data structure)
-                         li.innerHTML = `
-                             <strong>${appointment.nama || 'Pasien Tidak Dikenal'}</strong>
-                             (${appointment.tanggal} ${appointment.waktu || ''})
-                             <br>
-                             <span class="text-gray-500 text-sm">RS: ${appointment.rumah_sakit || '-'}, Catatan: ${appointment.catatan || '-'}</span>
-                             `;
-                         if (appointmentListUl) appointmentListUl.appendChild(li);
+                        const reservationId = appointmentSnapshot.key;
+                        const appointmentData = appointmentSnapshot.val();
+                        allAppointments.push({
+                            id: reservationId,
+                            ...appointmentData
+                        });
                     });
-
-                    // Show/hide "no data" message
-                    if (noAppointmentsMsgP) noAppointmentsMsgP.classList.toggle('hidden', hasAppointments);
-
+                     console.log(`Total ${allAppointments.length} reservasi dimuat.`);
                 } else {
                      console.log("Tidak ada antrian pasien mendatang untuk dokter ini.");
-                     // No appointments found
-                     if (noAppointmentsMsgP) noAppointmentsMsgP.classList.remove('hidden');
                 }
 
+                // Display initial content view (Schedule & Prayer)
+                displayState('content'); // Show the main content wrapper
+                showContentView('schedulePrayerSection'); // Set initial view here
 
-                displayState('content'); // Show the content section after loading profile and appointments
+                // Load prayer times
+                loadPrayerTimes();
+
 
             } catch (error) {
                 console.error("Error saat memuat data dokter atau antrian:", error);
                 displayState('error', `Gagal memuat data dashboard: ${error.message}.`);
+            }
+        }
+
+        /**
+         * Filters and displays appointments based on the selected filter.
+         * This function is now primarily used by the "Antrian Pasien" card.
+         * @param {'today'|'all'} filter - The filter to apply.
+         */
+        function displayAppointments(filter) {
+            if (!appointmentListUl || !noAppointmentsMsgP) {
+                 console.error("Elemen daftar antrian atau pesan 'no data' tidak ditemukan.");
+                 return;
+            }
+
+            currentFilter = filter; // Update current filter state
+
+            appointmentListUl.innerHTML = ''; // Clear current list
+
+            const today = formatDate(new Date());
+            let filteredAppointments = allAppointments;
+
+            if (filter === 'today') {
+                // Filter for appointments scheduled for TODAY and not completed
+                filteredAppointments = allAppointments.filter(appt => {
+                    // Check if the appointment date is exactly today's date string
+                    return (appt.tanggal === today) && (appt.status !== 'Selesai');
+                });
+                 console.log(`Menampilkan ${filteredAppointments.length} antrian untuk Hari Ini.`);
+            } else if (filter === 'all') {
+                 // Show all appointments, including past and completed ones
+                 filteredAppointments = allAppointments;
+                 console.log(`Menampilkan semua (${filteredAppointments.length}) antrian.`);
+            }
+
+             // Sort appointments by date and time for 'today' filter
+             if (filter === 'today') {
+                 filteredAppointments.sort((a, b) => {
+                     const dateTimeA = new Date(`${a.tanggal}T${a.waktu}`);
+                     const dateTimeB = new Date(`${b.tanggal}T${b.waktu}`);
+                     return dateTimeA - dateTimeB;
+                     // Handle potential invalid dates from data
+                 }).filter(appt => {
+                     const dateTime = new Date(`${appt.tanggal}T${appt.waktu}`);
+                     return !isNaN(dateTime.getTime()); // Filter out invalid date/time entries
+                 });
+             }
+
+
+            if (filteredAppointments.length > 0) {
+                filteredAppointments.forEach(appointment => {
+                    const li = document.createElement('li');
+                    // Use flexbox for layout within the list item
+                    li.innerHTML = `
+                        <div class='appointment-details'>
+                            <strong>${appointment.nama || 'Pasien Tidak Dikenal'}</strong>
+                            <span>${appointment.tanggal} ${appointment.waktu || ''}</span>
+                            <span class='text-gray-500 text-sm'>RS: ${appointment.rumah_sakit || '-'}</span>
+                            <div class='text-gray-500 text-sm mt-1'>Catatan: ${appointment.diagnosis || '-'}</div>
+                        </div>
+                        ${appointment.status === 'Selesai'
+                            ? `<span class="status-completed">Selesai</span>`
+                            : `<button onclick="markAppointmentComplete('${appointment.id}')">Selesai</button>`
+                        }
+                    `;
+                    appointmentListUl.appendChild(li);
+                });
+                noAppointmentsMsgP.classList.add('hidden'); // Hide "no data" message
+            } else {
+                // No appointments match the filter
+                noAppointmentsMsgP.classList.remove('hidden'); // Show "no data" message
+            }
+
+            // Update active state of filter buttons
+            if (filterTodayButton && filterAllButton) {
+                filterTodayButton.classList.remove('bg-blue-500', 'hover:bg-blue-600', 'dark:bg-blue-600', 'dark:hover:bg-blue-700', 'bg-gray-200', 'text-gray-800', 'shadow-sm', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+                 filterAllButton.classList.remove('bg-blue-500', 'hover:bg-blue-600', 'dark:bg-blue-600', 'dark:hover:bg-blue-700', 'bg-gray-200', 'text-gray-800', 'shadow-sm', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+
+
+                if (filter === 'today') {
+                    filterTodayButton.classList.add('bg-blue-500', 'text-white', 'shadow-md', 'hover:bg-blue-600', 'dark:bg-blue-600', 'dark:hover:bg-blue-700');
+                    filterAllButton.classList.add('bg-gray-200', 'text-gray-800', 'shadow-sm', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+                } else { // filter === 'all'
+                    filterTodayButton.classList.add('bg-gray-200', 'text-gray-800', 'shadow-sm', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+                    filterAllButton.classList.add('bg-blue-500', 'text-white', 'shadow-md', 'hover:bg-blue-600', 'dark:bg-blue-600', 'dark:hover:bg-blue-700');
+                }
+            }
+        }
+
+
+        /**
+         * Marks a specific appointment as 'Selesai' in the database.
+         * @param {string} reservationId - The ID of the reservation to mark complete.
+         */
+        window.markAppointmentComplete = async (reservationId) => {
+             if (!firebaseDb) {
+                 showNotificationError('Koneksi database belum siap.');
+                 return;
+             }
+
+             console.log(`Menandai reservasi ${reservationId} sebagai Selesai.`);
+
+             // Optional: Show confirmation dialog before marking complete
+             const confirmResult = await Swal.fire({
+                 title: 'Tandai Selesai?',
+                 text: "Anda yakin ingin menandai reservasi ini sebagai selesai?",
+                 icon: 'question',
+                 showCancelButton: true,
+                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim(),
+                 cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                 confirmButtonText: 'Ya, Selesai!',
+                 cancelButtonText: 'Batal'
+             });
+
+             if (!confirmResult.isConfirmed) {
+                 return; // User cancelled
+             }
+
+
+             try {
+                 // Update the status field in the database
+                 await firebaseDb.ref(`reservasi/${reservationId}`).update({
+                     status: 'Selesai',
+                     // Optional: Add a completion timestamp
+                     completed_at: new Date().toISOString()
+                 });
+
+                 console.log(`Reservasi ${reservationId} berhasil ditandai Selesai.`);
+                 showNotificationSuccess('Reservasi berhasil ditandai selesai.');
+
+                 // Update the local `allAppointments` array and re-display the list
+                 const appointmentIndex = allAppointments.findIndex(appt => appt.id === reservationId);
+                 if (appointmentIndex > -1) {
+                     allAppointments[appointmentIndex].status = 'Selesai';
+                     allAppointments[appointmentIndex].completed_at = new Date().toISOString(); // Update local timestamp
+                 }
+                 // Re-display the list based on the current filter
+                 displayAppointments(currentFilter);
+
+             } catch (error) {
+                 console.error(`Gagal menandai reservasi ${reservationId} sebagai Selesai:`, error);
+                 showNotificationError(`Gagal menandai reservasi selesai: ${error.message}`);
+             }
+        }
+
+        // --- Schedule Countdown Timer Functions ---
+
+        /**
+         * Starts the countdown timer to the next practice schedule.
+         */
+        function startScheduleCountdown() {
+            if (!doctorSchedule || !doctorSchedule.hari_praktik || !doctorSchedule.jam_mulai || !countdownTimerDiv || !countdownTextSpan) {
+                console.warn("Data jadwal tidak lengkap untuk memulai countdown jadwal.");
+                if (countdownTimerDiv) countdownTimerDiv.classList.add('hidden');
+                return;
+            }
+
+            // Clear any existing schedule interval
+            if (scheduleCountdownInterval) {
+                clearInterval(scheduleCountdownInterval);
+            }
+
+            countdownTimerDiv.classList.remove('hidden'); // Show the schedule countdown div
+
+            // Function to update the schedule timer text
+            const updateScheduleTimer = () => {
+                const now = new Date();
+                const daysOfWeek = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                // Split and trim day names, convert to day numbers
+                const practiceDayNumbers = doctorSchedule.hari_praktik.split(',').map(day => getDayNumber(day.trim())).filter(dayNum => dayNum !== null);
+
+                if (practiceDayNumbers.length === 0) {
+                    countdownTextSpan.textContent = "Jadwal praktik tidak valid.";
+                    if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
+                    return;
+                }
+
+                const [startHour, startMinute] = doctorSchedule.jam_mulai.split(':').map(Number);
+
+                let nextPracticeTime = null;
+
+                // Find the next upcoming practice day and time
+                for (let i = 0; i < 7; i++) {
+                    const nextDate = new Date(now);
+                    nextDate.setDate(now.getDate() + i);
+                    const nextDayNumber = nextDate.getDay();
+
+                    if (practiceDayNumbers.includes(nextDayNumber)) {
+                        const potentialPracticeTime = new Date(nextDate);
+                        potentialPracticeTime.setHours(startHour, startMinute, 0, 0);
+
+                        // If the potential practice time is in the future
+                        if (potentialPracticeTime > now) {
+                            nextPracticeTime = potentialPracticeTime;
+                            break; // Found the next upcoming time
+                        }
+                    }
+                }
+
+                if (nextPracticeTime) {
+                    const timeRemaining = formatTimeDifference(now, nextPracticeTime);
+                    const nextDayName = daysOfWeek[nextPracticeTime.getDay()];
+                    const startTime = formatTime(nextPracticeTime);
+
+                    // Display countdown to the next specific practice time
+                    countdownTextSpan.textContent = `Praktik berikutnya: ${nextDayName}, Pukul ${startTime} (dalam ${timeRemaining})`;
+
+                } else {
+                     // This might happen if the last practice time of the week just passed
+                     countdownTextSpan.textContent = "Tidak ada jadwal praktik mendatang dalam 7 hari ke depan.";
+                     if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval); // Stop interval if no next schedule found
+                }
+            };
+
+            // Initial call and then update every second
+            updateScheduleTimer();
+            scheduleCountdownInterval = setInterval(updateScheduleTimer, 1000);
+        }
+
+        // --- Custom Reminder Timer Functions ---
+
+        /**
+         * Starts a custom timer based on user input (target time).
+         * Can optionally take a target time and description to pre-fill (e.g., from prayer times).
+         * @param {string} [prefillTime] - Optional time string (HH:MM) to pre-fill.
+         * @param {string} [prefillDescription] - Optional description string to pre-fill.
+         */
+        function startCustomTimer(prefillTime = null, prefillDescription = null) {
+            // Pre-fill inputs if values are provided
+            if (prefillTime) targetTimeInput.value = prefillTime;
+            if (prefillDescription) timerDescriptionInput.value = prefillDescription;
+
+            const targetTimeString = targetTimeInput.value; // Get time string from input
+            const description = timerDescriptionInput.value.trim(); // Get description
+
+            if (!targetTimeString) {
+                Swal.fire('Input Tidak Valid', 'Harap masukkan waktu target untuk pengingat.', 'warning');
+                return;
+            }
+
+            if (!description) {
+                 Swal.fire('Keterangan Kosong', 'Harap masukkan keterangan untuk pengingat ini.', 'warning');
+                 return;
+            }
+
+            const now = new Date();
+            const [targetHour, targetMinute] = targetTimeString.split(':').map(Number);
+
+            // Create a Date object for the target time today
+            let targetDateTime = new Date(now);
+            targetDateTime.setHours(targetHour, targetMinute, 0, 0);
+
+            // If the target time today is in the past, set it for tomorrow
+            if (targetDateTime <= now) {
+                targetDateTime.setDate(targetDateTime.getDate() + 1);
+            }
+
+            customTimerEndTime = targetDateTime; // Store the calculated end time
+            customTimerDescription = description; // Store description
+
+            console.log(`Memulai timer kustom untuk waktu target: ${targetTimeString} (${customTimerDescription}). Berakhir pada: ${customTimerEndTime}`);
+
+            // Show the custom timer display
+            customTimerDisplay.classList.remove('hidden');
+            timerDescriptionDisplaySpan.textContent = `(${customTimerDescription})`; // Display description
+
+            // Clear any existing custom timer interval
+            if (customTimerInterval) {
+                clearInterval(customTimerInterval);
+            }
+
+            // Function to update the custom timer display
+            const updateCustomTimer = () => {
+                const now = new Date();
+                const timeRemaining = formatTimeDifference(now, customTimerEndTime);
+
+                if (customTimerEndTime > now) {
+                    timerCountdownTextSpan.textContent = timeRemaining;
+                } else {
+                    // Timer finished
+                    timerCountdownTextSpan.textContent = "Waktu habis!";
+                    clearInterval(customTimerInterval); // Stop the interval
+                    customTimerInterval = null; // Reset interval ID
+                    customTimerEndTime = null; // Reset end time
+                    // Show notification regardless of current view
+                    Swal.fire({
+                        title: 'Pengingat Selesai!',
+                        text: `Waktu untuk "${customTimerDescription}" telah tiba.`,
+                        icon: 'info', // Using info icon for a reminder
+                        confirmButtonText: 'OK'
+                    });
+                    console.log(`Pengingat "${customTimerDescription}" selesai!`);
+                    customTimerDescription = ''; // Clear description
+
+                    // Optional: Hide the timer display after a delay
+                    setTimeout(() => {
+                        customTimerDisplay.classList.add('hidden');
+                         targetTimeInput.value = ''; // Reset time input
+                         timerDescriptionInput.value = ''; // Reset description input
+                         timerDescriptionDisplaySpan.textContent = ''; // Clear displayed description
+                    }, 5000); // Hide after 5 seconds
+                }
+            };
+
+            // Initial call and then update every second
+            updateCustomTimer();
+            customTimerInterval = setInterval(updateCustomTimer, 1000);
+        }
+
+        // --- Prayer Times Functions ---
+
+        /**
+         * Loads prayer times for the current date and a specific location using an API.
+         * Displays the prayer times in the dedicated section with 'Set Alarm' buttons.
+         */
+        async function loadPrayerTimes() {
+            if (!prayerTimesListUl) {
+                 console.error("Elemen daftar waktu sholat tidak ditemukan.");
+                 return;
+            }
+
+            prayerTimesListUl.innerHTML = '<li class="loading-prayer-times">Memuat waktu sholat...</li>'; // Show loading state
+
+            // *** IMPORTANT: Replace with actual location (latitude, longitude) or city/country
+            // You might need to store the doctor's hospital location or ask the user for location.
+            // For this example, using a placeholder location (e.g., Yogyakarta, Indonesia).
+            const latitude = -7.7956; // Example: Yogyakarta latitude
+            const longitude = 110.3695; // Example: Yogyakarta longitude
+            const method = 11; // Example: Kemenag (Indonesia) calculation method
+            const date = formatDate(new Date()); // Today's date
+
+            // Using Aladhan API as an example
+            const apiUrl = `https://api.aladhan.com/v1/timings/${date}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
+
+            try {
+                console.log(`Mengambil waktu sholat dari API: ${apiUrl}`);
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    let errorDetail = `Status ${response.status}`;
+                    try { const errJson = await response.json(); errorDetail = errJson.data?.message || errorDetail; } catch(e) {}
+                    throw new Error(`Network response was not ok: ${errorDetail}`);
+                }
+
+                const data = await response.json();
+
+                if (data.status !== 'OK' || !data.data || !data.data.timings) {
+                    throw new Error(`API response indicates an error: ${data.status} - ${data.data?.message || 'Unknown error'}`);
+                }
+
+                const timings = data.data.timings;
+                console.log("Waktu sholat dimuat:", timings);
+
+                // Clear loading/error message
+                prayerTimesListUl.innerHTML = '';
+
+                // Display relevant prayer times with Set Alarm buttons
+                const prayerNames = {
+                    Fajr: 'Subuh',
+                    Sunrise: 'Terbit',
+                    Dhuhr: 'Dzuhur',
+                    Asr: 'Ashar',
+                    Sunset: 'Maghrib',
+                    Isha: 'Isya',
+                    Imsak: 'Imsak', // Optional
+                    Midnight: 'Tengah Malam' // Optional
+                };
+
+                // Create list items for each prayer time
+                for (const [key, value] of Object.entries(timings)) {
+                    // Only display known prayer times
+                    if (prayerNames[key]) {
+                         const li = document.createElement('li');
+                         const prayerTime = value; // e.g., "04:30"
+                         const prayerName = prayerNames[key]; // e.g., "Subuh"
+
+                         li.innerHTML = `
+                             <span>${prayerName}</span>
+                             <strong>${prayerTime}</strong>
+                             <button onclick="startCustomTimer('${prayerTime}', 'Pengingat ${prayerName}')">Set Alarm</button>
+                         `;
+                         prayerTimesListUl.appendChild(li);
+                    }
+                }
+
+            } catch (error) {
+                console.error("Gagal memuat waktu sholat:", error);
+                prayerTimesListUl.innerHTML = `<li class="error-prayer-times">Gagal memuat waktu sholat: ${error.message}</li>`;
+                // Show notification error as well
+                showNotificationError(`Gagal memuat waktu sholat: ${error.message}`);
             }
         }
 
@@ -417,10 +1553,12 @@
                             if (idTokenResult.claims.doctor === true) {
                                 console.log("Pengguna terverifikasi sebagai dokter.");
 
-                                // Load doctor's specific data and appointments
+                                // Load doctor's specific data and appointments, and prayer times
                                 await loadDoctorData(user.uid);
 
-                                // Display content state is handled inside loadDoctorData upon success
+                                // Set initial view after data is loaded
+                                showContentView('schedulePrayerSection');
+
 
                             } else {
                                 console.warn("Akses ditolak: Pengguna", user.uid, "bukan dokter.");
@@ -447,8 +1585,114 @@
             }
         }
 
+        // --- Event Listeners ---
+
+        // Sidebar navigation button listeners
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                if (targetId) {
+                    showContentView(targetId);
+                     // Close mobile sidebar if open
+                     if (window.innerWidth < 768 && mainSidebar.classList.contains('open-mobile')) {
+                        mainSidebar.classList.remove('open-mobile');
+                        sidebarOverlay.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden-custom');
+                     }
+                }
+            });
+        });
+
+        // Sidebar toggle button listener
+         if (sidebarToggleBtn && mainSidebar && mainContent && sidebarOverlay) {
+            sidebarToggleBtn.addEventListener('click', () => {
+                const isMobile = window.innerWidth < 768;
+
+                if (isMobile) {
+                    mainSidebar.classList.toggle('open-mobile');
+                    sidebarOverlay.classList.toggle('hidden');
+                    document.body.classList.toggle('overflow-hidden-custom');
+                } else {
+                    mainSidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('sidebar-collapsed');
+                }
+                console.log("Sidebar toggled. Collapsed:", mainSidebar.classList.contains('collapsed'), "Mobile Open:", mainSidebar.classList.contains('open-mobile'));
+            });
+
+            // Sidebar overlay click listener (closes mobile sidebar)
+            sidebarOverlay.addEventListener('click', () => {
+                 if (window.innerWidth < 768) {
+                     mainSidebar.classList.remove('open-mobile');
+                     sidebarOverlay.classList.add('hidden');
+                     document.body.classList.remove('overflow-hidden-custom');
+                     console.log("Mobile sidebar closed via overlay click.");
+                 }
+            });
+        } else {
+             console.warn("Elemen sidebar atau toggle button tidak ditemukan sepenuhnya.");
+        }
+
+        // Filter button listeners (for Antrian Pasien card)
+        if (filterTodayButton) {
+             filterTodayButton.addEventListener('click', () => displayAppointments('today'));
+        }
+        if (filterAllButton) {
+             filterAllButton.addEventListener('click', () => displayAppointments('all'));
+        }
+
+
+        // Edit Schedule button listener (Placeholder functionality)
+        if (editScheduleBtn) {
+            editScheduleBtn.addEventListener('click', () => {
+                // Show message to contact admin
+                Swal.fire({
+                    title: 'Ubah Jadwal Praktik',
+                    html: 'Untuk mengubah jadwal praktik Anda, silakan hubungi administrator sistem.<br><br>Admin akan membantu Anda melakukan perubahan yang diperlukan.',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+
+        // Start Custom Timer button listener
+        if (startTimerBtn) {
+            startTimerBtn.addEventListener('click', () => startCustomTimer()); // Call without prefill args
+        }
+
+
         // Start the main initialization process when the DOM is ready
         document.addEventListener('DOMContentLoaded', main);
+
+        // Clean up intervals when leaving the page
+        window.addEventListener('beforeunload', () => {
+            if (scheduleCountdownInterval) {
+                clearInterval(scheduleCountdownInterval);
+            }
+            if (customTimerInterval) {
+                clearInterval(customTimerInterval);
+            }
+        });
+
+        // Handle window resize for sidebar behavior
+        window.addEventListener('resize', () => {
+             const isMobile = window.innerWidth < 768;
+             if (!isMobile) {
+                 // On desktop, ensure sidebar is not in mobile 'open-mobile' state
+                 mainSidebar.classList.remove('open-mobile');
+                 sidebarOverlay.classList.add('hidden');
+                 document.body.classList.remove('overflow-hidden-custom');
+                 // Apply desktop margin based on collapsed state
+                 if (!mainSidebar.classList.contains('collapsed')) {
+                      mainContent.style.marginLeft = 'var(--sidebar-width)';
+                 } else {
+                      mainContent.style.marginLeft = '0';
+                 }
+             } else {
+                 // On mobile, remove desktop margin
+                 mainContent.style.marginLeft = '0';
+             }
+        });
+
 
     </script>
 </body>

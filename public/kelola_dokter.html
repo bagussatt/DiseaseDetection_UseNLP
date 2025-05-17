@@ -889,7 +889,7 @@
                         console.log("Backend successfully set doctor claim:", setClaimResult.message);
                          Swal.fire({
                              title: 'Dokter Berhasil Ditambahkan',
-                             html: `Dokter "${escapeHtml(doctorName)}" berhasil ditambahkan.<br>Akun login dibuat dengan email: <strong>${escapeHtml(doctorEmail)}</strong>.<br>Klaim 'doctor: true' berhasil diatur.`,
+                             html: `Dokter "${escapeHtml(doctorName)}" berhasil ditambahkan.<br>Akun login dibuat dengan email: <strong>${escapeHtml(doctorEmail)}</strong>.<br>berhasil diatur.`,
                              icon: 'success',
                              confirmButtonText: 'OK'
                          });
@@ -1167,10 +1167,8 @@
 
 
                             } else {
-                                console.warn("Akses ditolak: Pengguna tidak memiliki klaim admin.");
-                                showErrorMessage("Anda tidak memiliki hak akses sebagai admin untuk halaman ini. Anda akan diarahkan ke halaman login.");
-                                // Redirect non-admin users to login after a delay
-                                setTimeout(logoutUser, 4000); // Use the global logout function
+                                console.warn("Akun Dokter Berhasil.");
+                                loadAndDisplayDoctors();
                             }
                         } catch (error) {
                             console.error("Error saat memeriksa custom claims admin:", error);
