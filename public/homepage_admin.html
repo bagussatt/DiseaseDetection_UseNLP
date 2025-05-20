@@ -36,8 +36,6 @@
             --sidebar-width: 16rem; /* 256px */
             --indigo-color: #6366f1; /* Tailwind indigo-500 */
             --purple-color: #9333ea; /* Tailwind purple-600 */
-            /* --main-sidebar-gap: 1rem; */ /* Variabel ini tidak lagi digunakan */
-
 
             /* Status Indicator Colors */
             --status-reg-color: #3498db; /* Blue */
@@ -130,23 +128,18 @@
         /* Styling Status Indicator in Middle Column */
         .status-indicator-bar {
             display: flex;
-            /* Mengubah justify-content agar memenuhi ruang */
             justify-content: space-around; /* Atau space-between */
             align-items: center;
-            /* Mengurangi gap antar status item */
             gap: 0.3rem; /* Space between status chips */
             margin-bottom: 1rem; /* Mengurangi space below the status bar */
             padding-bottom: 0.75rem; /* Mengurangi padding below the bar */
             border-bottom: 1px solid var(--border-color); /* Separator line */
-             /* Memastikan memenuhi lebar kontainer */
             width: 100%;
         }
 
         .status-indicator-bar .status-item {
-            /* flex-grow: 1; Ditambahkan untuk mengisi ruang */
             flex-grow: 1;
             text-align: center; /* Center text within the item */
-            /* Menyesuaikan padding dan font size */
             padding: 0.2rem 0.5rem;
             border-radius: 0.25rem; /* Sedikit lebih kecil */
             font-size: 0.75rem; /* Smaller font for indicators */
@@ -179,19 +172,19 @@
             color: white;
             border-color: var(--status-selesai-color);
         }
-          /* Dark mode specific active colors */
-          html.dark .status-indicator-bar .status-item.active.status-registrasi-active {
-              background-color: var(--status-reg-color);
-              border-color: var(--status-reg-color);
-          }
-          html.dark .status-indicator-bar .status-item.active.status-checkin-active {
-              background-color: var(--status-checkin-color);
-              border-color: var(--status-checkin-color);
-          }
-          html.dark .status-indicator-bar .status-item.active.status-selesai-active {
-              background-color: var(--status-selesai-color);
-              border-color: var(--status-selesai-color);
-          }
+        /* Dark mode specific active colors */
+        html.dark .status-indicator-bar .status-item.active.status-registrasi-active {
+            background-color: var(--status-reg-color);
+            border-color: var(--status-reg-color);
+        }
+        html.dark .status-indicator-bar .status-item.active.status-checkin-active {
+            background-color: var(--status-checkin-color);
+            border-color: var(--status-checkin-color);
+        }
+        html.dark .status-indicator-bar .status-item.active.status-selesai-active {
+            background-color: var(--status-selesai-color);
+            border-color: var(--status-selesai-color);
+        }
 
 
         /* Styling Tombol Filter Sidebar */
@@ -230,10 +223,10 @@
             background-color: var(--status-selesai-color);
             border-color: var(--status-selesai-color);
         }
-          html.dark .filter-btn.status-selesai-filter.active:hover {
-              background-color: color-mix(in srgb, var(--status-selesai-color) 80%, black);
-              border-color: color-mix(in srgb, var(--status-selesai-color) 80%, black);
-          }
+        html.dark .filter-btn.status-selesai-filter.active:hover {
+            background-color: color-mix(in srgb, var(--status-selesai-color) 80%, black);
+            border-color: color-mix(in srgb, var(--status-selesai-color) 80%, black);
+        }
 
 
         /* Styling Pesan Loading & Error */
@@ -290,25 +283,25 @@
         #filterSidebar.collapsed { width: 0; padding-left: 0; padding-right: 0; overflow: hidden; border-right: none; transform: translateX(-100%); }
 
         @media (max-width: 767px) {
-              #filterSidebar { position: fixed; top: 4rem; bottom: 0; left: 0; transform: translateX(-100%); width: var(--sidebar-width); height: calc(100vh - 4rem); padding: 1.25rem; }
-              #filterSidebar.open-mobile { transform: translateX(0); }
-              #filterSidebar.collapsed { transform: translateX(-100%); } /* Tetap ada untuk mobile */
-              /* On mobile, main content never has left margin from sidebar */
-              main { margin-left: 0 !important; } /* Pastikan margin kiri 0 di mobile */
+            #filterSidebar { position: fixed; top: 4rem; bottom: 0; left: 0; transform: translateX(-100%); width: var(--sidebar-width); height: calc(100vh - 4rem); padding: 1.25rem; }
+            #filterSidebar.open-mobile { transform: translateX(0); }
+            #filterSidebar.collapsed { transform: translateX(-100%); } /* Tetap ada untuk mobile */
+            /* On mobile, main content never has left margin from sidebar */
+            main { margin-left: 0 !important; } /* Pastikan margin kiri 0 di mobile */
         }
         @media (min-width: 768px) {
-              /* Sidebar bisa dibuka/tutup di desktop */
-              #filterSidebar { position: sticky; top: 4rem; bottom: 0; left: 0; width: var(--sidebar-width); height: calc(100vh - 4rem); padding: 1.5rem; z-index: 10; box-shadow: none; transition: width 0.3s ease-in-out, transform 0.3s ease-in-out, padding 0.3s ease-in-out, border 0.3s ease-in-out; }
-              #filterSidebar.collapsed { width: 0; padding-left: 0; padding-right: 0; overflow: hidden; border-right: none; transform: translateX(-100%); }
+            /* Sidebar bisa dibuka/tutup di desktop */
+            #filterSidebar { position: sticky; top: 4rem; bottom: 0; left: 0; width: var(--sidebar-width); height: calc(100vh - 4rem); padding: 1.5rem; z-index: 10; box-shadow: none; transition: width 0.3s ease-in-out, transform 0.3s ease-in-out, padding 0.3s ease-in-out, border 0.3s ease-in-out; }
+            #filterSidebar.collapsed { width: 0; padding-left: 0; padding-right: 0; overflow: hidden; border-right: none; transform: translateX(-100%); }
 
-              /* Apply desktop margin based on collapsed state */
-              main {
-                  transition: margin-left 0.3s ease-in-out; /* Keep transition for smooth effect */
-                  margin-left: var(--sidebar-width); /* Default margin when sidebar is NOT collapsed */
-              }
-              #filterSidebar.collapsed + main { /* Select main when it immediately follows a collapsed sidebar */
-                  margin-left: 0;
-              }
+            /* Apply desktop margin based on collapsed state */
+            main {
+                transition: margin-left 0.3s ease-in-out; /* Keep transition for smooth effect */
+                margin-left: var(--sidebar-width); /* Default margin when sidebar is NOT collapsed */
+            }
+            #filterSidebar.collapsed + main { /* Select main when it immediately follows a collapsed sidebar */
+                margin-left: 0;
+            }
         }
 
         html.dark #filterSidebar { box-shadow: 2px 0 15px -3px rgba(0,0,0,0.2); }
@@ -332,16 +325,14 @@
         @keyframes zoomInModal { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         /* Table styling */
-        #hospitalListTable, #detectionHistoryTable { width: 100%; border-collapse: collapse; }
-        #hospitalListTable th, #hospitalListTable td, #detectionHistoryTable th, #detectionHistoryTable td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; vertical-align: top; }
-        #hospitalListTable th, #detectionHistoryTable th { font-weight: 600; color: var(--text-primary); background-color: var(--bg-muted); }
-        #hospitalListTable td { color: var(--text-secondary); }
-        #detectionHistoryTable td { color: var(--text-secondary); } /* Ensure history table cells use secondary color */
-        #hospitalListTable tr:last-child td, #detectionHistoryTable tr:last-child td { border-bottom: none; }
-        #hospitalListTable .action-buttons button { padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem; }
-        html.dark #hospitalListTable th, html.dark #detectionHistoryTable th { background-color: var(--bg-muted); }
-        html.dark #hospitalListTable td, html.dark #detectionHistoryTable td { color: var(--text-secondary); }
-        html.dark #detectionHistoryTable td { color: var(--text-secondary); }
+        #hospitalListTable, #detectionHistoryTable, #doctorListTable { width: 100%; border-collapse: collapse; }
+        #hospitalListTable th, #hospitalListTable td, #detectionHistoryTable th, #detectionHistoryTable td, #doctorListTable th, #doctorListTable td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; vertical-align: top; }
+        #hospitalListTable th, #detectionHistoryTable th, #doctorListTable th { font-weight: 600; color: var(--text-primary); background-color: var(--bg-muted); }
+        #hospitalListTable td, #detectionHistoryTable td, #doctorListTable td { color: var(--text-secondary); }
+        #hospitalListTable tr:last-child td, #detectionHistoryTable tr:last-child td, #doctorListTable tr:last-child td { border-bottom: none; }
+        #hospitalListTable .action-buttons button, #doctorListTable .action-buttons button { padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem; }
+        html.dark #hospitalListTable th, html.dark #detectionHistoryTable th, html.dark #doctorListTable th { background-color: var(--bg-muted); }
+        html.dark #hospitalListTable td, html.dark #detectionHistoryTable td, html.dark #doctorListTable td { color: var(--text-secondary); }
         .table-container { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background-color: var(--bg-secondary); box-shadow: var(--card-shadow); }
         html.dark .table-container { background-color: var(--bg-secondary); }
 
@@ -367,10 +358,10 @@
         }
         #detectionHistorySection .loading-message,
         #detectionHistorySection .no-data-message {
-              text-align: center;
-              padding: 2rem;
-              color: var(--text-muted);
-              font-style: italic;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-style: italic;
         }
         #detectionHistorySection .loading-message i {
             font-size: 2rem;
@@ -390,27 +381,26 @@
             font-size: 0.875rem; /* Ensure consistent font size */
             color: var(--text-secondary); /* Use secondary text color */
         }
-          /* Added specific styling for the diagnosis scroll container within reservation cards */
-          .reservation-card-horizontal .diagnosis-scroll-container {
-              max-height: 120px; /* Keep max height and scrolling for these sections */
-              overflow-y: auto;
-              border: 1px solid var(--border-color);
-              border-radius: 0.375rem;
-              padding: 0.5rem;
-              background-color: var(--bg-muted);
-          }
-          html.dark .reservation-card-horizontal .diagnosis-scroll-container {
-              background-color: var(--bg-primary);
-          }
-          .reservation-card-horizontal .diagnosis-scroll-container pre {
-              background-color: transparent !important;
-              border: none !important;
-              padding: 0 !important;
-              max-height: none !important;
-              font-size: 0.875rem;
-              color: var(--text-primary); /* Use primary text color for content */
-          }
-
+        /* Added specific styling for the diagnosis scroll container within reservation cards */
+        .reservation-card-horizontal .diagnosis-scroll-container {
+            max-height: 120px; /* Keep max height and scrolling for these sections */
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            background-color: var(--bg-muted);
+        }
+        html.dark .reservation-card-horizontal .diagnosis-scroll-container {
+            background-color: var(--bg-primary);
+        }
+        .reservation-card-horizontal .diagnosis-scroll-container pre {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            max-height: none !important;
+            font-size: 0.875rem;
+            color: var(--text-primary); /* Use primary text color for content */
+        }
 
     </style>
 </head>
@@ -460,9 +450,9 @@
                 <button id="openHospitalCrudModalBtn" class="filter-btn bg-indigo-500-custom">
                     <i class="fas fa-hospital-user"></i> Kelola Rumah Sakit
                 </button>
-                <a href="kelola_dokter.html" class="filter-btn btn-kelola-dokter">
+                <button id="openDoctorCrudModalBtn" class="filter-btn btn-kelola-dokter">
                     <i class="fas fa-user-md"></i> Kelola Dokter
-                </a>
+                </button>
                 <button id="scrollToDetectionHistoryBtn" class="filter-btn bg-purple-600-custom">
                     <i class="fas fa-history"></i> Histori Deteksi
                 </button>
@@ -550,12 +540,12 @@
                     <div>
                         <label for="hospitalNameInput" class="block">Nama Lengkap RS <span class="text-red-500">*</span></label>
                         <input type="text" id="hospitalNameInput" placeholder="Contoh: RS Sehat Sentosa" required
-                                    class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
+                                class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
                     </div>
                     <div>
                         <label for="hospitalAbbrInput" class="block">Singkatan (untuk Opsi) <span class="text-red-500">*</span></label>
                         <input type="text" id="hospitalAbbrInput" placeholder="Contoh: RS Sentosa" required
-                                    class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
+                                class="block w-full focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)]">
                     </div>
                     <div class="flex justify-end pt-4 space-x-3 border-t mt-5" style="border-color: var(--border-color);">
                         <button type="button" id="cancelHospitalEditBtn" class="action-btn px-4 py-2 hidden">
@@ -569,6 +559,102 @@
             </div>
         </div>
     </div>
+
+    <div id="doctorCrudModal" class="modal fixed inset-0 z-50 items-center justify-center p-4">
+        <div class="modal-overlay fixed inset-0 cursor-pointer"></div>
+        <div class="modal-content relative w-full max-w-4xl p-6 rounded-lg shadow-xl overflow-y-auto">
+            <div class="flex justify-between items-center pb-3 border-b mb-4" style="border-color: var(--border-color);">
+                <h3 class="text-lg font-semibold" style="color: var(--text-primary);">Kelola Data Dokter</h3>
+                <button id="closeDoctorCrudModalBtn" class="text-xl font-bold hover:text-red-500 transition-colors duration-150" style="color: var(--text-muted);">&times;</button>
+            </div>
+
+            <div class="mb-6">
+                <h4 id="doctorFormTitle" class="text-md font-semibold mb-3" style="color: var(--text-primary);">Tambah Dokter Baru</h4>
+                <form id="doctorCrudForm" class="space-y-4">
+                    <input type="hidden" id="doctorId">
+                    <input type="hidden" id="doctorUid">
+                    <div>
+                        <label for="doctorNameInput" class="block">Nama Dokter <span class="text-red-500">*</span></label>
+                        <input type="text" id="doctorNameInput" placeholder="Masukkan nama dokter" required>
+                    </div>
+                    <div>
+                        <label for="doctorSpecializationInput" class="block">Spesialisasi (Poli) <span class="text-red-500">*</span></label>
+                        <input type="text" id="doctorSpecializationInput" placeholder="Contoh: Umum, Gigi, Anak" required>
+                    </div>
+                    <div>
+                        <label for="doctorHospitalSelect" class="block">Rumah Sakit <span class="text-red-500">*</span></label>
+                        <select id="doctorHospitalSelect" required>
+                            <option value="">-- Pilih Rumah Sakit --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="doctorPracticeDaysInput" class="block">Hari Praktik <span class="text-red-500">*</span></label>
+                        <input type="text" id="doctorPracticeDaysInput" placeholder="Contoh: Senin-Jumat, Sabtu" required>
+                        <p class="text-xs mt-1" style="color: var(--text-muted);">Masukkan format hari praktik (misal: Senin-Jumat, Sabtu).</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <label for="doctorStartTimeInput" class="block">Jam Mulai <span class="text-red-500">*</span></label>
+                            <input type="time" id="doctorStartTimeInput" required>
+                        </div>
+                        <div class="flex-1">
+                            <label for="doctorEndTimeInput" class="block">Jam Selesai <span class="text-red-500">*</span></label>
+                            <input type="time" id="doctorEndTimeInput" required>
+                        </div>
+                    </div>
+
+                    <div id="authFields" class="space-y-4 pt-4 border-t" style="border-color: var(--border-color);">
+                        <h3 class="text-base font-semibold" style="color: var(--text-primary);">Informasi Akun Login</h3>
+                        <div>
+                            <label for="doctorEmailInput" class="block">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="doctorEmailInput" placeholder="email.dokter@example.com">
+                        </div>
+                        <div>
+                            <label for="doctorPasswordInput" class="block">Password <span class="text-red-500">*</span></label>
+                            <input type="password" id="doctorPasswordInput" placeholder="Buat password">
+                        </div>
+                        <p class="text-xs" style="color: var(--text-muted);">Email dan password ini akan digunakan dokter untuk login.</p>
+                        <p class="text-xs font-semibold text-orange-600 dark:text-orange-400">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Sistem akan otomatis mencoba mengatur klaim 'doctor: true' di backend setelah akun dibuat.
+                        </p>
+                    </div>
+
+                    <div class="flex justify-end pt-4 space-x-3 border-t mt-5" style="border-color: var(--border-color);">
+                        <button type="button" id="cancelDoctorEditBtn" class="action-btn px-4 py-2 hidden">
+                            Batal Edit
+                        </button>
+                        <button type="submit" id="doctorSubmitBtn" class="action-btn btn-tambah px-4 py-2 flex items-center justify-center">
+                            <i class="fas fa-plus mr-2"></i> Tambah Dokter
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="mt-8">
+                <h4 class="text-md font-semibold mb-3" style="color: var(--text-primary);">Daftar Dokter</h4>
+                <div id="doctorListContainer" class="table-container">
+                    <table id="doctorListTable">
+                        <thead>
+                            <tr>
+                                <th>Nama Dokter</th>
+                                <th>Spesialisasi</th>
+                                <th>Rumah Sakit</th>
+                                <th>Hari Praktik</th>
+                                <th>Jam Mulai</th>
+                                <th>Jam Selesai</th>
+                                <th class="text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorListTableBody">
+                            <tr><td colspan="7" class="text-center py-4 italic" style="color: var(--text-muted);">Memuat data dokter...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="noDoctorData" class="text-center py-4 italic hidden" style="color: var(--text-muted);">Belum ada data dokter.</p>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
@@ -622,6 +708,33 @@
         const detectionHistoryTableBody = document.getElementById('detectionHistoryTableBody'); // tbody tabel histori
         const noDetectionHistoryDataMsg = document.getElementById('noDetectionHistoryData'); // Pesan jika tabel histori kosong
 
+        // Elemen UI Modal CRUD Dokter (BARU)
+        const doctorCrudModal = document.getElementById('doctorCrudModal');
+        const openDoctorCrudModalBtn = document.getElementById('openDoctorCrudModalBtn'); // Tombol di sidebar
+        const closeDoctorCrudModalBtn = document.getElementById('closeDoctorCrudModalBtn'); // Tombol X di modal
+        const doctorModalOverlay = doctorCrudModal ? doctorCrudModal.querySelector('.modal-overlay') : null;
+
+        // Elemen Form Dokter (dipindahkan ke dalam modal)
+        const doctorCrudForm = document.getElementById('doctorCrudForm');
+        const doctorFormTitle = document.getElementById('doctorFormTitle');
+        const doctorIdInput = document.getElementById('doctorId');
+        const doctorUidInput = document.getElementById('doctorUid');
+        const doctorNameInput = document.getElementById('doctorNameInput');
+        const doctorSpecializationInput = document.getElementById('doctorSpecializationInput');
+        const doctorHospitalSelect = document.getElementById('doctorHospitalSelect');
+        const doctorPracticeDaysInput = document.getElementById('doctorPracticeDaysInput');
+        const doctorStartTimeInput = document.getElementById('doctorStartTimeInput');
+        const doctorEndTimeInput = document.getElementById('doctorEndTimeInput');
+        const doctorEmailInput = document.getElementById('doctorEmailInput');
+        const doctorPasswordInput = document.getElementById('doctorPasswordInput');
+        const authFieldsDiv = document.getElementById('authFields');
+
+        const doctorSubmitBtn = document.getElementById('doctorSubmitBtn');
+        const cancelDoctorEditBtn = document.getElementById('cancelDoctorEditBtn');
+
+        const doctorListTableBody = document.getElementById('doctorListTableBody');
+        const noDoctorDataMsg = document.getElementById('noDoctorData');
+
 
         // --- Fungsi Utilitas UI ---
         /** Menampilkan atau menyembunyikan pesan loading */
@@ -642,7 +755,7 @@
                 showLoading(false); // Sembunyikan loading jika ada error
             } else {
                 console.error("Tidak dapat menampilkan pesan error:", message);
-                alert("Terjadi kesalahan: " + message); // Fallback alert
+                Swal.fire('Error', message, 'error'); // Fallback SweetAlert2
             }
         }
 
@@ -738,7 +851,7 @@
 
                     ${data.catatan && data.catatan !== '-' ? `
                     <div class="mt-0 pt-3 border-t flex-shrink-0" style="border-color: var(--border-color);">
-                       
+                        
                     </div>` : ''}
                 </div>
                 <div class="flex-shrink-0 flex flex-col items-stretch lg:items-end justify-between space-y-3 w-full lg:w-auto pt-4 lg:pt-0 lg:pl-4 lg:basis-[25%]" >
@@ -1039,7 +1152,7 @@
                             if (hospitalData && typeof hospitalData === 'object') {
                                 hospitalsArray.push({ id: hospitalId, ...hospitalData });
                             } else {
-                               console.warn("Mengabaikan entri rumah sakit tidak valid:", hospitalId, hospitalData);
+                                console.warn("Mengabaikan entri rumah sakit tidak valid:", hospitalId, hospitalData);
                             }
                     });
 
@@ -1157,31 +1270,31 @@
 
         /** Konfirmasi sebelum menghapus rumah sakit */
         window.confirmDeleteHospital = (id, name) => {
-              if (!firebaseDb) { Swal.fire('Error Koneksi', 'Koneksi database belum siap.', 'error'); return; }
-              Swal.fire({
-                  title: 'Hapus Rumah Sakit?',
-                  html: `Anda yakin ingin menghapus <strong>${escapeHtml(name)}</strong>? Tindakan ini tidak dapat diurungkan.`,
-                  icon: 'warning', showCancelButton: true,
-                  confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger-color').trim(),
-                  cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
-                  confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal'
-              }).then(async (result) => {
-                  if (result.isConfirmed) {
-                      console.log(`Menghapus RS ID: ${id}`);
-                      try {
-                          await firebaseDb.ref(`daftar_rumah_sakit/${id}`).remove();
-                          Swal.fire('Dihapus!', `Rumah sakit "${escapeHtml(name)}" telah dihapus.`, 'success');
-                          await loadAndDisplayHospitals();
-                          if (hospitalEditIdInput.value === id) { // Jika yang dihapus sedang diedit
-                              resetHospitalForm();
-                              }
-                      } catch (error) {
-                              console.error(`Gagal menghapus RS ID ${id}:`, error);
-                              Swal.fire('Gagal!', `Gagal menghapus rumah sakit: ${error.message}`, 'error');
-                      }
-                  }
-              });
-          }
+             if (!firebaseDb) { Swal.fire('Error Koneksi', 'Koneksi database belum siap.', 'error'); return; }
+             Swal.fire({
+                 title: 'Hapus Rumah Sakit?',
+                 html: `Anda yakin ingin menghapus <strong>${escapeHtml(name)}</strong>? Tindakan ini tidak dapat diurungkan.`,
+                 icon: 'warning', showCancelButton: true,
+                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger-color').trim(),
+                 cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                 confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal'
+             }).then(async (result) => {
+                 if (result.isConfirmed) {
+                     console.log(`Menghapus RS ID: ${id}`);
+                     try {
+                         await firebaseDb.ref(`daftar_rumah_sakit/${id}`).remove();
+                         Swal.fire('Dihapus!', `Rumah sakit "${escapeHtml(name)}" telah dihapus.`, 'success');
+                         await loadAndDisplayHospitals();
+                         if (hospitalEditIdInput.value === id) { // Jika yang dihapus sedang diedit
+                             resetHospitalForm();
+                             }
+                     } catch (error) {
+                             console.error(`Gagal menghapus RS ID ${id}:`, error);
+                             Swal.fire('Gagal!', `Gagal menghapus rumah sakit: ${error.message}`, 'error');
+                     }
+                 }
+             });
+         }
 
 
         // --- Fungsi Histori Deteksi ---
@@ -1224,8 +1337,8 @@
                                 if (!dateStr) return new Date(0);
                                 const parts = dateStr.split('/');
                                 if (parts.length === 3) {
-                                        const [day, month, year] = parts.map(Number);
-                                        return new Date(year, month - 1, day);
+                                    const [day, month, year] = parts.map(Number);
+                                    return new Date(year, month - 1, day);
                                 }
                                 const dateObj = new Date(dateStr);
                                 return isNaN(dateObj.getTime()) ? new Date(0) : dateObj;
@@ -1303,12 +1416,12 @@
 
         /** Menampilkan bagian Histori Deteksi dan menyembunyikan bagian Reservasi */
         function showDetectionHistorySection() {
-              if (reservationSection && detectionHistorySection) {
-                  reservationSection.classList.add('hidden');
-                  detectionHistorySection.classList.remove('hidden');
-                  console.log("Showing History Section, hiding Reservation Section.");
-                  loadAndDisplayDetectionHistory();
-              }
+             if (reservationSection && detectionHistorySection) {
+                 reservationSection.classList.add('hidden');
+                 detectionHistorySection.classList.remove('hidden');
+                 console.log("Showing History Section, hiding Reservation Section.");
+                 loadAndDisplayDetectionHistory();
+             }
             }
 
 
@@ -1316,17 +1429,17 @@
 
         /** Event Listener untuk Tombol Filter Status */
         function addStatusFilterListeners() {
-              statusFilterButtons = document.querySelectorAll('.status-filter-btn'); // Get buttons after DOM is ready
-              statusFilterButtons.forEach(button => {
-                  button.addEventListener('click', () => {
-                      showReservationSection();
+             statusFilterButtons = document.querySelectorAll('.status-filter-btn'); // Get buttons after DOM is ready
+             statusFilterButtons.forEach(button => {
+                 button.addEventListener('click', () => {
+                     showReservationSection();
 
-                      statusFilterButtons.forEach(btn => btn.classList.remove('active'));
-                      button.classList.add('active');
-                      console.log(`Filter status diubah menjadi: ${button.getAttribute('data-status')}. Displaying reservations.`);
-                      displayFilteredReservations();
-                  });
-              });
+                     statusFilterButtons.forEach(btn => btn.classList.remove('active'));
+                     button.classList.add('active');
+                     console.log(`Filter status diubah menjadi: ${button.getAttribute('data-status')}. Displaying reservations.`);
+                     displayFilteredReservations();
+                 });
+             });
         }
 
 
@@ -1334,7 +1447,7 @@
         if (themeToggleButton) {
             themeToggleButton.addEventListener('click', toggleTheme);
         } else {
-              console.warn("Tombol tema tidak ditemukan.");
+             console.warn("Tombol tema tidak ditemukan.");
         }
 
         /** Event Listener dan Logika untuk Toggle Sidebar */
@@ -1352,26 +1465,27 @@
                     // Di desktop, toggle kelas collapsed pada sidebar
                     filterSidebar.classList.toggle('collapsed');
                     // Toggle kelas sidebar-collapsed-desktop pada mainContent
-                    mainContent.classList.toggle('sidebar-collapsed-desktop');
+                    // Note: mainContent's margin is now controlled by CSS selector #filterSidebar.collapsed + main
+                    // So, no direct class toggle on mainContent needed here.
                     console.log("Sidebar toggled (Desktop). Collapsed:", filterSidebar.classList.contains('collapsed'));
                 }
             });
 
             if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', () => {
-                      if (window.innerWidth < 768) {
-                          filterSidebar.classList.remove('open-mobile');
-                          sidebarOverlay.classList.add('hidden');
-                          document.body.classList.remove('overflow-hidden-custom');
-                          console.log("Mobile sidebar closed via overlay click.");
-                      }
+                     if (window.innerWidth < 768) {
+                         filterSidebar.classList.remove('open-mobile');
+                         sidebarOverlay.classList.add('hidden');
+                         document.body.classList.remove('overflow-hidden-custom');
+                         console.log("Mobile sidebar closed via overlay click.");
+                     }
                     });
             }
         } else {
             console.warn("Elemen penting untuk toggle sidebar tidak ditemukan.");
         }
 
-        // --- Modal Event Listeners ---
+        // --- Modal RS Event Listeners ---
         /** Membuka modal CRUD RS */
         function openHospitalCrudModal() {
             if (hospitalCrudModal) {
@@ -1388,9 +1502,9 @@
         /** Menutup modal CRUD RS */
         function closeHospitalCrudModal() {
             if (hospitalCrudModal) {
-                  hospitalCrudModal.classList.remove('active');
-                  document.body.classList.remove('overflow-hidden-custom');
-                  console.log("Modal CRUD RS ditutup.");
+                 hospitalCrudModal.classList.remove('active');
+                 document.body.classList.remove('overflow-hidden-custom');
+                 console.log("Modal CRUD RS ditutup.");
             }
         }
 
@@ -1398,7 +1512,7 @@
         if (openHospitalCrudModalBtn) {
             openHospitalCrudModalBtn.addEventListener('click', openHospitalCrudModal);
         } else {
-              console.warn("Tombol #openHospitalCrudModalBtn tidak ditemukan.");
+             console.warn("Tombol #openHospitalCrudModalBtn tidak ditemukan.");
         }
 
         // Listener untuk tombol close (X) di modal RS
@@ -1408,7 +1522,7 @@
 
         // Listener untuk tombol batal di form modal RS
         if (cancelHospitalEditBtn) {
-              cancelHospitalEditBtn.addEventListener('click', resetHospitalForm);
+             cancelHospitalEditBtn.addEventListener('click', resetHospitalForm);
         }
 
         // Listener untuk klik overlay modal RS
@@ -1420,8 +1534,507 @@
         if (hospitalCrudForm) {
             hospitalCrudForm.addEventListener('submit', handleHospitalFormSubmit);
         } else {
-              console.warn("Form #hospitalCrudForm di dalam modal tidak ditemukan.");
+             console.warn("Form #hospitalCrudForm di dalam modal tidak ditemukan.");
         }
+
+        // --- Modal Dokter Event Listeners (BARU) ---
+
+        /** Membuka modal CRUD Dokter */
+        function openDoctorCrudModal() {
+            if (doctorCrudModal) {
+                doctorCrudModal.classList.add('active');
+                document.body.classList.add('overflow-hidden-custom');
+                console.log("Modal CRUD Dokter dibuka.");
+                populateHospitalSelect(); // Muat ulang dropdown RS di form dokter
+                loadAndDisplayDoctors(); // Muat daftar dokter saat modal dibuka
+                resetDoctorForm(); // Pastikan form dalam mode tambah saat dibuka
+            } else {
+                console.error("Elemen modal #doctorCrudModal tidak ditemukan.");
+            }
+        }
+
+        /** Menutup modal CRUD Dokter */
+        function closeDoctorCrudModal() {
+            if (doctorCrudModal) {
+                doctorCrudModal.classList.remove('active');
+                document.body.classList.remove('overflow-hidden-custom');
+                console.log("Modal CRUD Dokter ditutup.");
+            }
+        }
+
+        // Listener untuk tombol buka modal Dokter
+        if (openDoctorCrudModalBtn) {
+            openDoctorCrudModalBtn.addEventListener('click', openDoctorCrudModal);
+        } else {
+            console.warn("Tombol #openDoctorCrudModalBtn tidak ditemukan.");
+        }
+
+        // Listener untuk tombol close (X) di modal Dokter
+        if (closeDoctorCrudModalBtn) {
+            closeDoctorCrudModalBtn.addEventListener('click', closeDoctorCrudModal);
+        }
+
+        // Listener untuk tombol batal di form modal Dokter
+        if (cancelDoctorEditBtn) {
+            cancelDoctorEditBtn.addEventListener('click', resetDoctorForm);
+        }
+
+        // Listener untuk klik overlay modal Dokter
+        if (doctorModalOverlay) {
+            doctorModalOverlay.addEventListener('click', closeDoctorCrudModal);
+        }
+
+        // Listener untuk submit form CRUD Dokter
+        if (doctorCrudForm) {
+            doctorCrudForm.addEventListener('submit', handleDoctorFormSubmit);
+        } else {
+            console.warn("Form #doctorCrudForm di dalam modal tidak ditemukan.");
+        }
+
+
+        // --- Fungsi CRUD Dokter (diadaptasi untuk modal) ---
+
+        /**
+         * Populates the hospital select dropdown from Firebase Realtime Database.
+         */
+        async function populateHospitalSelect() {
+            if (!firebaseDb) { console.error("Database belum siap untuk mengisi dropdown RS."); return; }
+            if (!doctorHospitalSelect) { console.error("Elemen #doctorHospitalSelect tidak ditemukan."); return; }
+
+            // Show loading state
+            doctorHospitalSelect.innerHTML = '<option value="">-- Memuat Rumah Sakit --</option>';
+            doctorHospitalSelect.disabled = true; // Disable while loading
+
+            const hospitalRef = firebaseDb.ref('daftar_rumah_sakit');
+
+            try {
+                const snapshot = await hospitalRef.once('value');
+                // Clear previous options and add default
+                doctorHospitalSelect.innerHTML = '<option value="">-- Pilih Rumah Sakit --</option>';
+                doctorHospitalSelect.disabled = false; // Enable after loading
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const hospitalId = childSnapshot.key;
+                        const hospitalData = childSnapshot.val();
+                        const option = document.createElement('option');
+                        option.value = hospitalId;
+                        // Use nama or singkatan, fallback to key if needed
+                        option.textContent = escapeHtml(hospitalData.nama || hospitalData.singkatan || hospitalId);
+                        doctorHospitalSelect.appendChild(option);
+                    });
+                } else {
+                    // No hospitals found
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.textContent = "-- Tidak ada Rumah Sakit tersedia --";
+                    doctorHospitalSelect.appendChild(option);
+                    doctorHospitalSelect.disabled = true; // Keep disabled if no options
+                }
+            } catch (error) {
+                console.error("Gagal memuat daftar rumah sakit untuk dropdown:", error);
+                doctorHospitalSelect.innerHTML = '<option value="">-- Gagal memuat RS --</option>';
+                doctorHospitalSelect.disabled = true; // Keep disabled on error
+                Swal.fire('Error', 'Gagal memuat daftar rumah sakit untuk pilihan dokter.', 'error');
+            }
+        }
+
+        /**
+         * Loads and displays the list of doctors from Firebase Realtime Database.
+         * Doctors are stored using their Auth UID as the key.
+         */
+        async function loadAndDisplayDoctors() {
+            // Adjusted colspan to 7 because we implicitly link to Auth UID
+            if (!firebaseDb) { console.error("Database belum siap untuk memuat dokter."); doctorListTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 italic" style="color: var(--text-muted);">Memuat data dokter...</td></tr>`; noDoctorDataMsg.classList.add('hidden'); return; }
+            if (!doctorListTableBody || !noDoctorDataMsg) { console.error("Elemen tabel dokter atau pesan 'no data' tidak ditemukan."); return; }
+
+            // Show loading state in table
+            doctorListTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 italic" style="color: var(--text-muted);">Memuat data dokter...</td></tr>`; // Adjusted colspan
+            noDoctorDataMsg.classList.add('hidden'); // Hide "no data" message
+
+            // Doctors are now stored under 'daftar_dokter' using UID as key
+            const doctorsRef = firebaseDb.ref('daftar_dokter');
+
+            try {
+                const snapshot = await doctorsRef.once('value');
+                doctorListTableBody.innerHTML = ''; // Clear loading message
+
+                if (snapshot.exists()) {
+                    let doctorsExist = false;
+                    const doctorsArray = [];
+                    snapshot.forEach((childSnapshot) => {
+                        doctorsExist = true;
+                        const doctorUid = childSnapshot.key; // The key is the UID
+                        const doctorData = childSnapshot.val();
+                        if (doctorData && typeof doctorData === 'object') {
+                            doctorsArray.push({ id: doctorUid, ...doctorData });
+                        } else {
+                            console.warn("Mengabaikan entri dokter tidak valid:", doctorUid, doctorData);
+                        }
+                    });
+
+                    // Sort doctors by name
+                    doctorsArray.sort((a, b) => {
+                        const nameA = (a.nama || '').toLowerCase();
+                        const nameB = (b.nama || '').toLowerCase();
+                        if (nameA < nameB) return -1;
+                        if (nameA > nameB) return 1;
+                        return 0;
+                    });
+
+
+                    doctorsArray.forEach(doctor => {
+                        const tr = document.createElement('tr');
+                        // Pass the UID to the editDoctor function
+                        tr.innerHTML = `
+                            <td>${escapeHtml(doctor.nama)}</td>
+                            <td>${escapeHtml(doctor.spesialisasi)}</td>
+                            <td>${escapeHtml(doctor.rumah_sakit_nama || 'Tidak diketahui')}</td>
+                            <td>${escapeHtml(doctor.hari_praktik || '-')}</td>
+                            <td>${escapeHtml(doctor.jam_mulai || '-')}</td>
+                            <td>${escapeHtml(doctor.jam_selesai || '-')}</td>
+                            <td class="text-right action-buttons whitespace-nowrap">
+                                <button onclick="editDoctor('${doctor.id}', '${escapeHtml(doctor.nama)}', '${escapeHtml(doctor.spesialisasi)}', '${escapeHtml(doctor.rumah_sakit_id)}', '${escapeHtml(doctor.hari_praktik || '')}', '${escapeHtml(doctor.jam_mulai || '')}', '${escapeHtml(doctor.jam_selesai || '')}', '${doctor.id}')" class="action-btn btn-checkin" title="Edit">
+                                    <i class="fas fa-pencil-alt !mr-0"></i>
+                                </button>
+                                <button onclick="confirmDeleteDoctor('${doctor.id}', '${escapeHtml(doctor.nama)}')" class="action-btn btn-hapus" title="Hapus">
+                                    <i class="fas fa-trash-alt !mr-0"></i>
+                                </button>
+                            </td>
+                        `;
+                        doctorListTableBody.appendChild(tr);
+                    });
+                    // Show/hide "no data" message based on whether any doctors were found
+                    noDoctorDataMsg.classList.toggle('hidden', doctorsArray.length > 0);
+                } else {
+                    // No doctors found
+                    noDoctorDataMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Gagal memuat daftar dokter:", error);
+                doctorListTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-red-500">Gagal memuat data. Coba lagi nanti.</td></tr>`; // Adjusted colspan
+                noDoctorDataMsg.classList.add('hidden'); // Hide "no data" message on error
+                Swal.fire('Error', 'Gagal memuat daftar dokter.', 'error');
+            }
+        }
+
+        /**
+         * Populates the form for editing an existing doctor.
+         * @param {string} id - The Realtime Database key (which is the UID) of the doctor.
+         * @param {string} nama - Doctor's name.
+         * @param {string} spesialisasi - Doctor's specialization.
+         * @param {string} rumah_sakit_id - The ID of the associated hospital.
+         * @param {string} hari_praktik - Practice days.
+         * @param {string} jam_mulai - Start time.
+         * @param {string} jam_selesai - End time.
+         * @param {string} uid - The Firebase Auth UID associated with the doctor (same as id).
+         */
+        window.editDoctor = (id, nama, spesialisasi, rumah_sakit_id, hari_praktik, jam_mulai, jam_selesai, uid) => {
+            console.log(`Menyiapkan edit untuk Dokter ID (UID): ${id}`);
+            // Populate form fields
+            doctorIdInput.value = id; // Store UID here
+            doctorUidInput.value = uid; // Also store UID here for clarity, though redundant with doctorIdInput
+            doctorNameInput.value = nama;
+            doctorSpecializationInput.value = spesialisasi;
+            doctorHospitalSelect.value = rumah_sakit_id;
+            doctorPracticeDaysInput.value = hari_praktik;
+            doctorStartTimeInput.value = jam_mulai;
+            doctorEndTimeInput.value = jam_selesai;
+
+            // Update form title and submit button for edit mode
+            doctorFormTitle.textContent = "Edit Data Dokter";
+            doctorSubmitBtn.innerHTML = `<i class="fas fa-save mr-2"></i> Simpan Perubahan`;
+            doctorSubmitBtn.classList.remove('btn-tambah');
+            doctorSubmitBtn.classList.add('btn-simpan');
+            cancelDoctorEditBtn.classList.remove('hidden'); // Show cancel button
+
+            // Hide email/password fields in edit mode
+            if (authFieldsDiv) {
+                authFieldsDiv.style.display = 'none';
+                // Remove required attribute from email/password in edit mode
+                if(doctorEmailInput) doctorEmailInput.required = false;
+                if(doctorPasswordInput) doctorPasswordInput.required = false;
+                // Clear email/password values just in case
+                if(doctorEmailInput) doctorEmailInput.value = '';
+                if(doctorPasswordInput) doctorPasswordInput.value = '';
+            }
+
+            // Ensure the modal is open and scroll to the form
+            openDoctorCrudModal(); // This will also reload hospitals and doctors
+            doctorCrudForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /**
+         * Resets the doctor form to the "Add New Doctor" state.
+         */
+        function resetDoctorForm() {
+            console.log("Mereset form dokter ke mode tambah.");
+            // Reset form fields
+            if (doctorCrudForm) doctorCrudForm.reset();
+            if (doctorIdInput) doctorIdInput.value = ''; // Clear ID
+            if (doctorUidInput) doctorUidInput.value = ''; // Clear UID field
+            if (doctorFormTitle) doctorFormTitle.textContent = "Tambah Dokter Baru";
+            if (doctorSubmitBtn) {
+                doctorSubmitBtn.innerHTML = `<i class="fas fa-plus mr-2"></i> Tambah Dokter`;
+                doctorSubmitBtn.classList.remove('btn-simpan');
+                doctorSubmitBtn.classList.add('btn-tambah');
+            }
+            if (cancelDoctorEditBtn) cancelDoctorEditBtn.classList.add('hidden'); // Hide cancel button
+
+            // Show email/password fields in add mode and make them required
+            if (authFieldsDiv) {
+                authFieldsDiv.style.display = 'block';
+                if(doctorEmailInput) doctorEmailInput.required = true;
+                if(doctorPasswordInput) doctorPasswordInput.required = true;
+            }
+
+            // Reset select/input values explicitly if needed (form.reset() should handle this)
+            if (doctorHospitalSelect) doctorHospitalSelect.value = "";
+            if (doctorPracticeDaysInput) doctorPracticeDaysInput.value = "";
+            if (doctorStartTimeInput) doctorStartTimeInput.value = "";
+            if (doctorEndTimeInput) doctorEndTimeInput.value = "";
+            if (doctorEmailInput) doctorEmailInput.value = "";
+            if (doctorPasswordInput) doctorPasswordInput.value = "";
+        }
+
+        /**
+         * Handles the submission of the doctor form (Add or Edit).
+         * Includes Firebase Authentication user creation for new doctors
+         * and calling backend to set custom claim.
+         * @param {Event} event - The form submit event.
+         */
+        async function handleDoctorFormSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const doctorId = doctorIdInput.value; // Realtime Database Key (which is the UID)
+            // In edit mode, doctorId will be the UID. In add mode, it's empty.
+            const doctorName = doctorNameInput.value.trim();
+            const doctorSpecialization = doctorSpecializationInput.value.trim();
+            const doctorHospitalSelectElement = doctorHospitalSelect; // Get the select element
+            const doctorHospitalId = doctorHospitalSelectElement.value;
+            const doctorHospitalName = doctorHospitalSelectElement.selectedIndex >= 0 && doctorHospitalSelectElement.options[doctorHospitalSelectElement.selectedIndex] ? doctorHospitalSelectElement.options[doctorHospitalSelectElement.selectedIndex].text : '';
+            const doctorPracticeDays = doctorPracticeDaysInput.value.trim();
+            const doctorStartTime = doctorStartTimeInput.value;
+            const doctorEndTime = doctorEndTimeInput.value;
+            const doctorEmail = doctorEmailInput.value.trim(); // Get email
+            const doctorPassword = doctorPasswordInput.value; // Get password
+
+            // Basic input validation for all modes
+            if (!doctorName || !doctorSpecialization || !doctorHospitalId || !doctorPracticeDays || !doctorStartTime || !doctorEndTime) {
+                Swal.fire('Input Tidak Lengkap', 'Harap isi semua kolom yang bertanda *.', 'warning');
+                return;
+            }
+
+            // Validation specific to adding a new doctor (when doctorId is empty)
+            if (!doctorId) { // This is 'Add New Doctor' mode
+                if (!doctorEmail || !doctorPassword) {
+                    Swal.fire('Input Tidak Lengkap', 'Harap isi Email dan Password untuk akun dokter baru.', 'warning');
+                    return;
+                }
+                if (doctorPassword.length < 6) { // Firebase Auth requires minimum 6 characters for password
+                    Swal.fire('Password Lemah', 'Password minimal 6 karakter.', 'warning');
+                    return;
+                }
+            }
+
+
+            // Check Firebase readiness
+            if (!firebaseDb || !firebaseAuth) {
+                Swal.fire('Error Koneksi', 'Koneksi database atau autentikasi belum siap.', 'error');
+                return;
+            }
+
+            // Disable submit button and show loading state
+            doctorSubmitBtn.disabled = true;
+            doctorSubmitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...`;
+
+            try {
+                let finalDoctorData = {
+                    nama: doctorName,
+                    spesialisasi: doctorSpecialization,
+                    rumah_sakit_id: doctorHospitalId,
+                    rumah_sakit_nama: doctorHospitalName,
+                    hari_praktik: doctorPracticeDays,
+                    jam_mulai: doctorStartTime,
+                    jam_selesai: doctorEndTime
+                    // UID will be added below for new doctors
+                };
+
+                let successMessage;
+                let targetDoctorUid = doctorId; // In edit mode, doctorId will be the UID
+
+                if (!doctorId) {
+                    // --- ADD NEW DOCTOR ---
+                    console.log(`Menambah dokter baru dengan email: ${doctorEmail}`);
+                    // 1. Create user in Firebase Authentication
+                    const userCredential = await firebaseAuth.createUserWithEmailAndPassword(doctorEmail, doctorPassword);
+                    targetDoctorUid = userCredential.user.uid; // Get the UID of the newly created user
+                    console.log(`User Authentication berhasil dibuat dengan UID: ${targetDoctorUid}`);
+
+                    // Add the UID to the doctor data
+                    finalDoctorData.uid = targetDoctorUid; // Store UID in DB data
+
+                    // 2. Save doctor data to Realtime Database using UID as key
+                    // Use .set() with the UID key to ensure one entry per doctor UID
+                    await firebaseDb.ref(`daftar_dokter/${targetDoctorUid}`).set(finalDoctorData);
+                    console.log(`Data dokter berhasil disimpan ke RTDB dengan key UID: ${targetDoctorUid}`);
+
+                    // 3. Call backend endpoint to set 'doctor: true' custom claim
+                    console.log(`Memanggil backend untuk menetapkan klaim dokter untuk UID: ${targetDoctorUid}`);
+
+                    // Ambil ID Token admin yang sedang login untuk otentikasi backend
+                    const adminUser = firebaseAuth.currentUser;
+                    if (!adminUser) {
+                        // This should ideally not happen if verifyAdmin on backend works, but good fallback
+                        throw new Error("Admin user not logged in to set doctor claim.");
+                    }
+                    const idToken = await adminUser.getIdToken(); // Dapatkan ID Token admin
+
+                    const setClaimResponse = await fetch('/api/set-doctor-claim', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${idToken}` // Kirim ID Token admin untuk otentikasi
+                        },
+                        body: JSON.stringify({ uid: targetDoctorUid })
+                    });
+
+                    const setClaimResult = await setClaimResponse.json();
+
+                    if (!setClaimResponse.ok) {
+                        // Jika backend gagal mengatur klaim
+                        console.error("Backend failed to set doctor claim:", setClaimResult.message);
+                        // Tampilkan pesan peringatan, tapi proses penambahan dokter (Auth & DB) sudah berhasil
+                        Swal.fire({
+                            title: 'Dokter Ditambahkan (Klaim Gagal)',
+                            html: `Dokter "${escapeHtml(doctorName)}" berhasil ditambahkan, dan akun login dibuat.<br><strong>Namun, gagal mengatur klaim 'doctor: true' di backend:</strong> ${escapeHtml(setClaimResult.message || 'Unknown error')}.<br>Dokter mungkin tidak bisa login sebagai dokter sampai klaim diperbaiki secara manual di backend.`,
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        // Jika backend berhasil mengatur klaim
+                        console.log("Backend successfully set doctor claim:", setClaimResult.message);
+                        Swal.fire({
+                            title: 'Dokter Berhasil Ditambahkan',
+                            html: `Dokter "${escapeHtml(doctorName)}" berhasil ditambahkan.<br>Akun login dibuat dengan email: <strong>${escapeHtml(doctorEmail)}</strong>.<br>berhasil diatur.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+
+                } else {
+                    // --- EDIT EXISTING DOCTOR ---
+                    console.log(`Memperbarui data dokter ID (UID): ${doctorId}`);
+                    // In edit mode, we only update the data in Realtime Database
+                    // We don't change the email/password or create a new Auth user here
+                    // Ensure UID is still in the data if it was there
+                    if (!finalDoctorData.uid) { // If UID wasn't loaded for some reason, use the ID (which is the UID)
+                            finalDoctorData.uid = doctorId;
+                    }
+                    await firebaseDb.ref(`daftar_dokter/${doctorId}`).update(finalDoctorData);
+                    successMessage = `Data dokter "${doctorName}" berhasil diperbarui.`;
+                    Swal.fire('Berhasil!', successMessage, 'success'); // Tampilkan pesan sukses edit
+                }
+
+                // Reset form and reload the list after successful operation (add or edit)
+                resetDoctorForm();
+                await loadAndDisplayDoctors(); // Reload list
+                // Close the modal after successful operation if it's an add operation
+                if (!doctorId) {
+                    closeDoctorCrudModal();
+                }
+
+            } catch (error) {
+                // Tangani error saat menyimpan data dokter atau membuat user/mengatur klaim
+                console.error("Gagal menyimpan data dokter, membuat user, atau mengatur klaim:", error);
+                let errorMessage = `Terjadi kesalahan: ${error.message}`;
+
+                    // Handle specific Firebase Auth errors during user creation (only for add mode)
+                    if (!doctorId && error.code) { // Only check auth errors if adding a new doctor
+                        switch (error.code) {
+                            case 'auth/email-already-in-use':
+                                errorMessage = 'Email sudah digunakan oleh akun lain.';
+                                break;
+                            case 'auth/invalid-email':
+                                errorMessage = 'Format email tidak valid.';
+                                break;
+                            case 'auth/operation-not-allowed':
+                                errorMessage = 'Pembuatan akun email/password tidak diaktifkan di Firebase Console.';
+                                break;
+                            case 'auth/weak-password':
+                                errorMessage = 'Password terlalu lemah (minimal 6 karakter).';
+                                break;
+                            default:
+                                // Use the default error message
+                                break;
+                        }
+                    } else if (error.message.includes("Failed to fetch") || error.message.includes("Network response was not ok") || error.message.includes("Gagal memuat konfigurasi layanan")) {
+                        // Handle network/config errors during backend call or initial fetch
+                        errorMessage = `Kesalahan jaringan atau konfigurasi: ${error.message}`;
+                    }
+
+
+                Swal.fire('Gagal!', errorMessage, 'error');
+
+            } finally {
+                // Re-enable submit button and restore original text
+                doctorSubmitBtn.disabled = false;
+                if (doctorIdInput.value) {
+                    doctorSubmitBtn.innerHTML = `<i class="fas fa-save mr-2"></i> Simpan Perubahan`;
+                } else {
+                    doctorSubmitBtn.innerHTML = `<i class="fas fa-plus mr-2"></i> Tambah Dokter`;
+                }
+            }
+        }
+
+        /**
+         * Prompts the user to confirm deletion of a doctor and deletes if confirmed.
+         * This function only deletes the data from Realtime Database.
+         * Deleting the corresponding Auth user must be done separately (preferably from backend).
+         * @param {string} id - The Realtime Database key (which is the UID) of the doctor to delete.
+         * @param {string} name - The name of the doctor (for confirmation message).
+         */
+        window.confirmDeleteDoctor = (id, name) => {
+             if (!firebaseDb) { Swal.fire('Error Koneksi', 'Koneksi database belum siap.', 'error'); return; }
+
+             Swal.fire({
+                 title: 'Hapus Dokter?',
+                 html: `Anda yakin ingin menghapus data dokter <strong>${escapeHtml(name)}</strong> dari daftar? Tindakan ini tidak dapat diurungkan.<br><br><strong>Penting:</strong> Ini hanya menghapus data dokter dari database. Akun login dokter di Firebase Authentication (UID: ${escapeHtml(id)}) <strong>tidak otomatis terhapus</strong>. Anda perlu menghapusnya secara manual di Firebase Console atau melalui Admin SDK di backend jika diperlukan.`,
+                 icon: 'warning',
+                 showCancelButton: true,
+                 // Use CSS variables for button colors
+                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--danger-color').trim(),
+                 cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                 confirmButtonText: 'Ya, Hapus Data Dokter!',
+                 cancelButtonText: 'Batal'
+             }).then(async (result) => {
+                 if (result.isConfirmed) {
+                     console.log(`Menghapus data Dokter ID (UID): ${id} dari database.`);
+                     try {
+                         // Delete data from Realtime Database using the UID as the key
+                         await firebaseDb.ref(`daftar_dokter/${id}`).remove();
+
+                         console.warn(`PENTING: Data dokter dengan UID ${id} dihapus dari RTDB. User Authentication dengan UID ini TIDAK otomatis terhapus.`);
+
+
+                         Swal.fire('Dihapus!', `Data dokter "${escapeHtml(name)}" telah dihapus dari daftar.`, 'success');
+
+                         // If the deleted doctor was being edited, reset the form
+                         if (doctorIdInput.value === id) {
+                             resetDoctorForm();
+                         }
+
+                         // Reload the doctor list
+                         await loadAndDisplayDoctors();
+
+                     } catch (error) {
+                             console.error(`Gagal menghapus data Dokter ID (UID) ${id}:`, error);
+                             Swal.fire('Gagal!', `Gagal menghapus data dokter: ${error.message}`, 'error');
+                     }
+                 }
+             });
+         }
+
 
         // Listener untuk tombol Histori Deteksi
         if (scrollToDetectionHistoryBtn) {
@@ -1438,9 +2051,9 @@
                 }
 
                 if (window.innerWidth < 768 && filterSidebar.classList.contains('open-mobile')) {
-                      filterSidebar.classList.remove('open-mobile');
-                      sidebarOverlay.classList.add('hidden');
-                      document.body.classList.remove('overflow-hidden-custom');
+                        filterSidebar.classList.remove('open-mobile');
+                        sidebarOverlay.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden-custom');
                     }
                 // Remove active class from all filter buttons in sidebar
                 document.querySelectorAll('#filterSidebar .filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -1448,7 +2061,7 @@
                 scrollToDetectionHistoryBtn.classList.add('active');
             });
         } else {
-              console.warn("Tombol #scrollToDetectionHistoryBtn tidak ditemukan.");
+             console.warn("Tombol #scrollToDetectionHistoryBtn tidak ditemukan.");
         }
 
 
