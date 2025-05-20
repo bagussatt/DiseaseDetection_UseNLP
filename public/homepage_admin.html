@@ -325,19 +325,19 @@
         @keyframes zoomInModal { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         /* Table styling */
-        #hospitalListTable, #detectionHistoryTable, #doctorListTable { width: 100%; border-collapse: collapse; }
-        #hospitalListTable th, #hospitalListTable td, #detectionHistoryTable th, #detectionHistoryTable td, #doctorListTable th, #doctorListTable td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; vertical-align: top; }
-        #hospitalListTable th, #detectionHistoryTable th, #doctorListTable th { font-weight: 600; color: var(--text-primary); background-color: var(--bg-muted); }
-        #hospitalListTable td, #detectionHistoryTable td, #doctorListTable td { color: var(--text-secondary); }
-        #hospitalListTable tr:last-child td, #detectionHistoryTable tr:last-child td, #doctorListTable tr:last-child td { border-bottom: none; }
-        #hospitalListTable .action-buttons button, #doctorListTable .action-buttons button { padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem; }
-        html.dark #hospitalListTable th, html.dark #detectionHistoryTable th, html.dark #doctorListTable th { background-color: var(--bg-muted); }
-        html.dark #hospitalListTable td, html.dark #detectionHistoryTable td, html.dark #doctorListTable td { color: var(--text-secondary); }
+        #hospitalListTable, #detectionHistoryTable, #doctorListTable, #patientHistoryTable { width: 100%; border-collapse: collapse; }
+        #hospitalListTable th, #hospitalListTable td, #detectionHistoryTable th, #detectionHistoryTable td, #doctorListTable th, #doctorListTable td, #patientHistoryTable th, #patientHistoryTable td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; vertical-align: top; }
+        #hospitalListTable th, #detectionHistoryTable th, #doctorListTable th, #patientHistoryTable th { font-weight: 600; color: var(--text-primary); background-color: var(--bg-muted); }
+        #hospitalListTable td, #detectionHistoryTable td, #doctorListTable td, #patientHistoryTable td { color: var(--text-secondary); }
+        #hospitalListTable tr:last-child td, #detectionHistoryTable tr:last-child td, #doctorListTable tr:last-child td, #patientHistoryTable tr:last-child td { border-bottom: none; }
+        #hospitalListTable .action-buttons button, #doctorListTable .action-buttons button, #patientHistoryTable .action-buttons button { padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem; }
+        html.dark #hospitalListTable th, html.dark #detectionHistoryTable th, html.dark #doctorListTable th, html.dark #patientHistoryTable th { background-color: var(--bg-muted); }
+        html.dark #hospitalListTable td, html.dark #detectionHistoryTable td, html.dark #doctorListTable td, html.dark #patientHistoryTable td { color: var(--text-secondary); }
         .table-container { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background-color: var(--bg-secondary); box-shadow: var(--card-shadow); }
         html.dark .table-container { background-color: var(--bg-secondary); }
 
         /* Styling for the inline detection history section */
-        #detectionHistorySection {
+        #detectionHistorySection, #patientHistorySection {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
             box-shadow: var(--card-shadow);
@@ -345,7 +345,7 @@
             padding: 1.5rem;
             margin-top: 2rem;
         }
-        #detectionHistorySection h2 {
+        #detectionHistorySection h2, #patientHistorySection h2 {
             color: var(--text-primary);
             font-weight: 600;
             font-size: 1.5rem;
@@ -353,24 +353,29 @@
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border-color);
         }
-        #detectionHistorySection .table-container {
+        #detectionHistorySection .table-container, #patientHistorySection .table-container {
             max-height: 500px;
         }
         #detectionHistorySection .loading-message,
-        #detectionHistorySection .no-data-message {
+        #detectionHistorySection .no-data-message,
+        #patientHistorySection .loading-message,
+        #patientHistorySection .no-data-message {
             text-align: center;
             padding: 2rem;
             color: var(--text-muted);
             font-style: italic;
         }
-        #detectionHistorySection .loading-message i {
+        #detectionHistorySection .loading-message i,
+        #detectionHistorySection .no-data-message i,
+        #patientHistorySection .loading-message i,
+        #patientHistorySection .no-data-message i {
             font-size: 2rem;
             color: var(--accent-color);
             margin-bottom: 0.5rem;
         }
 
-        /* Specific styling for detection history table cells */
-        #detectionHistoryTable td pre {
+        /* Specific styling for table cells */
+        #detectionHistoryTable td pre, #patientHistoryTable td pre {
             max-height: none !important;
             overflow-y: visible !important;
             padding: 0 !important;
@@ -456,6 +461,9 @@
                 <button id="scrollToDetectionHistoryBtn" class="filter-btn bg-purple-600-custom">
                     <i class="fas fa-history"></i> Histori Deteksi
                 </button>
+                <button id="openPatientHistorySectionBtn" class="filter-btn bg-purple-600-custom">
+                    <i class="fas fa-users"></i> Histori Pasien
+                </button>
             </div>
         </aside>
 
@@ -502,6 +510,30 @@
                     </table>
                 </div>
                 <p id="noDetectionHistoryData" class="no-data-message hidden" style="color: var(--text-muted);">Belum ada data histori deteksi.</p>
+            </div>
+
+            <div id="patientHistorySection" class="hidden p-4 sm:p-6 md:p-8">
+                <h2 class="text-2xl font-semibold mb-4">Histori Reservasi Pasien</h2>
+                <div id="patientHistoryTableContainer" class="table-container">
+                    <table id="patientHistoryTable">
+                        <thead>
+                            <tr>
+                                <th>Nama Pasien</th>
+                                <th>Telepon</th>
+                                <th>Rumah Sakit</th>
+                                <th>Dokter</th>
+                                <th>Tanggal</th>
+                                <th>Waktu</th>
+                                <th>Status</th>
+                                <th>Diagnosis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientHistoryTableBody">
+                            <tr><td colspan="8" class="text-center py-4 italic loading-message" style="color: var(--text-muted);"><i class="fas fa-spinner animate-spin-slow mr-2"></i> Memuat data histori pasien...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="noPatientHistoryData" class="no-data-message hidden" style="color: var(--text-muted);">Belum ada data histori pasien.</p>
             </div>
         </main>
     </div>
@@ -668,6 +700,7 @@
         let firebaseDb;
         const reservationSection = document.getElementById('reservationSection');
         const detectionHistorySection = document.getElementById('detectionHistorySection');
+        const patientHistorySection = document.getElementById('patientHistorySection'); // NEW
 
         const reservationListDiv = document.getElementById('reservationList');
         const loadingMessageDiv = document.getElementById('loadingMessage');
@@ -734,6 +767,11 @@
 
         const doctorListTableBody = document.getElementById('doctorListTableBody');
         const noDoctorDataMsg = document.getElementById('noDoctorData');
+
+        // Elemen UI Histori Pasien (NEW)
+        const openPatientHistorySectionBtn = document.getElementById('openPatientHistorySectionBtn');
+        const patientHistoryTableBody = document.getElementById('patientHistoryTableBody');
+        const noPatientHistoryDataMsg = document.getElementById('noPatientHistoryData');
 
 
         // --- Fungsi Utilitas UI ---
@@ -1035,6 +1073,10 @@
                 allReservations = snapshot.val() || {};
                 console.log("Data reservasi diterima/diperbarui:", Object.keys(allReservations).length + " item");
                 displayFilteredReservations();
+                // Also trigger update for patient history if it's currently visible
+                if (!patientHistorySection.classList.contains('hidden')) {
+                    loadAndDisplayPatientHistory();
+                }
             }, (error) => {
                 console.error("Error saat mendengarkan data reservasi:", error);
                 showErrorMessage(`Gagal memuat data reservasi secara real-time: ${error.message}`);
@@ -1402,27 +1444,116 @@
             }
         }
 
+        // --- Fungsi Histori Pasien (NEW) ---
+        /** Memuat dan menampilkan data histori pasien (reservasi) di dalam tabel inline */
+        async function loadAndDisplayPatientHistory() {
+            if (!firebaseDb) { console.error("Database belum siap untuk memuat histori pasien."); patientHistoryTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-red-500">Koneksi database gagal.</td></tr>`; noPatientHistoryDataMsg.classList.add('hidden'); return; }
+            if (!patientHistoryTableBody || !noPatientHistoryDataMsg) { console.error("Elemen tabel histori pasien atau pesan 'no data' tidak ditemukan."); return; }
+
+            patientHistoryTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 italic loading-message" style="color: var(--text-muted);"><i class="fas fa-spinner animate-spin-slow mr-2"></i> Memuat data histori pasien...</td></tr>`;
+            noPatientHistoryDataMsg.classList.add('hidden');
+
+            // Use the already loaded allReservations data
+            const reservations = Object.entries(allReservations || {});
+
+            try {
+                patientHistoryTableBody.innerHTML = ''; // Clear loading message
+
+                if (reservations.length > 0) {
+                    const patientHistoryArray = reservations
+                        .map(([key, value]) => {
+                            if (value && typeof value === 'object') {
+                                // Ensure tanggal is in YYYY-MM-DD for consistent Date parsing
+                                const dateParts = value.tanggal ? value.tanggal.split('/') : ['01', '01', '1970'];
+                                const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                                const sortableDateTime = new Date(`${formattedDate}T${value.waktu || '00:00'}`).getTime();
+
+                                return {
+                                    id: key,
+                                    nama: value.nama || 'Tidak Dikenal',
+                                    telepon: value.telepon || '-',
+                                    rumah_sakit: value.rumah_sakit || 'Tidak diketahui',
+                                    dokter_nama: value.dokter_nama || '-',
+                                    tanggal: value.tanggal || '-',
+                                    waktu: value.waktu || '-',
+                                    status: value.status || 'registrasi',
+                                    diagnosis: value.diagnosis, // Use existing diagnosis function
+                                    sortableValue: sortableDateTime
+                                };
+                            }
+                            console.warn("Mengabaikan entri reservasi tidak valid untuk histori pasien:", key, value);
+                            return null;
+                        })
+                        .filter(entry => entry !== null);
+
+                    // Sort by patient name, then by reservation date (newest first)
+                    patientHistoryArray.sort((a, b) => {
+                        const nameCompare = a.nama.localeCompare(b.nama);
+                        if (nameCompare !== 0) return nameCompare;
+                        return b.sortableValue - a.sortableValue; // Newest first
+                    });
+
+                    patientHistoryArray.forEach(entry => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${escapeHtml(entry.nama)}</td>
+                            <td>${escapeHtml(entry.telepon)}</td>
+                            <td>${escapeHtml(entry.rumah_sakit)}</td>
+                            <td>${escapeHtml(entry.dokter_nama)}</td>
+                            <td>${escapeHtml(entry.tanggal)}</td>
+                            <td>${escapeHtml(entry.waktu)}</td>
+                            <td>${escapeHtml(entry.status)}</td>
+                            <td><pre class="whitespace-pre-wrap">${escapeHtml(entry.diagnosis)}</pre></td>
+                        `;
+                        patientHistoryTableBody.appendChild(tr);
+                    });
+
+                    noPatientHistoryDataMsg.classList.toggle('hidden', patientHistoryArray.length > 0);
+                } else {
+                    noPatientHistoryDataMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Gagal memuat data histori pasien:", error);
+                patientHistoryTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-red-500">Gagal memuat data histori pasien. Coba lagi nanti.</td></tr>`;
+                noPatientHistoryDataMsg.classList.add('hidden');
+                Swal.fire('Error', 'Gagal memuat histori pasien.', 'error');
+            }
+        }
+
 
         // --- Fungsi Pengaturan Tampilan Bagian Utama ---
-        /** Menampilkan bagian Reservasi dan menyembunyikan bagian Histori Deteksi */
+        /** Menampilkan bagian Reservasi dan menyembunyikan bagian Histori Deteksi dan Histori Pasien */
         function showReservationSection() {
-            if (reservationSection && detectionHistorySection) {
+            if (reservationSection && detectionHistorySection && patientHistorySection) {
                 reservationSection.classList.remove('hidden');
                 detectionHistorySection.classList.add('hidden');
-                console.log("Showing Reservation Section, hiding History Section.");
+                patientHistorySection.classList.add('hidden'); // Hide patient history
+                console.log("Showing Reservation Section, hiding History Sections.");
                 displayFilteredReservations();
             }
         }
 
-        /** Menampilkan bagian Histori Deteksi dan menyembunyikan bagian Reservasi */
+        /** Menampilkan bagian Histori Deteksi dan menyembunyikan bagian Reservasi dan Histori Pasien */
         function showDetectionHistorySection() {
-             if (reservationSection && detectionHistorySection) {
+             if (reservationSection && detectionHistorySection && patientHistorySection) {
                  reservationSection.classList.add('hidden');
                  detectionHistorySection.classList.remove('hidden');
-                 console.log("Showing History Section, hiding Reservation Section.");
+                 patientHistorySection.classList.add('hidden'); // Hide patient history
+                 console.log("Showing History Section, hiding Reservation and Patient History Sections.");
                  loadAndDisplayDetectionHistory();
              }
+        }
+
+        /** Menampilkan bagian Histori Pasien dan menyembunyikan bagian Reservasi dan Histori Deteksi */
+        function showPatientHistorySection() { // NEW
+            if (reservationSection && detectionHistorySection && patientHistorySection) {
+                reservationSection.classList.add('hidden');
+                detectionHistorySection.classList.add('hidden');
+                patientHistorySection.classList.remove('hidden'); // Show patient history
+                console.log("Showing Patient History Section, hiding other sections.");
+                loadAndDisplayPatientHistory();
             }
+        }
 
 
         // --- Event Listener UI ---
@@ -1432,7 +1563,7 @@
              statusFilterButtons = document.querySelectorAll('.status-filter-btn'); // Get buttons after DOM is ready
              statusFilterButtons.forEach(button => {
                  button.addEventListener('click', () => {
-                     showReservationSection();
+                     showReservationSection(); // Always show reservation section for status filters
 
                      statusFilterButtons.forEach(btn => btn.classList.remove('active'));
                      button.classList.add('active');
@@ -2064,6 +2195,34 @@
              console.warn("Tombol #scrollToDetectionHistoryBtn tidak ditemukan.");
         }
 
+        // Listener untuk tombol Histori Pasien (NEW)
+        if (openPatientHistorySectionBtn) {
+            openPatientHistorySectionBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                showPatientHistorySection();
+
+                const targetElement = document.getElementById('patientHistorySection');
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    console.log("Scrolling to Patient History Section.");
+                } else {
+                    console.warn("Patient History Section element not found for scrolling.");
+                }
+
+                if (window.innerWidth < 768 && filterSidebar.classList.contains('open-mobile')) {
+                    filterSidebar.classList.remove('open-mobile');
+                    sidebarOverlay.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden-custom');
+                }
+                // Remove active class from all filter buttons in sidebar
+                document.querySelectorAll('#filterSidebar .filter-btn').forEach(btn => btn.classList.remove('active'));
+                // Add active class to the patient history button
+                openPatientHistorySectionBtn.classList.add('active');
+            });
+        } else {
+            console.warn("Tombol #openPatientHistorySectionBtn tidak ditemukan.");
+        }
+
 
         // --- Alur Utama Aplikasi ---
         /** Fungsi utama yang dijalankan saat halaman dimuat */
@@ -2084,6 +2243,7 @@
                                 showReservationSection(); // Default view is reservations
                                 listenReservations(); // Start listening for real-time updates
                                 loadAndDisplayDetectionHistory(); // Load history initially
+                                // No need to load patient history here, it will be loaded when its button is clicked.
                             } else {
                                 console.warn("Akses ditolak: Pengguna bukan admin.");
                                 showErrorMessage("Anda tidak memiliki hak akses sebagai admin untuk halaman ini.");
