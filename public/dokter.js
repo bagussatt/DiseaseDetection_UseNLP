@@ -1,847 +1,4 @@
-<!DOCTYPE html>
-<html lang="id" class="">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Dokter | KonsulSehat</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        /* Definisi Variabel Warna CSS */
-        :root {
-            --font-primary: 'Inter', 'Poppins', sans-serif;
-            --bg-primary: #f8fbfd;
-            --bg-secondary: #ffffff;
-            --bg-muted: #eef3f6;
-            --text-primary: #212529;
-            --text-secondary: #495057;
-            --text-muted: #6c757d;
-            --border-color: #e3e6ea;
-            --card-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.1), 0 5px 15px -5px rgba(0, 0, 0, 0.06);
-            --card-shadow-hover: 0 18px 35px -10px rgba(0, 0, 0, 0.15), 0 8px 18px -8px rgba(0, 0, 0, 0.08);
-            --navbar-bg: #2c3e50;
-            --navbar-text: #ecf0f1;
-            --accent-color: #3b82f6;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --danger-color: #ef4444;
-            --countdown-color: #10b981;
-            --timer-color: #f39c12;
-            --prayer-time-color: #1d4ed8;
-            --sidebar-width: 16rem; /* Added sidebar width variable */
-            --active-nav-bg: #eef3f6; /* Background for active sidebar item */
-            --active-nav-text: #212529; /* Text for active sidebar item */
-            --active-filter-bg: #3b82f6; /* Background for active filter button */
-            --active-filter-text: #ffffff; /* Text for active filter button */
-
-            /* Warna khusus untuk tombol antrian */
-            --queue-button-bg: #3b82f6; /* Tailwind blue-500 */
-            --queue-button-text: #ffffff;
-            --queue-button-hover-bg: #2563eb; /* Tailwind blue-600 */
-        }
-        /* Dark Mode Variables */
-        html.dark {
-            --bg-primary: #1e293b;
-            --bg-secondary: #334155;
-            --bg-muted: #475569;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border-color: #475569;
-            --card-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.25), 0 5px 15px -5px rgba(0, 0, 0, 0.18);
-            --card-shadow-hover: 0 18px 35px -10px rgba(0, 0, 0, 0.35), 0 8px 18px -8px rgba(0, 0, 0, 0.25);
-            --navbar-bg: #1a202c;
-            --navbar-text: #e2e8f0;
-            --accent-color: #3b82f6;
-            --info-color: #3b82f6;
-            --danger-color: #ef4444;
-            --countdown-color: #34d399;
-            --timer-color: #f39c12;
-            --prayer-time-color: #60a5fa;
-            --active-nav-bg: #475569;
-            --active-nav-text: #f1f5f9;
-            --active-filter-bg: #2563eb;
-            --active-filter-text: #ffffff;
-
-            /* Warna khusus dark mode untuk tombol antrian */
-            --queue-button-bg: #2563eb; /* Tailwind blue-600 */
-            --queue-button-text: #ffffff;
-            --queue-button-hover-bg: #1d4ed8; /* Tailwind blue-700 */
-        }
-
-        /* Base Body Styles */
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* Navbar Styles */
-        nav {
-            background-color: var(--navbar-bg);
-            color: var(--navbar-text);
-            padding: 1rem 0;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            position: fixed; /* Fixed navbar */
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            height: 5rem; /* Increased height */
-            display: flex;
-            align-items: center;
-        }
-        nav .container { /* Adjust container padding for fixed navbar */
-             padding: 0 1.5rem;
-        }
-        nav a {
-            color: var(--navbar-text);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-        nav a:hover {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        /* Sidebar Toggle Button */
-        #sidebarToggleBtn {
-             padding: 0.5rem;
-             border-radius: 0.375rem;
-             transition: background-color 0.2s ease;
-             margin-right: 1rem;
-        }
-        #sidebarToggleBtn:hover {
-             background-color: rgba(255, 255, 255, 0.1);
-        }
-        #sidebarToggleBtn i {
-             color: var(--navbar-text);
-        }
-
-
-        /* Layout with Sidebar */
-        .content-area {
-            display: flex;
-            flex-grow: 1;
-            padding-top: 5rem; /* Space for fixed navbar */
-        }
-
-        /* Sidebar Styles */
-        aside {
-            width: var(--sidebar-width);
-            background-color: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-            flex-shrink: 0; /* Prevent sidebar from shrinking */
-            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
-            overflow-y: auto; /* Allow scrolling if content overflows */
-            position: fixed; /* Fixed position on desktop */
-            top: 5rem; /* Below navbar */
-            bottom: 0;
-            left: 0;
-            z-index: 40;
-        }
-        aside.collapsed {
-            transform: translateX(-100%);
-            width: 0;
-            padding-left: 0;
-            padding-right: 0;
-            overflow: hidden;
-        }
-        aside h3 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-        aside .nav-button {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 0.5rem;
-            color: var(--text-secondary);
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
-            cursor: pointer;
-        }
-        aside .nav-button i {
-             margin-right: 0.75rem;
-             width: 18px;
-             text-align: center;
-             color: var(--text-muted);
-        }
-        aside .nav-button:hover {
-            background-color: var(--bg-muted);
-            color: var(--text-primary);
-            transform: translateX(3px);
-        }
-        aside .nav-button.active {
-            background-color: var(--active-nav-bg);
-            color: var(--active-nav-text);
-            font-weight: 600;
-        }
-         aside .nav-button.active i {
-             color: var(--active-nav-text);
-         }
-
-        /* Style for the Queue button specifically */
-        aside .nav-button-queue {
-            background-color: var(--queue-button-bg);
-            color: var(--queue-button-text);
-        }
-        aside .nav-button-queue i {
-            color: var(--queue-button-text); /* Ensure icon color matches text */
-        }
-        aside .nav-button-queue:hover {
-            background-color: var(--queue-button-hover-bg);
-            color: var(--queue-button-text); /* Ensure text color stays white on hover */
-        }
-        /* Style for the active Queue button */
-        aside .nav-button-queue.active {
-             background-color: var(--queue-button-bg); /* Keep background color when active */
-             color: var(--queue-button-text); /* Keep text color white when active */
-             font-weight: 600; /* Keep bold font weight */
-        }
-         aside .nav-button-queue.active i {
-             color: var(--queue-button-text); /* Ensure icon color stays white when active */
-         }
-
-
-        /* Main Content Area */
-        main {
-            flex-grow: 1;
-            padding: 1.5rem;
-            transition: margin-left 0.3s ease-in-out;
-            margin-left: var(--sidebar-width); /* Default margin for open sidebar */
-            overflow-y: auto; /* Allow scrolling */
-        }
-        main.sidebar-collapsed {
-            margin-left: 0; /* Remove margin when sidebar is collapsed */
-        }
-
-        /* Sidebar Overlay (for mobile) */
-        #sidebarOverlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0,0,0,0.6);
-            z-index: 30;
-            display: none; /* Hidden by default */
-        }
-
-        /* Mobile Responsiveness for Sidebar */
-        @media (max-width: 767px) {
-            aside {
-                transform: translateX(-100%); /* Hidden by default on mobile */
-                top: 5rem; /* Below navbar */
-                height: calc(100vh - 5rem);
-                z-index: 40; /* Ensure sidebar is above overlay */
-            }
-            aside.open-mobile {
-                transform: translateX(0); /* Slide in on mobile */
-            }
-            main {
-                margin-left: 0; /* No margin on mobile */
-            }
-             body.overflow-hidden-custom { /* Prevent body scroll when mobile sidebar is open */
-                 overflow: hidden;
-             }
-        }
-         @media (min-width: 768px) { /* Desktop styles */
-             aside {
-                 position: sticky; /* Sticky on desktop */
-                 top: 5rem;
-                 height: calc(100vh - 5rem);
-                 transform: translateX(0) !important; /* Always visible on desktop unless collapsed */
-                 width: var(--sidebar-width);
-                 padding: 1.5rem;
-                 z-index: 10; /* Lower z-index on desktop */
-             }
-             aside.collapsed { /* Desktop collapsed state */
-                  width: 0;
-                  padding-left: 0;
-                  padding-right: 0;
-                  overflow: hidden;
-             }
-             main.sidebar-collapsed { /* Adjust main margin based on desktop collapsed state */
-                  margin-left: 0;
-             }
-              main:not(.sidebar-collapsed) { /* Default margin for open sidebar on desktop */
-                   margin-left: var(--sidebar-width);
-              }
-             #sidebarOverlay {
-                 display: none !important; /* Hide overlay on desktop */
-             }
-             body.overflow-hidden-custom {
-                 overflow: auto !important;
-             }
-         }
-
-
-        /* Card styles */
-        .card {
-            background-color: var(--bg-secondary);
-            padding: 2.5rem;
-            border-radius: 1.25rem;
-            box-shadow: var(--card-shadow);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-            margin-bottom: 2rem; /* Space between cards */
-        }
-        .card:hover {
-             box-shadow: var(--card-shadow-hover);
-             transform: translateY(-3px);
-        }
-
-        /* Loading spinner animation */
-        .loading-spinner {
-            border: 5px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--accent-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        /* Hide sections by default */
-        .content-section {
-            display: none;
-        }
-        /* Show active section */
-        .content-section.active {
-            display: block;
-        }
-
-        /* Style for appointment list items (the "cards" in queue/history) */
-        #appointmentList li, #detectionHistoryTable tbody tr {
-            background-color: var(--bg-secondary); /* Ensure background matches card */
-            border: 1px solid var(--border-color); /* Add border like a card */
-            box-shadow: var(--card-shadow); /* Add shadow like a card */
-            padding: 1.5rem; /* Add padding */
-            margin-bottom: 1.5rem; /* Space between items */
-            border-radius: 0.75rem; /* Rounded corners */
-            list-style: none;
-            padding-left: 1.5rem; /* Adjust padding left */
-            margin-left: 0;
-            color: var(--text-secondary);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; /* Align items to the top */
-            flex-wrap: wrap;
-            transition: box-shadow 0.2s ease, transform 0.2s ease; /* Add transition */
-        }
-         #appointmentList li:hover, #detectionHistoryTable tbody tr:hover {
-             box-shadow: var(--card-shadow-hover);
-             transform: translateY(-2px); /* Slight lift on hover */
-         }
-
-        /* Style for appointment details (left column) */
-         #appointmentList li .appointment-details {
-             flex-grow: 1;
-             margin-right: 1.5rem; /* Space from middle/right column */
-             min-width: 200px; /* Ensure details have enough width */
-             flex-basis: 40%; /* Give it a base width */
-         }
-         #appointmentList li strong {
-             color: var(--text-primary);
-             font-weight: 600;
-             display: block;
-             margin-bottom: 0.5rem; /* More space below name */
-             font-size: 1.1em; /* Slightly larger name font */
-         }
-         #appointmentList li span {
-             color: var(--text-muted);
-             font-size: 0.9em;
-             display: flex; /* Use flex for icon and text alignment */
-             align-items: center;
-             margin-bottom: 0.25rem; /* Space between detail lines */
-         }
-         #appointmentList li span i {
-             margin-right: 0.5rem; /* Space between icon and text */
-             color: var(--text-secondary); /* Icon color */
-         }
-         #appointmentList li .text-gray-500 { /* Style for RS and Catatan */
-             color: var(--text-secondary); /* Use secondary text color */
-         }
-
-        /* Style for status indicator (middle column) */
-         #appointmentList li .status-indicator-bar {
-             display: flex;
-             justify-content: space-around;
-             align-items: center;
-             gap: 0.5rem; /* Space between status items */
-             width: 100%; /* Fill available width in its flex container */
-             flex-basis: 100%; /* Take full width on small screens */
-             margin-bottom: 1rem; /* Space below status bar */
-             padding-bottom: 1rem;
-             border-bottom: 1px solid var(--border-color);
-         }
-          /* On larger screens, let status bar take up space */
-         @media (min-width: 768px) {
-             #appointmentList li .status-indicator-bar {
-                 flex-basis: 25%; /* Give it a base width on larger screens */
-                 width: auto; /* Auto width when flex-basis is set */
-                 border-bottom: none; /* Remove border on larger screens */
-                 padding-bottom: 0;
-                 margin-bottom: 0;
-                 flex-direction: column; /* Stack status items vertically on desktop */
-                 align-items: flex-start; /* Align stacked items to the start */
-                 gap: 0.25rem; /* Smaller gap when stacked */
-             }
-         }
-
-
-        /* Style for action buttons (right column) */
-         #appointmentList li .action-buttons {
-             display: flex;
-             flex-direction: column; /* Stack buttons vertically */
-             align-items: stretch; /* Stretch buttons to fill width */
-             gap: 0.5rem; /* Space between buttons */
-             width: 100%; /* Take full width on small screens */
-             flex-basis: 100%; /* Take full width on small screens */
-             margin-top: 1rem; /* Space from middle column on small screens */
-         }
-         /* On larger screens, adjust layout */
-         @media (min-width: 768px) {
-             #appointmentList li .action-buttons {
-                 flex-direction: column; /* Keep stacked vertically */
-                 align-items: flex-end; /* Align buttons to the right */
-                 width: auto; /* Auto width */
-                 flex-basis: 25%; /* Give it a base width */
-                 margin-top: 0; /* Remove margin top */
-                 margin-left: 1.5rem; /* Space from middle column */
-             }
-         }
-
-         #appointmentList li .action-buttons button {
-             width: 100%; /* Ensure buttons fill their container */
-             padding: 0.6rem 1rem; /* Adjust padding */
-             font-size: 0.9rem; /* Adjust font size */
-             justify-content: center; /* Center content in button */
-         }
-
-         /* Style for the "Selesai" button within the action buttons */
-         #appointmentList li .action-buttons button.btn-selesai {
-             background-color: var(--success-color); /* Use success color for Selesai */
-             color: white;
-         }
-         #appointmentList li .action-buttons button.btn-selesai:hover {
-             background-color: color-mix(in srgb, var(--success-color) 80%, black); /* Darken on hover */
-         }
-         html.dark #appointmentList li .action-buttons button.btn-selesai {
-             background-color: var(--success-color); /* Dark mode success color */
-         }
-         html.dark #appointmentList li .action-buttons button.btn-selesai:hover {
-             background-color: color-mix(in srgb, var(--success-color) 80%, black); /* Darken on hover in dark mode */
-         }
-
-
-        /* Style for status completed text */
-         #appointmentList li .status-completed {
-             color: var(--success-color);
-             font-weight: 600;
-             font-style: italic;
-             flex-shrink: 0;
-             margin-top: 0.5rem;
-             /* Ensure consistent positioning */
-             align-self: center; /* Center vertically in the flex container */
-         }
-         @media (min-width: 768px) {
-             #appointmentList li .status-completed {
-                 align-self: flex-end; /* Align to the end on desktop */
-                 margin-top: 0; /* Remove margin top on desktop */
-             }
-         }
-
-
-        /* Style for schedule info */
-        #scheduleInfo {
-            color: var(--text-secondary);
-        }
-        #scheduleInfo strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* Style for countdown timer */
-        #countdownTimer {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--countdown-color);
-            margin-top: 1rem;
-            text-align: center;
-        }
-        #countdownTimer i {
-            margin-right: 0.5rem;
-        }
-
-        /* Style for custom reminder timer */
-        #customTimerSection h3 {
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        #customTimerControls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-         #customTimerControls input[type="time"] {
-             width: 120px;
-             padding: 0.5rem;
-             border-radius: 0.5rem;
-             border: 1px solid var(--border-color);
-             background-color: var(--bg-secondary);
-             color: var(--text-primary);
-             text-align: center;
-         }
-         #customTimerControls input[type="text"] {
-             flex-grow: 1;
-             min-width: 150px;
-             padding: 0.5rem;
-             border-radius: 0.5rem;
-             border: 1px solid var(--border-color);
-             background-color: var(--bg-secondary);
-             color: var(--text-primary);
-         }
-         #customTimerControls button {
-             background-color: var(--timer-color);
-             color: white;
-             font-weight: 500;
-             padding: 0.6rem 1.2rem;
-             border-radius: 0.5rem;
-             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-             flex-shrink: 0;
-         }
-         #customTimerControls button:hover {
-             background-color: #d98c0c;
-             transform: translateY(-1px);
-             box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-         }
-         html.dark #customTimerControls button {
-             background-color: var(--timer-color);
-         }
-          html.dark #customTimerControls button:hover {
-              background-color: #b87d0a;
-          }
-
-        #customTimerDisplay {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--timer-color);
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-         #customTimerDisplay i {
-             margin-right: 0.5rem;
-         }
-         #customTimerDisplay .timer-description {
-             font-size: 1rem;
-             font-weight: 500;
-             color: var(--text-secondary);
-             display: block;
-             margin-top: 0.5rem;
-         }
-         html.dark #customTimerDisplay .timer-description {
-             color: var(--text-secondary);
-         }
-
-        /* Style for Prayer Times Section */
-        #prayerTimesSection h3 {
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        #prayerTimesList {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        #prayerTimesList li {
-            padding: 0.75rem 0; /* Increased padding */
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            display: flex;
-            justify-content: space-between;
-            align-items: center; /* Align items vertically */
-            flex-wrap: wrap; /* Allow wrapping */
-        }
-         #prayerTimesList li:last-child {
-             border-bottom: none;
-         }
-         #prayerTimesList li span { /* Prayer name */
-             flex-grow: 1;
-             margin-right: 1rem;
-             min-width: 80px; /* Ensure name has minimum width */
-         }
-         #prayerTimesList li strong { /* Prayer time */
-             color: var(--prayer-time-color);
-             font-weight: 600;
-             flex-shrink: 0; /* Prevent time from shrinking */
-         }
-          #prayerTimesList li button { /* Set Alarm button */
-              background-color: var(--accent-color);
-              color: white;
-              font-weight: 500;
-              padding: 0.3rem 0.75rem;
-              border-radius: 0.375rem;
-              transition: background-color 0.2s ease, transform 0.1s ease;
-              font-size: 0.8rem;
-              margin-left: 1rem; /* Space from time */
-              flex-shrink: 0;
-              margin-top: 0.5rem; /* Add margin top on wrap */
-          }
-           #prayerTimesList li button:hover {
-               background-color: #2563eb;
-               transform: translateY(-1px);
-           }
-            html.dark #prayerTimesList li button {
-                background-color: var(--accent-color);
-            }
-            html.dark #prayerTimesList li button:hover {
-                background-color: #1d4ed8;
-            }
-
-         #prayerTimesList .loading-prayer-times {
-             text-align: center;
-             color: var(--text-muted);
-             font-style: italic;
-         }
-         #prayerTimesList .error-prayer-times {
-             text-align: center;
-             color: var(--danger-color);
-             font-style: italic;
-         }
-
-
-        /* Style for error state */
-        #errorState {
-            color: var(--danger-color);
-        }
-        #errorState i {
-            color: var(--danger-color);
-        }
-        #errorState button {
-            background-color: var(--accent-color);
-            color: white;
-            font-weight: 500;
-            padding: 0.8rem 1.8rem;
-            border-radius: 0.6rem;
-            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-         #errorState button:hover {
-             background-color: #2563eb;
-             transform: translateY(-2px);
-             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-         }
-         html.dark #errorState button {
-             background-color: var(--accent-color);
-         }
-         html.dark #errorState button:hover {
-             background-color: #1d4ed8;
-         }
-
-        /* Footer styles */
-        footer {
-            background-color: var(--bg-muted);
-            color: var(--text-muted);
-            padding: 1.5rem 0;
-            text-align: center;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* Dark Mode specific styles */
-        html.dark body {
-             background-color: var(--bg-primary);
-             color: var(--text-primary);
-        }
-        html.dark .card {
-            background-color: var(--bg-secondary);
-            box-shadow: var(--card-shadow);
-        }
-        html.dark nav {
-            background-color: var(--navbar-bg);
-            color: var(--navbar-text);
-        }
-        html.dark nav a:hover {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        html.dark .loading-spinner {
-            border-left-color: var(--accent-color);
-        }
-        html.dark #appointmentList li {
-             border-bottom-color: var(--border-color);
-             color: var(--text-secondary);
-        }
-        html.dark #appointmentList li strong {
-             color: var(--text-primary);
-        }
-        html.dark #appointmentList li span {
-             color: var(--text-muted);
-        }
-        html.dark #errorState {
-             color: var(--danger-color);
-        }
-        html.dark #errorState i {
-             color: var(--danger-color);
-        }
-        html.dark footer {
-             background-color: var(--bg-muted);
-             color: var(--text-muted);
-        }
-        html.dark #countdownTimer {
-             color: var(--countdown-color);
-        }
-         html.dark #customTimerDisplay {
-             color: var(--timer-color);
-         }
-          html.dark #customTimerSection h3 {
-              color: var(--text-primary);
-          }
-          html.dark #prayerTimesList li strong {
-              color: var(--prayer-time-color);
-          }
-
-
-    </style>
-</head>
-<body class="flex flex-col">
-
-    <nav>
-        <div class="container flex justify-between items-center">
-            <button id="sidebarToggleBtn" class="p-2 rounded-md hover:bg-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white mr-3" aria-label="Toggle Sidebar">
-                <i class="fas fa-bars text-xl text-white"></i>
-            </button>
-            <a href="#" class="text-xl font-bold flex items-center text-white mr-auto">
-                 <i class="fas fa-user-md mr-3 text-2xl" style="color: var(--accent-color);"></i>
-                 <span class="hidden sm:inline">Dashboard Dokter</span>
-                 <span class="inline sm:hidden">Dokter</span>
-            </a>
-            <div class="flex items-center">
-                <span id="doctorName" class="mr-4 text-sm sm:text-base text-gray-300">Memuat...</span>
-                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-md transition duration-200 flex items-center shadow-md hover:shadow-lg">
-                    <i class="fas fa-sign-out-alt mr-1.5 text-xs"></i> Logout
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-60 z-30 hidden md:hidden"></div>
-
-    <div class="content-area">
-
-        <aside id="mainSidebar">
-            <div class="mb-6">
-                <h3>Navigasi</h3>
-                <div class="flex flex-col space-y-2">
-                    <button class="nav-button active" data-target="schedulePrayerSection"><i class="fas fa-calendar-alt"></i> Jadwal & Sholat</button>
-                    <button class="nav-button nav-button-queue" data-target="todayQueueSection"><i class="fas fa-users"></i> Antrian Pasien</button>
-                     </div>
-            </div>
-        </aside>
-
-        <main id="mainContent">
-
-            <h1 class="text-2xl sm:text-3xl font-bold mb-8" style="color: var(--text-primary);">Selamat Datang, <span id="greetingName">Dokter</span>!</h1>
-
-            <div id="loadingState" class="flex flex-col items-center justify-center py-20 content-section active">
-                <div class="loading-spinner"></div>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Memuat data dashboard...</p>
-            </div>
-
-            <div id="doctorContent" class="content-section">
-
-                <div id="schedulePrayerSection" class="content-view active space-y-8">
-                    <div class="card">
-                        <div class="flex justify-between items-center mb-4">
-                             <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Jadwal Praktik Anda</h2>
-                             <button id="editScheduleBtn" class="px-3 py-1 text-sm font-medium rounded-md transition-colors duration-200 bg-blue-500 text-white shadow-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">Ubah Jadwal</button>
-                        </div>
-                        <p id="scheduleInfo" class="text-gray-700 dark:text-gray-300 text-base">Memuat jadwal...</p>
-                        <div id="countdownTimer" class="hidden"> <i class="fas fa-clock"></i> <span id="countdownText"></span> </div>
-                    </div>
-
-                    <div class="card" id="customTimerSection">
-                         <h3 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Atur Pengingat Kustom</h3>
-                         <div id="customTimerControls" class="mt-4">
-                              <input type="time" id="targetTimeInput">
-                              <input type="text" id="timerDescription" placeholder="Keterangan pengingat (cth: Minum Obat)">
-                              <button id="startTimerBtn">Set Pengingat</button>
-                         </div>
-                         <div id="customTimerDisplay" class="hidden mt-4">
-                              <i class="fas fa-stopwatch"></i> <span id="timerCountdownText"></span><span id="timerDescriptionDisplay" class="timer-description"></span>
-                         </div>
-                    </div>
-
-                    <div class="card" id="prayerTimesSection">
-                         <h3 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Waktu Sholat Hari Ini</h3>
-                         <ul id="prayerTimesList">
-                              <li class="loading-prayer-times">Memuat waktu sholat...</li>
-                         </ul>
-                    </div>
-                </div>
-
-                <div id="todayQueueSection" class="content-view space-y-8">
-                    <div class="card">
-                         <div class="flex justify-between items-center mb-4">
-                              <h2 class="text-xl sm:text-2xl font-semibold" style="color: var(--text-primary);">Antrian Pasien</h2>
-                              <div class="flex space-x-2">
-                                  <button id="filterToday" class="px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200">Hari Ini</button>
-                                  <button id="filterAll" class="px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200">Semua</button>
-                              </div>
-                         </div>
-                         <div id="appointmentListContainer">
-                              <ul id="appointmentList" class="list-inside text-gray-700 dark:text-gray-300 space-y-3">
-                                   <li>Memuat antrian...</li>
-                              </ul>
-                         </div>
-                         <p id="noAppointmentsMsg" class="text-gray-600 dark:text-gray-400 italic hidden mt-6 text-center">Tidak ada antrian pasien untuk filter ini.</p>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div id="errorState" class="content-section text-center py-20 text-red-600 dark:text-red-500">
-                 <i class="fas fa-exclamation-circle text-5xl mb-6"></i>
-                 <p id="errorMessage" class="text-xl sm:text-2xl mb-6">Terjadi kesalahan saat memuat halaman.</p>
-                 <button onclick="logoutUser()" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 shadow-md">
-                     Kembali ke Halaman Login
-                 </button>
-            </div>
-
-        </main>
-    </div>
-
-
-    <footer class="mt-auto py-4 text-center text-gray-600 dark:text-gray-400 text-sm">
-        <p>&copy; 2025 KonsulSehat. All rights reserved.</p>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        // Firebase instances (will be initialized after config fetch)
-        let firebaseApp;
+  let firebaseApp;
         let firebaseAuth;
         let firebaseDb;
         let allAppointments = []; // Array to store all fetched appointments
@@ -997,7 +154,7 @@
 
 
         /**
-         * Formats a Date object into YYYY-MM-DD string.
+         * Formats a Date object into Paribas-MM-DD string.
          * @param {Date} date - The Date object.
          * @returns {string} Formatted date string.
          */
@@ -1253,8 +410,8 @@
          */
         function displayAppointments(filter) {
             if (!appointmentListUl || !noAppointmentsMsgP) {
-                  console.error("Elemen daftar antrian atau pesan 'no data' tidak ditemukan.");
-                  return;
+                 console.error("Elemen daftar antrian atau pesan 'no data' tidak ditemukan.");
+                 return;
             }
 
             currentFilter = filter; // Update current filter state
@@ -1283,7 +440,7 @@
                      const dateTimeA = new Date(`${a.tanggal}T${a.waktu}`);
                      const dateTimeB = new Date(`${b.tanggal}T${b.waktu}`);
                      return dateTimeA - dateTimeB;
-                      // Handle potential invalid dates from data
+                     // Handle potential invalid dates from data
                  }).filter(appt => {
                      const dateTime = new Date(`${appt.tanggal}T${appt.waktu}`);
                      return !isNaN(dateTime.getTime()); // Filter out invalid date/time entries
@@ -1298,17 +455,14 @@
                     li.innerHTML = `
                         <div class='appointment-details'>
                             <strong>${appointment.nama || 'Pasien Tidak Dikenal'}</strong>
-                            <span><i class="fas fa-phone-alt mr-2"></i> ${appointment.telepon || '-'}</span>
-                            <span><i class="fas fa-calendar-alt mr-2"></i> ${appointment.tanggal} ${appointment.waktu || ''}</span>
-                            <span><i class="fas fa-hospital mr-2"></i> RS: ${appointment.rumah_sakit || '-'}</span>
-                            <div class='text-gray-500 text-sm mt-2'>Catatan: ${appointment.diagnosis || '-'}</div>
+                            <span>${appointment.tanggal} ${appointment.waktu || ''}</span>
+                            <span class='text-gray-500 text-sm'>RS: ${appointment.rumah_sakit || '-'}</span>
+                            <div class='text-gray-500 text-sm mt-1'>Catatan: ${appointment.diagnosis || '-'}</div>
                         </div>
-                        <div class="action-buttons">
-                            ${appointment.status === 'Selesai'
-                                ? `<span class="status-completed">Selesai</span>`
-                                : `<button onclick="markAppointmentComplete('${appointment.id}')" class="btn-selesai">Selesai</button>`
-                            }
-                        </div>
+                        ${appointment.status === 'Selesai'
+                            ? `<span class="status-completed">Selesai</span>`
+                            : `<button onclick="markAppointmentComplete('${appointment.id}')">Selesai</button>`
+                        }
                     `;
                     appointmentListUl.appendChild(li);
                 });
@@ -1340,54 +494,54 @@
          * @param {string} reservationId - The ID of the reservation to mark complete.
          */
         window.markAppointmentComplete = async (reservationId) => {
-              if (!firebaseDb) {
-                  showNotificationError('Koneksi database belum siap.');
-                  return;
-              }
+             if (!firebaseDb) {
+                 showNotificationError('Koneksi database belum siap.');
+                 return;
+             }
 
-              console.log(`Menandai reservasi ${reservationId} sebagai Selesai.`);
+             console.log(`Menandai reservasi ${reservationId} sebagai Selesai.`);
 
-              // Optional: Show confirmation dialog before marking complete
-              const confirmResult = await Swal.fire({
-                  title: 'Tandai Selesai?',
-                  text: "Anda yakin ingin menandai reservasi ini sebagai selesai?",
-                  icon: 'question',
-                  showCancelButton: true,
-                  confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim(),
-                  cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
-                  confirmButtonText: 'Ya, Selesai!',
-                  cancelButtonText: 'Batal'
-              });
+             // Optional: Show confirmation dialog before marking complete
+             const confirmResult = await Swal.fire({
+                 title: 'Tandai Selesai?',
+                 text: "Anda yakin ingin menandai reservasi ini sebagai selesai?",
+                 icon: 'question',
+                 showCancelButton: true,
+                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color').trim(),
+                 cancelButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
+                 confirmButtonText: 'Ya, Selesai!',
+                 cancelButtonText: 'Batal'
+             });
 
-              if (!confirmResult.isConfirmed) {
-                  return; // User cancelled
-              }
+             if (!confirmResult.isConfirmed) {
+                 return; // User cancelled
+             }
 
 
-              try {
-                  // Update the status field in the database
-                  await firebaseDb.ref(`reservasi/${reservationId}`).update({
-                      status: 'Selesai',
-                      // Optional: Add a completion timestamp
-                      completed_at: new Date().toISOString()
-                  });
+             try {
+                 // Update the status field in the database
+                 await firebaseDb.ref(`reservasi/${reservationId}`).update({
+                     status: 'Selesai',
+                     // Optional: Add a completion timestamp
+                     completed_at: new Date().toISOString()
+                 });
 
-                  console.log(`Reservasi ${reservationId} berhasil ditandai Selesai.`);
-                  showNotificationSuccess('Reservasi berhasil ditandai selesai.');
+                 console.log(`Reservasi ${reservationId} berhasil ditandai Selesai.`);
+                 showNotificationSuccess('Reservasi berhasil ditandai selesai.');
 
-                  // Update the local `allAppointments` array and re-display the list
-                  const appointmentIndex = allAppointments.findIndex(appt => appt.id === reservationId);
-                  if (appointmentIndex > -1) {
-                      allAppointments[appointmentIndex].status = 'Selesai';
-                      allAppointments[appointmentIndex].completed_at = new Date().toISOString(); // Update local timestamp
-                  }
-                  // Re-display the list based on the current filter
-                  displayAppointments(currentFilter);
+                 // Update the local `allAppointments` array and re-display the list
+                 const appointmentIndex = allAppointments.findIndex(appt => appt.id === reservationId);
+                 if (appointmentIndex > -1) {
+                     allAppointments[appointmentIndex].status = 'Selesai';
+                     allAppointments[appointmentIndex].completed_at = new Date().toISOString(); // Update local timestamp
+                 }
+                 // Re-display the list based on the current filter
+                 displayAppointments(currentFilter);
 
-              } catch (error) {
-                  console.error(`Gagal menandai reservasi ${reservationId} sebagai Selesai:`, error);
-                  showNotificationError(`Gagal menandai reservasi selesai: ${error.message}`);
-              }
+             } catch (error) {
+                 console.error(`Gagal menandai reservasi ${reservationId} sebagai Selesai:`, error);
+                 showNotificationError(`Gagal menandai reservasi selesai: ${error.message}`);
+             }
         }
 
         // --- Schedule Countdown Timer Functions ---
@@ -1562,8 +716,8 @@
          */
         async function loadPrayerTimes() {
             if (!prayerTimesListUl) {
-                  console.error("Elemen daftar waktu sholat tidak ditemukan.");
-                  return;
+                 console.error("Elemen daftar waktu sholat tidak ditemukan.");
+                 return;
             }
 
             prayerTimesListUl.innerHTML = '<li class="loading-prayer-times">Memuat waktu sholat...</li>'; // Show loading state
@@ -1673,9 +827,8 @@
                                 // Load doctor's specific data and appointments, and prayer times
                                 await loadDoctorData(user.uid);
 
-                                // Set initial content view (Schedule & Prayer)
-                                // This is now handled within loadDoctorData after data is ready
-                                // showContentView('schedulePrayerSection');
+                                // Set initial view after data is loaded
+                                showContentView('schedulePrayerSection');
 
 
                             } else {
@@ -1713,9 +866,9 @@
                     showContentView(targetId);
                      // Close mobile sidebar if open
                      if (window.innerWidth < 768 && mainSidebar.classList.contains('open-mobile')) {
-                         mainSidebar.classList.remove('open-mobile');
-                         sidebarOverlay.classList.add('hidden');
-                         document.body.classList.remove('overflow-hidden-custom');
+                        mainSidebar.classList.remove('open-mobile');
+                        sidebarOverlay.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden-custom');
                      }
                 }
             });
@@ -1723,42 +876,39 @@
 
         // Sidebar toggle button listener
          if (sidebarToggleBtn && mainSidebar && mainContent && sidebarOverlay) {
-             sidebarToggleBtn.addEventListener('click', () => {
-                 const isMobile = window.innerWidth < 768;
+            sidebarToggleBtn.addEventListener('click', () => {
+                const isMobile = window.innerWidth < 768;
 
-                 if (isMobile) {
-                     // Logika toggle hanya untuk mobile
-                     mainSidebar.classList.toggle('open-mobile');
-                     sidebarOverlay.classList.toggle('hidden');
-                     document.body.classList.toggle('overflow-hidden-custom');
-                 } else {
-                     // Di desktop, toggle kelas collapsed pada sidebar
-                     mainSidebar.classList.toggle('collapsed');
-                     mainContent.classList.toggle('sidebar-collapsed');
+                if (isMobile) {
+                    mainSidebar.classList.toggle('open-mobile');
+                    sidebarOverlay.classList.toggle('hidden');
+                    document.body.classList.toggle('overflow-hidden-custom');
+                } else {
+                    mainSidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('sidebar-collapsed');
+                }
+                console.log("Sidebar toggled. Collapsed:", mainSidebar.classList.contains('collapsed'), "Mobile Open:", mainSidebar.classList.contains('open-mobile'));
+            });
+
+            // Sidebar overlay click listener (closes mobile sidebar)
+            sidebarOverlay.addEventListener('click', () => {
+                 if (window.innerWidth < 768) {
+                     mainSidebar.classList.remove('open-mobile');
+                     sidebarOverlay.classList.add('hidden');
+                     document.body.classList.remove('overflow-hidden-custom');
+                     console.log("Mobile sidebar closed via overlay click.");
                  }
-                 console.log("Sidebar toggled. Collapsed:", mainSidebar.classList.contains('collapsed'), "Mobile Open:", mainSidebar.classList.contains('open-mobile'));
-             });
-
-             // Sidebar overlay click listener (closes mobile sidebar)
-             sidebarOverlay.addEventListener('click', () => {
-                   if (window.innerWidth < 768) {
-                       mainSidebar.classList.remove('open-mobile');
-                       sidebarOverlay.classList.add('hidden');
-                       document.body.classList.remove('overflow-hidden-custom');
-                       console.log("Mobile sidebar closed via overlay click.");
-                   }
-             });
-         } else {
-              console.warn("Elemen sidebar atau toggle button tidak ditemukan sepenuhnya.");
-         }
-
+            });
+        } else {
+             console.warn("Elemen sidebar atau toggle button tidak ditemukan sepenuhnya.");
+        }
 
         // Filter button listeners (for Antrian Pasien card)
         if (filterTodayButton) {
-              filterTodayButton.addEventListener('click', () => displayAppointments('today'));
+             filterTodayButton.addEventListener('click', () => displayAppointments('today'));
         }
         if (filterAllButton) {
-              filterAllButton.addEventListener('click', () => displayAppointments('all'));
+             filterAllButton.addEventListener('click', () => displayAppointments('all'));
         }
 
 
@@ -1813,8 +963,3 @@
                  mainContent.style.marginLeft = '0';
              }
         });
-
-
-    </script>
-</body>
-</html>
