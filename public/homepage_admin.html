@@ -858,9 +858,9 @@
             card.classList.add(statusColorClass);
 
             let datePart = data.tanggal || 'Tanggal tidak tersedia';
-            let timePart = data.waktu ? ` <span class="font-semibold">${data.waktu}</span>` : '';
+            let timePart = data.waktu ? ` <span class="font-semibold">  (${data.waktu})</span>` : '';
             let dateTimeString = datePart + timePart;
-            let timestampString = '';
+            let timestampString =  '';
             if (data.timestamp) {
                 try { timestampString = new Date(data.timestamp).toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }); }
                 catch(e){ console.warn("Gagal format timestamp:", data.timestamp, e); }
@@ -876,7 +876,7 @@
                         <h2 class="text-lg sm:text-xl font-semibold truncate" style="color: var(--text-primary);" title="${escapeHtml(data.nama || 'Pasien')}">${escapeHtml(data.nama || 'Pasien Tidak Dikenal')}</h2>
                         <p class="text-sm mt-1 truncate flex items-center"><i class="fas fa-phone-alt mr-2"></i> ${escapeHtml(data.telepon || '-')}</p>
                         <p class="text-sm truncate flex items-center"><i class="fas fa-calendar-alt mr-2"></i> ${dateTimeString}</p>
-                        <p class="text-sm truncate flex items-center"><i class="fas fa-hospital mr-2"></i> ${escapeHtml(data.rumah_sakit || 'RS Tidak diketahui')}</p>
+                        <p class="text-sm truncate flex items-center"><i class="fas fa-hospital mr-2"></i>  ${escapeHtml(data.rumah_sakit || 'RS Tidak diketahui')}</p>
                         ${data.dokter_nama ? `<p class="text-sm truncate flex items-center"><i class="fas fa-user-md mr-2"></i> ${escapeHtml(data.dokter_nama)}</p>` : ''}
                     </div>
                 </div>
@@ -1527,7 +1527,7 @@
             if (reservationSection && detectionHistorySection && patientHistorySection) {
                 reservationSection.classList.remove('hidden');
                 detectionHistorySection.classList.add('hidden');
-                patientHistorySection.classList.add('hidden'); // Hide patient history
+                patientHistorySection.classList.add('hidden'); // Hide patient historyj
                 console.log("Showing Reservation Section, hiding History Sections.");
                 displayFilteredReservations();
             }

@@ -14,25 +14,26 @@
     <style>
         :root {
             --font-primary: 'Inter', 'Poppins', sans-serif;
-            --bg-primary-light: #f7f9fc; /* Slightly off-white */
+            --bg-primary-light: #f7f9fc;
             --bg-secondary-light: #ffffff;
-            --bg-muted-light: #eef2f7; /* Softer muted */
-            --text-primary-light: #1a202c; /* Darker text for better contrast */
+            --bg-muted-light: #eef2f7;
+            --text-primary-light: #1a202c;
             --text-secondary-light: #4a5568;
             --text-muted-light: #718096;
             --border-color-light: #e2e8f0;
             --card-shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
             --card-shadow-hover-light: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-            --navbar-bg-light: #ffffff; /* White navbar for a cleaner look */
-            --navbar-text-light: #2d3748; /* Darker navbar text */
-            --accent-color-light: #4F46E5; /* Indigo */
+            --navbar-bg-light: #ffffff;
+            --navbar-text-light: #2d3748;
+            --accent-color-light: #4F46E5;
             --accent-color-darker-light: #4338CA;
-            --success-color-light: #10B981; /* Emerald */
-            --warning-color-light: #F59E0B; /* Amber */
-            --danger-color-light: #EF4444; /* Red */
-            --info-color-light: #3B82F6; /* Blue 500 */
+            --success-color-light: #10B981;
+            --warning-color-light: #F59E0B;
+            --danger-color-light: #EF4444;
+            --info-color-light: #3B82F6;
+            --orange-color-light: #F97316; /* For practice end countdown */
             --sidebar-width: 16rem;
-            --active-nav-bg-light: #e0e7ff; /* Lighter active nav */
+            --active-nav-bg-light: #e0e7ff;
             --active-nav-text-light: var(--accent-color-light);
             --queue-button-bg-light: var(--accent-color-light);
             --queue-button-text-light: #ffffff;
@@ -40,27 +41,28 @@
         }
 
         html.dark {
-            --bg-primary-dark: #0f172a; /* Very dark blue */
-            --bg-secondary-dark: #1e293b; /* Dark slate */
-            --bg-muted-dark: #334155; /* Slate */
-            --text-primary-dark: #f1f5f9; /* Light gray */
-            --text-secondary-dark: #cbd5e1; /* Slate 300 */
-            --text-muted-dark: #94a3b8; /* Slate 400 */
-            --border-color-dark: #3e4c5f; /* Darker border */
+            --bg-primary-dark: #0f172a;
+            --bg-secondary-dark: #1e293b;
+            --bg-muted-dark: #334155;
+            --text-primary-dark: #f1f5f9;
+            --text-secondary-dark: #cbd5e1;
+            --text-muted-dark: #94a3b8;
+            --border-color-dark: #3e4c5f;
             --card-shadow-dark: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.16);
             --card-shadow-hover-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.13);
-            --navbar-bg-dark: #1a2332; /* Slightly lighter than primary bg */
+            --navbar-bg-dark: #1a2332;
             --navbar-text-dark: #e2e8f0;
-            --accent-color-dark: #6366F1; /* Brighter Indigo for dark mode */
+            --accent-color-dark: #6366F1;
             --accent-color-darker-dark: #4F46E5;
-            --success-color-dark: #34D399; /* Brighter Emerald */
-            --warning-color-dark: #FBBF24; /* Brighter Amber */
-            --danger-color-dark: #F87171; /* Brighter Red */
-            --info-color-dark: #60A5FA; /* Blue 400 */
-            --active-nav-bg-dark: #312e81; /* Darker active nav */
-            --active-nav-text-dark: #c7d2fe; /* Lighter active text */
+            --success-color-dark: #34D399;
+            --warning-color-dark: #FBBF24;
+            --danger-color-dark: #F87171;
+            --info-color-dark: #60A5FA;
+            --orange-color-dark: #EA580C; /* For practice end countdown */
+            --active-nav-bg-dark: #312e81;
+            --active-nav-text-dark: #c7d2fe;
             --queue-button-bg-dark: var(--accent-color-dark);
-            --queue-button-text-dark: #0f172a; /* Dark text on bright button */
+            --queue-button-text-dark: #0f172a;
             --queue-button-hover-bg-dark: var(--accent-color-darker-dark);
         }
 
@@ -83,12 +85,12 @@
         nav {
             background-color: var(--navbar-bg-light);
             color: var(--navbar-text-light);
-            padding: 0; /* Removed padding, handled by container */
+            padding: 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             position: fixed;
             top: 0; left: 0; right: 0;
-            z-index: 1000; /* Ensure navbar is on top */
-            height: 4.5rem; /* Standard height */
+            z-index: 1000;
+            height: 4.5rem;
             display: flex;
             align-items: center;
             border-bottom: 1px solid var(--border-color-light);
@@ -99,7 +101,7 @@
             border-bottom: 1px solid var(--border-color-dark);
         }
         nav .container {
-            padding: 0 1.5rem; /* Horizontal padding for container */
+            padding: 0 1.5rem;
             width: 100%;
         }
         nav a {
@@ -133,20 +135,20 @@
         .content-area {
             display: flex;
             flex-grow: 1;
-            padding-top: 4.5rem; /* Space for fixed navbar */
+            padding-top: 4.5rem;
         }
 
         aside {
             width: var(--sidebar-width);
             background-color: var(--bg-secondary-light);
             border-right: 1px solid var(--border-color-light);
-            padding: 1.5rem 1rem; /* Adjusted padding */
+            padding: 1.5rem 1rem;
             flex-shrink: 0;
             transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, opacity 0.3s ease-in-out;
             overflow-y: auto;
             position: fixed;
             top: 4.5rem; bottom: 0; left: 0;
-            z-index: 990; /* Below navbar */
+            z-index: 990;
         }
         html.dark aside {
             background-color: var(--bg-secondary-dark);
@@ -160,12 +162,12 @@
             pointer-events: none;
         }
         aside h3 {
-            font-size: 0.75rem; /* Smaller heading */
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.075em; /* Wider spacing */
+            letter-spacing: 0.075em;
             margin-bottom: 1rem;
             color: var(--text-muted-light);
-            font-weight: 700; /* Bolder */
+            font-weight: 700;
             padding: 0 0.5rem;
         }
         html.dark aside h3 { color: var(--text-muted-dark); }
@@ -183,11 +185,11 @@
         }
         html.dark aside .nav-button { color: var(--text-secondary-dark); }
         aside .nav-button i {
-            margin-right: 0.875rem; /* Increased icon margin */
-            width: 20px; /* Fixed width for icon alignment */
+            margin-right: 0.875rem;
+            width: 20px;
             text-align: center;
             color: var(--text-muted-light);
-            font-size: 0.9rem; /* Slightly smaller icon */
+            font-size: 0.9rem;
         }
         html.dark aside .nav-button i { color: var(--text-muted-dark); }
         aside .nav-button:hover {
@@ -229,20 +231,20 @@
             color: var(--queue-button-text-dark);
         }
         aside .nav-button-queue.active {
-            background-color: var(--queue-button-hover-bg-light); /* Use hover color for active */
+            background-color: var(--queue-button-hover-bg-light);
             color: var(--queue-button-text-light);
         }
         html.dark aside .nav-button-queue.active {
             background-color: var(--queue-button-hover-bg-dark);
             color: var(--queue-button-text-dark);
         }
-         aside .nav-button-queue.active i { color: var(--queue-button-text-light); }
+        aside .nav-button-queue.active i { color: var(--queue-button-text-light); }
         html.dark aside .nav-button-queue.active i { color: var(--queue-button-text-dark); }
 
 
         main {
             flex-grow: 1;
-            padding: 2rem; /* Increased padding */
+            padding: 2rem;
             transition: margin-left 0.3s ease-in-out;
             margin-left: var(--sidebar-width);
             overflow-y: auto;
@@ -252,7 +254,7 @@
         #sidebarOverlay {
             position: fixed; inset: 0;
             background-color: rgba(0,0,0,0.5);
-            z-index: 980; /* Below sidebar, above content */
+            z-index: 980;
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
@@ -294,8 +296,8 @@
 
         .card {
             background-color: var(--bg-secondary-light);
-            padding: 1.5rem; /* Standardized padding */
-            border-radius: 0.75rem; /* Softer radius */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
             box-shadow: var(--card-shadow-light);
             transition: background-color 0.3s ease, box-shadow 0.2s ease, transform 0.2s ease;
             margin-bottom: 1.5rem;
@@ -321,8 +323,8 @@
         }
         html.dark .card-header { border-bottom: 1px solid var(--border-color-dark); }
         .card-title {
-            font-size: 1.25rem; /* Larger title */
-            font-weight: 700; /* Bolder title */
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--text-primary-light);
         }
         html.dark .card-title { color: var(--text-primary-dark); }
@@ -340,42 +342,40 @@
 
         .content-section { display: none; }
         .content-section.active { display: block; }
-        .content-view { display: none; } /* For sub-sections within a content-section */
+        .content-view { display: none; }
         .content-view.active { display: block; }
 
 
-        #appointmentList li, #detectionHistoryTable tbody tr {
+        #appointmentList li {
             background-color: var(--bg-secondary-light);
             border: 1px solid var(--border-color-light);
             box-shadow: var(--card-shadow-light);
             padding: 1.25rem;
             margin-bottom: 1rem;
-            border-radius: 0.5rem; /* Slightly smaller radius for list items */
+            border-radius: 0.5rem;
             list-style: none; padding-left: 0; margin-left: 0;
             color: var(--text-secondary-light);
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
+            flex-direction: column;
             transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
-        html.dark #appointmentList li, html.dark #detectionHistoryTable tbody tr {
+        html.dark #appointmentList li {
             background-color: var(--bg-secondary-dark);
             border: 1px solid var(--border-color-dark);
             box-shadow: var(--card-shadow-dark);
             color: var(--text-secondary-dark);
         }
-        #appointmentList li:hover, #detectionHistoryTable tbody tr:hover {
+        #appointmentList li:hover {
             box-shadow: var(--card-shadow-hover-light);
             transform: translateY(-2px);
         }
-        html.dark #appointmentList li:hover, html.dark #detectionHistoryTable tbody tr:hover {
+        html.dark #appointmentList li:hover {
             box-shadow: var(--card-shadow-hover-dark);
         }
 
         #appointmentList li .appointment-details {
-            flex-grow: 1; margin-right: 1rem;
-            min-width: 180px; flex-basis: 45%;
+            width: 100%; 
+            margin-bottom: 1rem; 
         }
         #appointmentList li strong {
             color: var(--text-primary-light); font-weight: 600;
@@ -384,101 +384,153 @@
         html.dark #appointmentList li strong { color: var(--text-primary-dark); }
         #appointmentList li span {
             color: var(--text-muted-light); font-size: 0.875em;
-            display: flex; align-items: center; margin-bottom: 0.25rem;
+            display: flex; align-items: center; margin-bottom: 0.35rem;
         }
         html.dark #appointmentList li span { color: var(--text-muted-dark); }
         #appointmentList li span i {
-            margin-right: 0.5rem; color: var(--text-secondary-light); font-size: 0.9em;
+            margin-right: 0.6rem;
+            color: var(--text-secondary-light); font-size: 0.9em;
+            width: 16px;
+            text-align: center;
         }
         html.dark #appointmentList li span i { color: var(--text-secondary-dark); }
-        #appointmentList li .text-gray-500 { color: var(--text-secondary-light); } /* Deprecated, use CSS var */
-        html.dark #appointmentList li .text-gray-500 { color: var(--text-secondary-dark); } /* Deprecated, use CSS var */
-        #appointmentList li .catatan-pasien { /* New class for notes */
+        #appointmentList li .catatan-pasien {
             color: var(--text-secondary-light);
             font-size: 0.875em;
-            margin-top: 0.25rem;
+            margin-top: 0.5rem;
+            word-break: break-word; 
         }
         html.dark #appointmentList li .catatan-pasien { color: var(--text-secondary-dark); }
 
 
         #appointmentList li .action-buttons {
-            display: flex; flex-direction: column;
-            align-items: stretch; gap: 0.5rem;
-            width: 100%; flex-basis: 100%; margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+            width: 100%; 
         }
-        @media (min-width: 768px) { /* md breakpoint */
+
+        @media (min-width: 768px) { 
+            #appointmentList li {
+                flex-direction: row; 
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            #appointmentList li .appointment-details {
+                flex-grow: 1; 
+                margin-right: 1.5rem; 
+                margin-bottom: 0; 
+                width: auto; 
+            }
             #appointmentList li .action-buttons {
-                flex-direction: column; align-items: flex-end;
-                width: auto; flex-basis: auto;
-                margin-top: 0; margin-left: 1rem; min-width: 130px; /* Slightly wider for two buttons */
+                flex-direction: column;
+                align-items: flex-end; 
+                width: auto; 
+                flex-shrink: 0; 
+                min-width: 140px;
+            }
+            #appointmentList li .action-buttons button,
+            #appointmentList li .action-buttons .status-completed {
+                 width: 100%; 
+                 text-align: center;
             }
         }
+
         #appointmentList li .action-buttons button {
-            width: 100%; padding: 0.5rem 0.75rem;
-            font-size: 0.875rem; justify-content: center;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            justify-content: center;
             border-radius: 0.375rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
+            display: flex;
+            align-items: center;
         }
+         #appointmentList li .action-buttons button i {
+            margin-right: 0.35rem;
+        }
+
         #appointmentList li .action-buttons button.btn-selesai {
             background-color: var(--success-color-light); color: white;
         }
         html.dark #appointmentList li .action-buttons button.btn-selesai { background-color: var(--success-color-dark); }
-        #appointmentList li .action-buttons button.btn-selesai:hover {
+        #appointmentList li .action-buttons button.btn-selesai:hover:not(:disabled) {
             background-color: color-mix(in srgb, var(--success-color-light) 85%, black);
             transform: translateY(-1px);
         }
-        html.dark #appointmentList li .action-buttons button.btn-selesai:hover {
+        html.dark #appointmentList li .action-buttons button.btn-selesai:hover:not(:disabled) {
             background-color: color-mix(in srgb, var(--success-color-dark) 85%, black);
         }
-        /* Style for Ubah Dokter button */
-        #appointmentList li .action-buttons button.btn-edit-doctor {
+        #appointmentList li .action-buttons button.btn-ganti-jam {
             background-color: var(--info-color-light);
             color: white;
         }
-        html.dark #appointmentList li .action-buttons button.btn-edit-doctor {
+        html.dark #appointmentList li .action-buttons button.btn-ganti-jam {
             background-color: var(--info-color-dark);
         }
-        #appointmentList li .action-buttons button.btn-edit-doctor:hover {
+        #appointmentList li .action-buttons button.btn-ganti-jam:hover {
             background-color: color-mix(in srgb, var(--info-color-light) 85%, black);
             transform: translateY(-1px);
         }
-        html.dark #appointmentList li .action-buttons button.btn-edit-doctor:hover {
+        html.dark #appointmentList li .action-buttons button.btn-ganti-jam:hover {
             background-color: color-mix(in srgb, var(--info-color-dark) 85%, black);
         }
 
 
         #appointmentList li .status-completed {
             color: var(--success-color-light); font-weight: 600; font-style: italic;
-            flex-shrink: 0; margin-top: 0.5rem; align-self: center;
             font-size: 0.9em;
+            text-align: right;
+            padding: 0.5rem 0.75rem; 
+            margin-top: 0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+         #appointmentList li .status-completed i {
+            margin-right: 0.35rem;
         }
         html.dark #appointmentList li .status-completed { color: var(--success-color-dark); }
         @media (min-width: 768px) {
-            #appointmentList li .status-completed { align-self: flex-end; margin-top: 0; }
+            #appointmentList li .status-completed {
+                text-align: center; 
+            }
         }
+
 
         #scheduleInfo { color: var(--text-secondary-light); }
         html.dark #scheduleInfo { color: var(--text-secondary-dark); }
         #scheduleInfo strong { color: var(--text-primary-light); font-weight: 600; }
         html.dark #scheduleInfo strong { color: var(--text-primary-dark); }
 
-        #countdownTimer {
-            font-size: 1.125rem; /* Adjusted size */
-            font-weight: 600; /* Semi-bold */
-            color: var(--accent-color-light);
+        #countdownTimer, #practiceEndCountdownTimer { /* Combined for some shared styles */
+            font-size: 1.125rem;
+            font-weight: 600;
             margin-top: 1rem; text-align: center;
             padding: 0.75rem;
-            background-color: var(--bg-muted-light);
             border-radius: 0.5rem;
+        }
+        #countdownTimer {
+            color: var(--accent-color-light);
+            background-color: var(--bg-muted-light);
         }
         html.dark #countdownTimer {
             color: var(--accent-color-dark);
             background-color: var(--bg-muted-dark);
         }
-        #countdownTimer i { margin-right: 0.5rem; }
+        #practiceEndCountdownTimer {
+            color: var(--orange-color-light);
+            background-color: color-mix(in srgb, var(--orange-color-light) 15%, var(--bg-muted-light));
+        }
+        html.dark #practiceEndCountdownTimer {
+            color: var(--orange-color-dark);
+            background-color: color-mix(in srgb, var(--orange-color-dark) 20%, var(--bg-muted-dark));
+        }
+        #countdownTimer i, #practiceEndCountdownTimer i { margin-right: 0.5rem; }
 
-        #customTimerSection h3, #prayerTimesSection h3 { /* Combined for consistency */
-            color: var(--text-primary-light); font-weight: 700; /* Bolder title */ margin-bottom: 1rem;
+
+        #customTimerSection h3, #prayerTimesSection h3 {
+            color: var(--text-primary-light); font-weight: 700; margin-bottom: 1rem;
             font-size: 1.125rem;
         }
         html.dark #customTimerSection h3, html.dark #prayerTimesSection h3 { color: var(--text-primary-dark); }
@@ -500,7 +552,7 @@
         }
         #customTimerControls input[type="time"] { width: auto; text-align: center; }
         #customTimerControls input[type="text"] { flex-grow: 1; min-width: 150px; }
-        #customTimerControls button { /* Styled as a general button */
+        #customTimerControls button {
             background-color: var(--warning-color-light); color: white;
             font-weight: 500; padding: 0.6rem 1rem; border-radius: 0.375rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
@@ -512,7 +564,7 @@
             transform: translateY(-1px);
         }
         html.dark #customTimerControls button:hover {
-             background-color: color-mix(in srgb, var(--warning-color-dark) 85%, black);
+            background-color: color-mix(in srgb, var(--warning-color-dark) 85%, black);
         }
 
         #customTimerDisplay {
@@ -548,7 +600,7 @@
             color: var(--accent-color-light); font-weight: 600; flex-shrink: 0; font-size: 0.9rem;
         }
         html.dark #prayerTimesList li strong { color: var(--accent-color-dark); }
-        #prayerTimesList li button { /* Styled as a general button */
+        #prayerTimesList li button {
             background-color: var(--accent-color-light); color: white;
             font-weight: 500; padding: 0.4rem 0.8rem; border-radius: 0.375rem;
             transition: background-color 0.2s ease, transform 0.1s ease;
@@ -574,7 +626,7 @@
         html.dark #errorState { color: var(--danger-color-dark); }
         #errorState i { color: var(--danger-color-light); }
         html.dark #errorState i { color: var(--danger-color-dark); }
-        #errorState button { /* Styled as a general button */
+        #errorState button {
             background-color: var(--accent-color-light); color: white;
             font-weight: 500; padding: 0.75rem 1.5rem; border-radius: 0.5rem;
             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
@@ -585,7 +637,7 @@
             background-color: var(--accent-color-darker-light); transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.07);
         }
-         html.dark #errorState button:hover { background-color: var(--accent-color-darker-dark); }
+        html.dark #errorState button:hover { background-color: var(--accent-color-darker-dark); }
 
 
         footer {
@@ -594,7 +646,7 @@
             border-top: 1px solid var(--border-color-light);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-         html.dark footer {
+        html.dark footer {
             background-color: var(--bg-muted-dark); color: var(--text-muted-dark);
             border-top: 1px solid var(--border-color-dark);
         }
@@ -613,20 +665,20 @@
             border: none;
             box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
         }
-        .btn:hover { transform: translateY(-1px); box-shadow: 0 2px 4px 0 rgba(0,0,0,0.07); }
+        .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 4px 0 rgba(0,0,0,0.07); }
         .btn-primary {
             background-color: var(--accent-color-light); color: white;
         }
         html.dark .btn-primary { background-color: var(--accent-color-dark); }
-        .btn-primary:hover { background-color: var(--accent-color-darker-light); }
-        html.dark .btn-primary:hover { background-color: var(--accent-color-darker-dark); }
+        .btn-primary:hover:not(:disabled) { background-color: var(--accent-color-darker-light); }
+        html.dark .btn-primary:hover:not(:disabled) { background-color: var(--accent-color-darker-dark); }
 
         .btn-danger {
             background-color: var(--danger-color-light); color: white;
         }
         html.dark .btn-danger { background-color: var(--danger-color-dark); }
-        .btn-danger:hover { background-color: color-mix(in srgb, var(--danger-color-light) 85%, black); }
-        html.dark .btn-danger:hover { background-color: color-mix(in srgb, var(--danger-color-dark) 85%, black); }
+        .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--danger-color-light) 85%, black); }
+        html.dark .btn-danger:hover:not(:disabled) { background-color: color-mix(in srgb, var(--danger-color-dark) 85%, black); }
 
         .btn-outline {
             background-color: transparent;
@@ -637,20 +689,41 @@
             border: 1px solid var(--border-color-dark);
             color: var(--text-secondary-dark);
         }
-        .btn-outline:hover {
+        .btn-outline:hover:not(:disabled) {
             background-color: var(--bg-muted-light);
             border-color: var(--accent-color-light);
             color: var(--accent-color-light);
         }
-        html.dark .btn-outline:hover {
+        html.dark .btn-outline:hover:not(:disabled) {
             background-color: var(--bg-muted-dark);
             border-color: var(--accent-color-dark);
             color: var(--accent-color-dark);
         }
-         .btn-sm { /* For smaller buttons like Set Alarm */
+        .btn-sm {
             padding: 0.4rem 0.8rem;
             font-size: 0.8rem;
         }
+        .btn:disabled {
+            background-color: var(--bg-muted-light) !important;
+            color: var(--text-muted-light) !important;
+            cursor: not-allowed !important;
+            opacity: 0.65 !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        html.dark .btn:disabled {
+            background-color: var(--bg-muted-dark) !important;
+            color: var(--text-muted-dark) !important;
+        }
+        #appointmentList li .action-buttons button.btn-selesai:disabled {
+            background-color: var(--bg-muted-light) !important;
+            color: var(--text-muted-light) !important;
+        }
+        html.dark #appointmentList li .action-buttons button.btn-selesai:disabled {
+            background-color: var(--bg-muted-dark) !important;
+            color: var(--text-muted-dark) !important;
+        }
+
 
         /* Filter button styling */
         #filterToday, #filterAll {
@@ -660,7 +733,6 @@
             transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
             border: 1px solid transparent;
         }
-        /* Default state for filter buttons */
         #filterToday, #filterAll {
             background-color: var(--bg-muted-light);
             color: var(--text-secondary-light);
@@ -671,7 +743,6 @@
             color: var(--text-secondary-dark);
             border-color: var(--border-color-dark);
         }
-        /* Hover state for filter buttons */
         #filterToday:hover, #filterAll:hover {
             background-color: color-mix(in srgb, var(--bg-muted-light) 90%, black);
             border-color: var(--accent-color-light);
@@ -682,7 +753,6 @@
             border-color: var(--accent-color-dark);
             color: var(--accent-color-dark);
         }
-        /* Active state for filter buttons */
         #filterToday.active-filter, #filterAll.active-filter {
             background-color: var(--accent-color-light);
             color: white;
@@ -691,7 +761,7 @@
         }
         html.dark #filterToday.active-filter, html.dark #filterAll.active-filter {
             background-color: var(--accent-color-dark);
-            color: var(--text-primary-dark); /* Or white depending on accent contrast */
+            color: var(--text-primary-dark);
             border-color: var(--accent-color-dark);
         }
 
@@ -699,7 +769,7 @@
         /* SweetAlert2 Customization */
         .swal2-popup {
             font-family: var(--font-primary) !important;
-            border-radius: 0.75rem !important; /* Softer radius */
+            border-radius: 0.75rem !important;
             background-color: var(--bg-secondary-light) !important;
             color: var(--text-primary-light) !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
@@ -748,16 +818,16 @@
             border-color: var(--warning-color-light) !important;
             color: var(--warning-color-light) !important;
         }
-         html.dark .swal2-icon.swal2-warning {
+        html.dark .swal2-icon.swal2-warning {
             border-color: var(--warning-color-dark) !important;
             color: var(--warning-color-dark) !important;
         }
         .swal2-icon.swal2-info {
-             border-color: var(--accent-color-light) !important;
+            border-color: var(--accent-color-light) !important;
             color: var(--accent-color-light) !important;
         }
         html.dark .swal2-icon.swal2-info {
-             border-color: var(--accent-color-dark) !important;
+            border-color: var(--accent-color-dark) !important;
             color: var(--accent-color-dark) !important;
         }
 
@@ -818,10 +888,13 @@
                         <div id="countdownTimer" class="hidden mt-3">
                             <i class="fas fa-clock"></i> <span id="countdownText"></span>
                         </div>
+                        <div id="practiceEndCountdownTimer" class="hidden mt-3">
+                            <i class="fas fa-hourglass-end"></i> <span id="practiceEndCountdownText"></span>
+                        </div>
                     </div>
 
                     <div class="card" id="customTimerSection">
-                         <h3 class="card-title mb-4">Atur Pengingat Kustom</h3>
+                        <h3 class="card-title mb-4">Atur Pengingat Kustom</h3>
                         <div id="customTimerControls" class="space-y-3 sm:space-y-0 sm:flex sm:space-x-3">
                             <input type="time" id="targetTimeInput" class="w-full sm:w-auto">
                             <input type="text" id="timerDescription" placeholder="Keterangan pengingat (cth: Istirahat)" class="w-full sm:flex-1">
@@ -905,6 +978,10 @@
         const scheduleInfoP = document.getElementById('scheduleInfo');
         const countdownTimerDiv = document.getElementById('countdownTimer');
         const countdownTextSpan = document.getElementById('countdownText');
+        // DOM elements for practice end countdown
+        const practiceEndCountdownTimerDiv = document.getElementById('practiceEndCountdownTimer');
+        const practiceEndCountdownTextSpan = document.getElementById('practiceEndCountdownText');
+
         const customTimerSection = document.getElementById('customTimerSection');
         const targetTimeInput = document.getElementById('targetTimeInput');
         const timerDescriptionInput = document.getElementById('timerDescription');
@@ -1000,12 +1077,12 @@
             if (days > 0) parts.push(`${days} hari`);
             if (hours > 0) parts.push(`${hours} jam`);
             if (minutes > 0) parts.push(`${minutes} menit`);
-            if (seconds >= 0 || parts.length === 0) parts.push(`${seconds} detik`); // Show seconds if less than a minute or exactly 0
+            if (seconds >= 0 || parts.length === 0) parts.push(`${seconds} detik`);
             return parts.join(' ');
         }
         function getDayNumber(dayName) {
             const dayMap = { 'Minggu': 0, 'Senin': 1, 'Selasa': 2, 'Rabu': 3, 'Kamis': 4, 'Jumat': 5, 'Sabtu': 6 };
-            return dayMap[dayName.trim()]; // Ensure to trim whitespace from dayName
+            return dayMap[dayName.trim()];
         }
 
         // --- Firebase Initialization and Config Fetch ---
@@ -1091,23 +1168,23 @@
                     const profileData = profileSnapshot.val();
                     console.log("Data profil dokter:", profileData);
                     doctorName = profileData.nama || 'Dokter';
-                    doctorSchedule = profileData; // Store the entire schedule data, including hari_praktik, jam_mulai, jam_selesai
+                    doctorSchedule = profileData; 
                     if (doctorNameSpan) doctorNameSpan.textContent = `Login sebagai ${doctorName}`;
                     if (greetingNameSpan) greetingNameSpan.textContent = doctorName;
                     if (scheduleInfoP) {
                         scheduleInfoP.innerHTML = `Jadwal: <strong>${profileData.hari_praktik || 'Belum diatur'}</strong>, Pukul: <strong>${profileData.jam_mulai || '--:--'} - ${profileData.jam_selesai || '--:--'}</strong>`;
                     }
-                    startScheduleCountdown(); // Call this after doctorSchedule is set
+                    startScheduleCountdown(); 
                 } else {
                     console.warn(`Profil dokter UID ${doctorUid} tidak ditemukan.`);
                     if (doctorNameSpan) doctorNameSpan.textContent = 'Dokter (Profil Tidak Ditemukan)';
                     if (greetingNameSpan) greetingNameSpan.textContent = 'Dokter';
                     if (scheduleInfoP) scheduleInfoP.innerHTML = "Jadwal tidak ditemukan.";
                     if (countdownTimerDiv) countdownTimerDiv.classList.add('hidden');
+                    if (practiceEndCountdownTimerDiv) practiceEndCountdownTimerDiv.classList.add('hidden');
                 }
 
                 const appointmentsRef = firebaseDb.ref('reservasi');
-                // Listen for real-time updates on appointments
                 appointmentsRef.orderByChild('dokter_id').equalTo(doctorUid).on('value', (appointmentsSnapshot) => {
                     allAppointments = [];
                     if (appointmentsSnapshot.exists()) {
@@ -1119,7 +1196,6 @@
                     } else {
                         console.log("Tidak ada antrian pasien untuk dokter ini (real-time).");
                     }
-                    // Re-display appointments whenever data changes, if the queue view is active
                     if(document.getElementById('todayQueueSection').classList.contains('active')) {
                         displayAppointments(currentFilter);
                     }
@@ -1130,7 +1206,7 @@
 
 
                 displayState('content');
-                showContentView('schedulePrayerSection'); // Default view
+                showContentView('schedulePrayerSection');
                 loadPrayerTimes();
             } catch (error) {
                 console.error("Error memuat data dokter/antrian awal:", error);
@@ -1143,47 +1219,84 @@
             currentFilter = filter;
             appointmentListUl.innerHTML = '<li><div class="loading-spinner mx-auto my-4"></div><p class="text-center text-[var(--text-muted-light)] dark:text-[var(--text-muted-dark)]">Memuat antrian...</p></li>';
 
-            const today = formatDate(new Date());
+            const todayString = formatDate(new Date());
             let filteredAppointments = [];
 
             if (filter === 'today') {
-                // Filter for appointments scheduled for TODAY and status_pasien is 'checkin' AND not 'Selesai' (overall status)
                 filteredAppointments = allAppointments.filter(appt =>
-                    appt.tanggal === today &&
-                    appt.status_pasien && appt.status_pasien.toLowerCase() === 'checkin' &&
-                    appt.status !== 'Selesai'
+                    appt.tanggal === todayString &&
+                    appt.status !== 'Selesai' // Tampilkan semua untuk hari ini yang belum Selesai
                 );
-                 console.log(`Menampilkan ${filteredAppointments.length} antrian 'checkin' untuk Hari Ini.`);
+                console.log(`Menampilkan ${filteredAppointments.length} antrian untuk Hari Ini (belum Selesai).`);
             } else { // 'all'
-                filteredAppointments = [...allAppointments]; // Create a shallow copy for sorting
+                filteredAppointments = [...allAppointments]; 
                 console.log(`Menampilkan semua (${filteredAppointments.length}) antrian.`);
             }
             
-            // Sort logic:
-            // For 'today' (checkin queue): sort by waktu_checkin (ascending), then by waktu (appointment time ascending)
-            // For 'all': sort by status (not Selesai first), then by date & time (descending - most recent first)
             filteredAppointments.sort((a, b) => {
                 if (filter === 'today') {
+                    // Untuk filter "Hari Ini", prioritaskan yang sudah check-in, lalu berdasarkan waktu check-in atau waktu janji
+                    const statusAIsCheckin = (a.status_pasien || "").toLowerCase() === 'checkin';
+                    const statusBIsCheckin = (b.status_pasien || "").toLowerCase() === 'checkin';
+
+                    if (statusAIsCheckin && !statusBIsCheckin) return -1;
+                    if (!statusAIsCheckin && statusBIsCheckin) return 1;
+                    
                     const timeA = a.waktu_checkin || a.waktu || "00:00";
                     const timeB = b.waktu_checkin || b.waktu || "00:00";
                     return timeA.localeCompare(timeB);
-                } else { // 'all' filter
+                } else { 
                     if (a.status !== 'Selesai' && b.status === 'Selesai') return -1;
                     if (a.status === 'Selesai' && b.status !== 'Selesai') return 1;
                     
                     const dateTimeA = new Date(`${a.tanggal}T${a.waktu || '00:00'}`);
                     const dateTimeB = new Date(`${b.tanggal}T${b.waktu || '00:00'}`);
-                    return dateTimeB - dateTimeA; // Most recent first
+                    return dateTimeB - dateTimeA; 
                 }
             });
             
-            appointmentListUl.innerHTML = ''; // Clear loading
+            appointmentListUl.innerHTML = ''; 
 
             if (filteredAppointments.length > 0) {
                 filteredAppointments.forEach(appointment => {
                     const li = document.createElement('li');
-                    const checkinTimeDisplay = appointment.waktu_checkin ? `<span><i class="fas fa-sign-in-alt mr-2 text-green-500"></i> Check-in: <strong>${appointment.waktu_checkin}</strong></span>` : '';
+                    const checkinTimeDisplay = appointment.waktu_checkin ? `<span><i class="fas fa-sign-in-alt text-green-500"></i> Check-in: <strong>${appointment.waktu_checkin}</strong></span>` : '';
                     
+                    let completeActionHTML = '';
+                    const patientStatusLower = appointment.status ? appointment.status.toLowerCase() : '';
+                    
+                    const appointmentDate = new Date(appointment.tanggal + "T00:00:00Z"); // Use Z for UTC to avoid timezone issues if dates are stored as YYYY-MM-DD
+                    const todayDate = new Date(todayString + "T00:00:00Z");
+
+                    const isFutureAppointment = appointmentDate > todayDate;
+                    const isTodayAppointment = appointment.tanggal === todayString;
+
+                    if (appointment.status === 'Selesai') {
+                        completeActionHTML = `<span class="status-completed"><i class="fas fa-check-circle"></i>Selesai</span>`;
+                    } else {
+                        const canBeCompleted = patientStatusLower === 'checkin' && 
+                                               (isTodayAppointment || (filter === 'all' && !isFutureAppointment));
+
+                        if (canBeCompleted) {
+                            completeActionHTML = `<button onclick="markAppointmentComplete('${appointment.id}')" class="btn btn-selesai"><i class="fas fa-check"></i>Selesai</button>`;
+                        } else {
+                            let disabledTitle = "Tidak dapat diselesaikan saat ini."; 
+                            if (patientStatusLower === 'reservasi') {
+                                disabledTitle = "Status pasien masih 'Reservasi'.";
+                            } else if (patientStatusLower === 'registrasi') {
+                                disabledTitle = "Status pasien masih 'Registrasi'.";
+                            } else if (filter === 'all' && isFutureAppointment) {
+                                disabledTitle = "Janji temu belum berlangsung.";
+                            } else if (patientStatusLower !== 'checkin') {
+                                 disabledTitle = `Status pasien: ${appointment.status || 'N/A'}. Harus 'checkin'.`;
+                            }
+                            completeActionHTML = `<button class="btn btn-selesai" disabled title="${disabledTitle}"><i class="fas fa-check"></i>Selesai</button>`;
+                        }
+                    }
+
+                    const changeTimeButtonHTML = appointment.status !== 'Selesai' ? 
+                        `<button onclick="changeAppointmentTime('${appointment.id}', '${appointment.tanggal}', '${appointment.waktu || ''}')" class="btn btn-ganti-jam btn-sm text-xs"><i class="fas fa-clock"></i>Ganti Jam</button>` : '';
+
                     li.innerHTML = `
                         <div class='appointment-details'>
                             <strong>${appointment.nama || 'Pasien Tanpa Nama'}</strong>
@@ -1194,18 +1307,15 @@
                             <div class='catatan-pasien mt-1'>Catatan: ${appointment.diagnosis || 'Tidak ada catatan'}</div>
                         </div>
                         <div class="action-buttons">
-                            ${appointment.status !== 'Selesai' ? `<button onclick="editAppointmentDoctor('${appointment.id}')" class="btn btn-edit-doctor btn-sm text-xs"><i class="fas fa-user-edit mr-1"></i>Ubah Dokter</button>` : ''}
-                            ${appointment.status === 'Selesai'
-                                ? `<span class="status-completed"><i class="fas fa-check-circle mr-1"></i>Selesai</span>`
-                                : `<button onclick="markAppointmentComplete('${appointment.id}')" class="btn btn-selesai"><i class="fas fa-check mr-1.5"></i>Selesai</button>`
-                            }
+                            ${changeTimeButtonHTML}
+                            ${completeActionHTML}
                         </div>
                     `;
                     appointmentListUl.appendChild(li);
                 });
                 noAppointmentsMsgP.classList.add('hidden');
             } else {
-                noAppointmentsMsgP.innerHTML = filter === 'today' ? "Tidak ada pasien yang check-in hari ini." : "Tidak ada data antrian.";
+                noAppointmentsMsgP.innerHTML = filter === 'today' ? "Tidak ada pasien untuk hari ini." : "Tidak ada data antrian.";
                 noAppointmentsMsgP.classList.remove('hidden');
             }
 
@@ -1215,26 +1325,44 @@
             }
         }
         
-        window.editAppointmentDoctor = async (reservationId) => {
-            // This is a placeholder. Full implementation would require fetching doctor lists,
-            // updating Firebase, and potentially more complex logic.
-            Swal.fire({
-                title: 'Ubah Dokter',
-                text: 'Fitur untuk mengubah dokter yang menangani pasien ini sedang dalam pengembangan. Untuk saat ini, silakan hubungi administrator.',
-                icon: 'info',
-                confirmButtonText: 'OK',
-                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color-light').trim()
+        window.changeAppointmentTime = async (reservationId, currentDate, currentTime) => {
+            const { value: formValues, isConfirmed } = await Swal.fire({
+                title: 'Ganti Jam Janji Temu',
+                html:
+                    `<label for="swal-input-date" class="swal2-label" style="display: block; margin-bottom: .5em;">Tanggal Baru:</label>`+
+                    `<input id="swal-input-date" type="date" value="${currentDate}" class="swal2-input" style="width: calc(100% - 1.25em); margin-bottom: 1em;">` +
+                    `<label for="swal-input-time" class="swal2-label" style="display: block; margin-bottom: .5em;">Waktu Baru:</label>`+
+                    `<input id="swal-input-time" type="time" value="${currentTime}" class="swal2-input" style="width: calc(100% - 1.25em);">`,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Simpan Perubahan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color-light').trim(),
+                preConfirm: () => {
+                    const newDate = document.getElementById('swal-input-date').value;
+                    const newTime = document.getElementById('swal-input-time').value;
+                    if (!newDate || !newTime) {
+                        Swal.showValidationMessage(`Tanggal dan waktu baru tidak boleh kosong.`);
+                        return false;
+                    }
+                    return { date: newDate, time: newTime };
+                }
             });
-            console.log(`Placeholder: Request to edit doctor for reservation ID: ${reservationId}`);
-            // Example of what might be needed:
-            // 1. Fetch list of available doctors from Firebase: firebaseDb.ref('daftar_dokter').once('value')
-            // 2. Create a select input for Swal.fire:
-            //    const { value: newDoctorId } = await Swal.fire({ ..., input: 'select', inputOptions: doctorOptions })
-            // 3. If newDoctorId is selected, update the reservation:
-            //    await firebaseDb.ref(`reservasi/${reservationId}`).update({ dokter_id: newDoctorId, nama_dokter: newDoctorName });
-            // 4. Refresh appointment list or update local data.
-        };
 
+            if (isConfirmed && formValues) {
+                const { date: newDate, time: newTime } = formValues;
+                console.log(`Request to change time for reservation ID: ${reservationId} to Date: ${newDate}, Time: ${newTime}`);
+                
+                try {
+                    await firebaseDb.ref(`reservasi/${reservationId}`).update({ tanggal: newDate, waktu: newTime });
+                    showNotificationSuccess(`Jam janji temu untuk reservasi ${reservationId} berhasil diubah.`);
+                    // Listener real-time akan memperbarui UI
+                } catch (error) {
+                    console.error("Error updating appointment time:", error);
+                    showNotificationError('Gagal mengubah jam janji temu: ' + error.message);
+                }
+            }
+        };
 
         window.markAppointmentComplete = async (reservationId) => {
             if (!firebaseDb) {
@@ -1254,100 +1382,127 @@
             try {
                 await firebaseDb.ref(`reservasi/${reservationId}`).update({
                     status: 'Selesai',
-                    status_pasien: 'selesai_konsultasi', // Optionally update patient status too
+                    status_pasien: 'selesai_konsultasi', 
                     completed_at: new Date().toISOString()
                 });
                 console.log(`Reservasi ${reservationId} berhasil ditandai Selesai.`);
                 showNotificationSuccess('Reservasi berhasil ditandai selesai.');
-                // Data will be re-rendered by the real-time listener on `loadDoctorData`
-                // No need to manually update `allAppointments` and call `displayAppointments` here if using .on()
             } catch (error) {
                 console.error(`Gagal menandai reservasi ${reservationId} Selesai:`, error);
                 showNotificationError(`Gagal menandai selesai: ${error.message}`);
             }
         }
 
-        // --- Schedule & Timer Functions ---
         function startScheduleCountdown() {
-            if (!doctorSchedule || !doctorSchedule.hari_praktik || !doctorSchedule.jam_mulai || !countdownTimerDiv || !countdownTextSpan) {
-                console.warn("Data jadwal tidak lengkap atau elemen DOM tidak ditemukan untuk countdown jadwal.");
+            if (!doctorSchedule || !countdownTimerDiv || !countdownTextSpan || !practiceEndCountdownTimerDiv || !practiceEndCountdownTextSpan) {
+                console.warn("Data jadwal atau elemen DOM countdown tidak lengkap.");
                 if (countdownTimerDiv) countdownTimerDiv.classList.add('hidden');
-                if (scheduleInfoP && (!doctorSchedule || !doctorSchedule.hari_praktik)) { // If hari_praktik is missing
-                     scheduleInfoP.innerHTML = `Jadwal: <strong>Belum diatur</strong>`;
+                if (practiceEndCountdownTimerDiv) practiceEndCountdownTimerDiv.classList.add('hidden');
+                if (scheduleInfoP && (!doctorSchedule || !doctorSchedule.hari_praktik)) {
+                    scheduleInfoP.innerHTML = `Jadwal: <strong>Belum diatur</strong>`;
                 }
                 return;
             }
             if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
-            countdownTimerDiv.classList.remove('hidden');
 
-            const updateScheduleTimer = () => {
+            const updateTimers = () => {
                 const now = new Date();
                 const daysOfWeek = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 
-                // Handle potentially undefined or empty hari_praktik
+                // Sembunyikan kedua countdown secara default
+                countdownTimerDiv.classList.add('hidden');
+                practiceEndCountdownTimerDiv.classList.add('hidden');
+
                 const practiceDaysString = doctorSchedule.hari_praktik || "";
                 const practiceDayNumbers = practiceDaysString.split(',')
-                    .map(day => getDayNumber(day.trim())) // Trim whitespace before getting day number
-                    .filter(dayNum => dayNum !== undefined && dayNum !== null); // Filter out invalid day numbers
+                    .map(day => getDayNumber(day.trim()))
+                    .filter(dayNum => dayNum !== undefined && dayNum !== null);
 
                 if (practiceDayNumbers.length === 0) {
+                    countdownTimerDiv.classList.remove('hidden');
                     countdownTextSpan.textContent = "Hari praktik tidak valid atau belum diatur.";
-                    if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
                     return;
                 }
 
-                const jamMulaiString = doctorSchedule.jam_mulai || "00:00"; // Default if missing
+                const jamMulaiString = doctorSchedule.jam_mulai || "00:00";
                 const [startHour, startMinute] = jamMulaiString.split(':').map(Number);
+                const jamSelesaiString = doctorSchedule.jam_selesai || "23:59";
+                const [endHour, endMinute] = jamSelesaiString.split(':').map(Number);
 
-                if (isNaN(startHour) || isNaN(startMinute)) {
-                    countdownTextSpan.textContent = "Jam mulai praktik tidak valid.";
-                    if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
+                if (isNaN(startHour) || isNaN(startMinute) || isNaN(endHour) || isNaN(endMinute)) {
+                    countdownTimerDiv.classList.remove('hidden');
+                    countdownTextSpan.textContent = "Jam praktik tidak valid.";
                     return;
                 }
 
-                let nextPracticeTime = null;
+                const currentDayIsPracticeDay = practiceDayNumbers.includes(now.getDay());
+                
+                if (currentDayIsPracticeDay) {
+                    const practiceStartTimeToday = new Date(now);
+                    practiceStartTimeToday.setHours(startHour, startMinute, 0, 0);
+                    const practiceEndTimeToday = new Date(now);
+                    practiceEndTimeToday.setHours(endHour, endMinute, 0, 0);
 
-                for (let i = 0; i < 7; i++) { // Check for the next 7 days
-                    const nextDate = new Date(now);
-                    nextDate.setDate(now.getDate() + i);
-                    if (practiceDayNumbers.includes(nextDate.getDay())) {
-                        const potentialPracticeTime = new Date(nextDate);
+                    if (now >= practiceStartTimeToday && now < practiceEndTimeToday) {
+                        // Sedang dalam sesi praktik
+                        practiceEndCountdownTimerDiv.classList.remove('hidden');
+                        const timeRemainingToEnd = formatTimeDifference(now, practiceEndTimeToday);
+                        practiceEndCountdownTextSpan.innerHTML = `Sesi praktik berakhir dalam: <strong>${timeRemainingToEnd}</strong>`;
+                        return; // Hanya tampilkan countdown akhir sesi
+                    }
+                }
+
+                // Jika tidak dalam sesi praktik, cari jadwal praktik berikutnya
+                let nextPracticeTime = null;
+                for (let i = 0; i < 7; i++) { // Cek untuk 7 hari ke depan
+                    const dateToCheck = new Date(now);
+                    dateToCheck.setDate(now.getDate() + i);
+                    
+                    if (practiceDayNumbers.includes(dateToCheck.getDay())) {
+                        const potentialPracticeTime = new Date(dateToCheck);
                         potentialPracticeTime.setHours(startHour, startMinute, 0, 0);
-                        if (potentialPracticeTime > now) {
+
+                        if (potentialPracticeTime > now) { 
                             nextPracticeTime = potentialPracticeTime;
                             break;
                         }
                     }
                 }
+                
                 if (nextPracticeTime) {
+                    countdownTimerDiv.classList.remove('hidden');
                     const timeRemaining = formatTimeDifference(now, nextPracticeTime);
                     countdownTextSpan.innerHTML = `Praktik berikutnya: <strong>${daysOfWeek[nextPracticeTime.getDay()]}, ${formatTime(nextPracticeTime)}</strong> (dalam ${timeRemaining})`;
                 } else {
-                    // If no upcoming practice in the next 7 days, try finding one further out (e.g., next week's first practice day)
-                    let foundFurther = false;
-                    for (let i = 7; i < 14; i++) { // Check the week after
-                         const nextDate = new Date(now);
-                         nextDate.setDate(now.getDate() + i);
-                         if (practiceDayNumbers.includes(nextDate.getDay())) {
-                            const potentialPracticeTime = new Date(nextDate);
+                    // Jika tidak ditemukan dalam 7 hari, coba cari lebih jauh (misal, minggu depan jika jadwal hanya sekali seminggu dan sudah lewat)
+                    // Logika ini bisa disesuaikan jika jadwal sangat jarang
+                    for (let i = 7; i < 14; i++) {
+                         const dateToCheck = new Date(now);
+                         dateToCheck.setDate(now.getDate() + i);
+                         if (practiceDayNumbers.includes(dateToCheck.getDay())) {
+                            const potentialPracticeTime = new Date(dateToCheck);
                             potentialPracticeTime.setHours(startHour, startMinute, 0, 0);
-                            nextPracticeTime = potentialPracticeTime;
-                            foundFurther = true;
-                            break;
+                            if (potentialPracticeTime > now) {
+                                nextPracticeTime = potentialPracticeTime;
+                                break;
+                            }
                          }
                     }
-                    if(foundFurther && nextPracticeTime){
+                    if (nextPracticeTime) {
+                        countdownTimerDiv.classList.remove('hidden');
                         const timeRemaining = formatTimeDifference(now, nextPracticeTime);
                         countdownTextSpan.innerHTML = `Praktik berikutnya: <strong>${daysOfWeek[nextPracticeTime.getDay()]}, ${formatTime(nextPracticeTime)}</strong> (dalam ${timeRemaining})`;
                     } else {
+                        countdownTimerDiv.classList.remove('hidden');
                         countdownTextSpan.textContent = "Tidak ada jadwal praktik mendatang yang terdeteksi.";
-                        if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
                     }
                 }
             };
-            updateScheduleTimer();
-            scheduleCountdownInterval = setInterval(updateScheduleTimer, 1000);
+            
+            updateTimers(); // Panggil sekali saat inisialisasi
+            scheduleCountdownInterval = setInterval(updateTimers, 1000); // Perbarui setiap detik
         }
+
 
         function startCustomTimer(prefillTime = null, prefillDescription = null) {
             if (prefillTime) targetTimeInput.value = prefillTime;
@@ -1453,7 +1608,7 @@
                             console.log("Custom Claims:", idTokenResult.claims);
                             if (idTokenResult.claims.doctor === true) {
                                 console.log("Pengguna terverifikasi sebagai dokter.");
-                                await loadDoctorData(user.uid); // This will now set up real-time listener for appointments
+                                await loadDoctorData(user.uid); 
                             } else {
                                 console.warn("Akses ditolak: Pengguna", user.uid, "bukan dokter.");
                                 displayState('error', "Anda tidak memiliki hak akses dokter. Mengarahkan ke login...");
@@ -1524,12 +1679,11 @@
         window.addEventListener('beforeunload', () => {
             if (scheduleCountdownInterval) clearInterval(scheduleCountdownInterval);
             if (customTimerInterval) clearInterval(customTimerInterval);
-            // Detach Firebase listeners if any were attached with .on() and not .once()
             if (firebaseDb) {
                 const user = firebaseAuth.currentUser;
                 if (user) {
-                     firebaseDb.ref('reservasi').orderByChild('dokter_id').equalTo(user.uid).off();
-                     console.log("Firebase listener for appointments detached.");
+                    firebaseDb.ref('reservasi').orderByChild('dokter_id').equalTo(user.uid).off();
+                    console.log("Firebase listener for appointments detached.");
                 }
             }
         });
@@ -1541,7 +1695,7 @@
                 document.body.classList.remove('overflow-hidden-custom');
                 mainContent.classList.toggle('sidebar-collapsed', mainSidebar.classList.contains('collapsed'));
             } else {
-                 mainContent.classList.remove('sidebar-collapsed'); // Ensure no margin on mobile
+                mainContent.classList.remove('sidebar-collapsed'); 
             }
         });
     </script>
