@@ -12,8 +12,8 @@ exports.processText = async (req, res) => {
 
     const dataToSave = {
         inputText: inputText,
-        hasil: hasil, 
-        timestamp: timestamp 
+        hasil: hasil,
+        timestamp: timestamp
     };
     console.log("[Firebase Save] Data to be saved:", JSON.stringify(dataToSave, null, 2));
     try {
@@ -26,16 +26,24 @@ exports.processText = async (req, res) => {
 
 
     let responseText = '';
-    if (hasil.length > 0) {
-         hasil.forEach(item => {
+    // Cek jika hasil adalah kasus 'Tidak Terdeteksi' dari NLP
+    if (hasil.length === 1 && hasil[0].penyakit === 'Tidak Terdeteksi') {
+        const item = hasil[0];
+        responseText += `Penyakit terdeteksi: ${item.penyakit}\n`;
+        // Pastikan gejala ditampilkan jika ada, meskipun tidak ada diagnosis kuat
+        responseText += `Gejala yang muncul: ${Array.isArray(item.gejala) && item.gejala.length > 0 ? item.gejala.join(', ') : 'Tidak ada gejala spesifik'}\n`;
+        responseText += `Saran Tambahan: ${item.saranDokter}\n`;
+    } else if (hasil.length > 0) {
+        // Ini untuk kasus penyakit yang benar-benar terdeteksi (skor >= 3)
+        hasil.forEach(item => {
             responseText += `Penyakit terdeteksi: ${item.penyakit}\n`;
             responseText += `Gejala yang muncul: ${Array.isArray(item.gejala) ? item.gejala.join(', ') : 'N/A'}\n`;
-            responseText += `Saran Dokter: ${item.saranDokter}\n`;
-            responseText += `Saran Obat: ${item.saranObat}\n`;
+            responseText += `Saran Tambahan: ${item.saranDokter}\n`;
         });
     } else {
- 
-         responseText = 'Tidak ada penyakit yang terdeteksi secara spesifik dari gejala yang Anda masukkan.';
+        // Fallback, meskipun dengan perubahan di NLP, blok ini seharusnya jarang (atau tidak pernah) tercapai
+        // Ini akan terjadi jika NLP mengembalikan array kosong, bukan objek 'Tidak Terdeteksi'
+        responseText = 'Tidak ada penyakit yang terdeteksi secara spesifik dari gejala yang Anda masukkan.';
     }
 
 
@@ -63,11 +71,14 @@ exports.getPersentasePenyakit = async (req, res) => {
         for (const key in data) {
             const penyakitList = data[key].hasil; // Mengakses `hasil` agar sesuai dengan struktur penyimpanan
             penyakitList.forEach(item => {
-                totalCount++;
-                if (totalPenyakit[item.penyakit]) {
-                    totalPenyakit[item.penyakit]++;
-                } else {
-                    totalPenyakit[item.penyakit] = 1;
+                // Hanya hitung penyakit yang terdeteksi secara spesifik, bukan 'Tidak Terdeteksi'
+                if (item.penyakit !== 'Tidak Terdeteksi') {
+                    totalCount++;
+                    if (totalPenyakit[item.penyakit]) {
+                        totalPenyakit[item.penyakit]++;
+                    } else {
+                        totalPenyakit[item.penyakit] = 1;
+                    }
                 }
             });
         }
@@ -105,9 +116,12 @@ exports.getPersentaseSpesifik = async (req, res) => {
         for (const key in data) {
             const penyakitList = data[key].hasil; // Mengakses `hasil` agar sesuai dengan format penyimpanan
             penyakitList.forEach(item => {
-                totalCount++;
-                if (item.penyakit.toLowerCase() === penyakitDicari) {
-                    penyakitCount++;
+                // Hanya hitung penyakit yang terdeteksi secara spesifik
+                if (item.penyakit !== 'Tidak Terdeteksi') {
+                    totalCount++;
+                    if (item.penyakit.toLowerCase() === penyakitDicari) {
+                        penyakitCount++;
+                    }
                 }
             });
         }

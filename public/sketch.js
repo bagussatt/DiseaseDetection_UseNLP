@@ -5,7 +5,6 @@ let transcriptArea;
 let listenButton;
 let statusDisplay;
 let speakingIndicator;
-// let reservationButton; // Tombol reservasi fisik telah dihapus
 let doctorImageElement;
 let isListening = false;
 let isSpeaking = false;
@@ -29,11 +28,9 @@ function setup() {
     listenButton = select('#listenButton');
     statusDisplay = select('#status');
     speakingIndicator = select('#speaking-indicator');
-    // reservationButton = select('#showMapBtn'); // Tombol reservasi fisik telah dihapus
     doctorImageElement = select('#doctor-image');
 
     // Check if all essential UI elements are selected
-    // Pemeriksaan untuk reservationButton dihilangkan karena tombolnya dihapus
     if (!transcriptArea || !listenButton || !statusDisplay || !speakingIndicator || !doctorImageElement) {
         console.error("FATAL ERROR: UI element missing! Check HTML IDs. Application might not work as expected.");
         if (statusDisplay) {
@@ -84,16 +81,6 @@ function setup() {
         if (statusDisplay) updateStatus("Peringatan: Fitur pengenal suara tidak tersedia.", 5000);
     }
 
-    // Listener for Reservation Button - Dihapus karena tombolnya dihilangkan
-    // if (reservationButton) {
-    //     reservationButton.mousePressed(handleReservationClick);
-    //     reservationButton.html('Reservasi');
-    //     reservationButton.style('display', 'none');
-    //     console.log("Reservation button (#showMapBtn) listener attached.");
-    // } else {
-    //     console.warn("Reservation button (#showMapBtn) not found as it has been removed.");
-    // }
-
     console.log("Initial message will be added via voiceReady.");
     updateStatus(''); // Clear status initially
     console.log("p5.js setup complete.");
@@ -140,7 +127,6 @@ function botStartedSpeaking() {
     isSpeaking = true;
     if (speakingIndicator) speakingIndicator.style('display', 'flex');
     if (listenButton) listenButton.attribute('disabled', '');
-    // if (reservationButton) reservationButton.attribute('disabled', ''); // Dihapus
     updateStatus('Vira sedang berbicara...');
     if (doctorImageElement) doctorImageElement.addClass('bot-speaking');
 }
@@ -158,11 +144,6 @@ function botFinishedSpeaking() {
     } else if (listenButton && isListening) {
         console.log("TTS finished, but STT still marked as listening. STT might have stopped due to silence.");
     }
-    // Re-enable reservation button if a valid diagnosis was made - Dihapus
-    // if (reservationButton && lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS") {
-    //     console.log("Re-enabling reservation button after bot finished speaking.");
-    //     reservationButton.removeAttribute('disabled');
-    // }
 }
 
 // --- Core Speech Recognition Functions ---
@@ -204,7 +185,6 @@ function toggleListening() {
         updateStatus('Error: Fitur rekam suara tidak siap.', 3000);
         return;
     }
-    // if (reservationButton) reservationButton.style('display', 'none'); // Dihapus
 
     if (!isListening) {
         // CHECK INITIAL DATA CONSENT
@@ -216,10 +196,10 @@ function toggleListening() {
             Swal.fire({
                 title: 'Persetujuan Penggunaan Data Suara',
                 html: `<p>Saya mengerti dan menyetujui bahwa suara saya akan direkam dan diproses untuk tujuan analisis.</p>
-                       <div class="flex items-center justify-center mt-2">
-                         <input type="checkbox" id="persetujuan-data-check" class="form-checkbox h-5 w-5 text-blue-600">
-                         <label for="persetujuan-data-check" class="ml-2 text-sm text-gray-700"> Saya Setuju</label>
-                       </div>`,
+                        <div class="flex items-center justify-center mt-2">
+                          <input type="checkbox" id="persetujuan-data-check" class="form-checkbox h-5 w-5 text-blue-600">
+                          <label for="persetujuan-data-check" class="ml-2 text-sm text-gray-700"> Saya Setuju</label>
+                        </div>`,
                 icon: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -288,12 +268,14 @@ function gotSpeech() {
 
         if (lowerUserInput.includes("saya ingin reservasi")) {
             console.log("Voice command 'saya ingin reservasi' detected.");
-            if (lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS" && lastDetectedDisease) {
+            // Condition for reservation trigger: lastDetectedDisease must be a valid disease name (not 'Tidak Terdeteksi')
+            // AND lastDetectionResult must NOT be 'INSUFFICIENT_SYMPTOMS'.
+            if (lastDetectedDisease && lastDetectedDisease.toLowerCase() !== 'tidak terdeteksi' && lastDetectionResult !== "INSUFFICIENT_SYMPTOMS") {
                 speakText("Baik, saya akan memproses permintaan reservasi Anda.");
-                handleReservationClick(); // Fungsi ini tetap ada untuk logika popup konfirmasi
+                handleReservationClick(); // This function handles the confirmation popup
             } else {
-                speakText("Maaf, saya belum bisa memproses reservasi. Hasil analisis gejala belum tersedia. Silakan sebutkan gejala Anda terlebih dahulu.");
-                addMessageToTranscript('Vira', "Untuk melakukan reservasi, hasil analisis gejala diperlukan. Silakan sebutkan gejala Anda.");
+                speakText("Maaf, saya belum bisa memproses reservasi. Hasil analisis gejala belum tersedia atau belum cukup. Silakan sebutkan gejala Anda terlebih dahulu.");
+                addMessageToTranscript('Vira', "Untuk melakukan reservasi, hasil analisis gejala yang valid dan cukup diperlukan. Silakan sebutkan gejala Anda.");
                 resetListenButtonUI(!isSpeaking);
             }
         } else {
@@ -303,8 +285,8 @@ function gotSpeech() {
 
         if (listenButton && !lowerUserInput.includes("saya ingin reservasi")) {
             listenButton.attribute('disabled', '');
-        } else if (listenButton && lowerUserInput.includes("saya ingin reservasi") && !(lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS" && lastDetectedDisease)) {
-             resetListenButtonUI(!isSpeaking);
+        } else if (listenButton && lowerUserInput.includes("saya ingin reservasi") && !(lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS" && lastDetectionResult !== "INSUFFICIENT_SYMPTOMS" && lastDetectedDisease)) {
+            resetListenButtonUI(!isSpeaking);
         }
     } else {
         console.warn("gotSpeech callback triggered but no valid result found (resultString or resultValue is missing).");
@@ -319,9 +301,8 @@ async function sendToServerForDetection(inputText) {
     console.log(`Sending text to /api/process: "${inputText}"`);
     updateStatus('Menganalisis gejala...');
     if (listenButton) listenButton.attribute('disabled', '');
-    // if (reservationButton) reservationButton.style('display', 'none'); // Dihapus
     lastDetectionResult = null;
-    lastDetectedDisease = null;
+    lastDetectedDisease = null; // Reset this before new detection
 
     try {
         const response = await fetch('/api/process', {
@@ -348,12 +329,11 @@ async function sendToServerForDetection(inputText) {
         updateStatus('Gagal menganalisis gejala. Silakan coba lagi nanti.', 5000);
         lastDetectionResult = null;
         lastDetectedDisease = null;
-        // updateReservationButtonVisibility(); // Dihapus
         speakText(errorMsg);
     } finally {
         console.log("sendToServerForDetection finished.");
         if (!isSpeaking && !isListening && listenButton) {
-             resetListenButtonUI(true);
+            resetListenButtonUI(true);
         }
     }
 }
@@ -362,85 +342,104 @@ async function sendToServerForDetection(inputText) {
 // --- Display Detection Results ---
 function displayDetectionResults(hasilDeteksiString) {
     console.log("Displaying detection results. Raw input:", hasilDeteksiString);
-    lastDetectionResult = "NO_VALID_DIAGNOSIS";
-    lastDetectedDisease = null;
+    lastDetectionResult = "NO_VALID_DIAGNOSIS"; // Default to no valid diagnosis
+    lastDetectedDisease = null; // Ensure this is reset at the start of new detection
 
     const noDetectionKeywords = [
         'tidak ada penyakit',
         'belum dapat mendeteksi',
         'tidak ditemukan',
-        'tidak terdeteksi',
         'gejala tidak cukup',
         'tidak ada indikasi penyakit spesifik',
-        'manchester united'
+        'manchester united' // Example of an irrelevant keyword
     ];
 
+    // Check if the string explicitly indicates a "no detection" scenario,
+    // but allow for the "Tidak Terdeteksi" from NLP if it contains symptoms.
     const isNoDetection = !hasilDeteksiString ||
         hasilDeteksiString.trim() === '' ||
-        noDetectionKeywords.some(keyword => hasilDeteksiString.toLowerCase().includes(keyword));
+        (noDetectionKeywords.some(keyword => hasilDeteksiString.toLowerCase().includes(keyword)) &&
+         !hasilDeteksiString.toLowerCase().includes('gejala yang muncul:')); // Add condition to not trigger if symptoms are present
 
-    let speakPenyakit = "Tidak diketahui";
-    let speakGejala = "N/A";
-    let foundDiagnosis = false;
+    let currentPenyakit = "Tidak diketahui";
+    let currentGejala = "N/A";
+    let currentFoundDiagnosis = false;
+    let symptomCount = 0; // Initialize symptom count
 
     if (isNoDetection) {
-        console.log("No specific disease detected based on keywords or empty/null result.");
-        const noDetectChatMsg = 'Gejala Anda belum kami kenali atau tidak terdeteksi adanya penyakit spesifik. Silakan coba ulangi dengan gejala yang lebih jelas atau berbeda.';
-        const noDetectSpeakMsg = 'Gejala Anda belum kami kenali. Silakan coba ulangi dengan gejala yang lebih jelas atau berbeda.';
+        console.log("No specific disease detected based on keywords or empty/null result, and no symptoms found.");
+        const noDetectChatMsg = 'Kami belum mendeteksi penyakit Anda.';
+        const noDetectSpeakMsg = 'Kami belum mendeteksi penyakit Anda.';
 
         addMessageToTranscript('Vira', noDetectChatMsg);
         lastDetectionResult = "NO_VALID_DIAGNOSIS";
         lastDetectedDisease = null;
         speakText(noDetectSpeakMsg);
-        // updateReservationButtonVisibility(); // Dihapus
-        return;
+        return; // Exit here for clear "no detection" cases
     }
 
-    console.log("Potential disease detected. Processing detailed results.");
+    console.log("Potential disease or symptoms detected. Processing detailed results.");
     lastDetectionResult = hasilDeteksiString.trim();
 
     const lines = lastDetectionResult.split('\n');
-    let formattedHTML = '<span class="sender-label">[Bot]:</span> <strong>Hasil Analisis:</strong><ul class="list-disc list-inside ml-4 mt-1">';
-    let currentPenyakit = "Tidak diketahui";
-    let currentGejala = "N/A";
-    let currentFoundDiagnosis = false;
-
+    
+    // Extracting data first
     lines.forEach(line => {
         const parts = line.split(':');
         if (parts.length >= 2) {
             const label = parts[0].trim();
             const value = parts.slice(1).join(':').trim();
-            const escapedLabel = label.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const escapedValue = value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            formattedHTML += `<li class="mb-1"><strong class="font-medium">${escapedLabel}:</strong> ${escapedValue}</li>`;
-
             const labelLower = label.toLowerCase();
+
             if (labelLower.includes('penyakit terdeteksi') || labelLower.includes('kemungkinan penyakit')) {
                 currentPenyakit = value;
-                currentFoundDiagnosis = true;
-                lastDetectedDisease = value;
+                if (value.toLowerCase() !== 'tidak terdeteksi') {
+                    currentFoundDiagnosis = true;
+                }
+                lastDetectedDisease = value; // Ensure lastDetectedDisease is set here
             } else if (labelLower.includes('gejala yang muncul') || labelLower.includes('gejala cocok')) {
                 currentGejala = value;
             }
-        } else if (line.trim()) {
-            const escapedLine = line.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            formattedHTML += `<li class="mb-1">${escapedLine}</li>`;
-            if (!currentFoundDiagnosis && (line.trim().toLowerCase().includes('penyakit:') || line.trim().toLowerCase().includes('kemungkinan:'))) {
-                const value = line.trim().split(':').slice(1).join(':').trim() || line.trim();
-                if (value) {
-                    currentPenyakit = value;
-                    currentFoundDiagnosis = true;
-                    lastDetectedDisease = value;
-                }
-            }
         }
     });
-    formattedHTML += '</ul>';
 
-    speakPenyakit = currentPenyakit;
-    speakGejala = currentGejala;
-    foundDiagnosis = currentFoundDiagnosis;
+    // Calculate symptom count from currentGejala
+    if (currentGejala && currentGejala !== "N/A" && currentGejala.trim() !== '') {
+        const symptomsArray = currentGejala.split(',').map(s => s.trim()).filter(s => s !== '');
+        symptomCount = symptomsArray.length;
+    }
 
+    let formattedHTML = ''; // Initialize formattedHTML here
+
+    // Determine the HTML content and set lastDetectionResult based on conditions
+    if (symptomCount > 0 && symptomCount < 3 && !currentFoundDiagnosis) {
+        // Case: Symptoms detected but less than 3 AND no confident diagnosis
+        formattedHTML = `<span class="sender-label">[Bot]:</span> Gejala yang terdeteksi adalah: <strong>${currentGejala}</strong>. <br>
+                         Silakan ulangi kata gejala Anda dan tambahkan.`;
+        lastDetectionResult = "INSUFFICIENT_SYMPTOMS"; // Set this status
+        // lastDetectedDisease remains null or 'Tidak Terdeteksi' as set by NLP, which is correct for this state.
+    } else {
+        // Case: Sufficient symptoms OR a confident diagnosis was made.
+        formattedHTML = '<span class="sender-label">[Bot]:</span> <strong>Hasil Analisis:</strong><ul class="list-disc list-inside ml-4 mt-1">';
+        lines.forEach(line => {
+            const parts = line.split(':');
+            if (parts.length >= 2) {
+                const label = parts[0].trim();
+                const value = parts.slice(1).join(':').trim();
+                const escapedLabel = label.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const escapedValue = value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                formattedHTML += `<li class="mb-1"><strong class="font-medium">${escapedLabel}:</strong> ${escapedValue}</li>`;
+            } else if (line.trim()) {
+                const escapedLine = line.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                formattedHTML += `<li class="mb-1">${escapedLine}</li>`;
+            }
+        });
+        formattedHTML += '</ul>';
+        // lastDetectionResult and lastDetectedDisease are already set correctly in the extraction loop above
+        // If currentFoundDiagnosis is true, lastDetectionResult will implicitly be a valid diagnosis.
+    }
+
+    // Always append the HTML to the transcript
     let resultDiv = createDiv(formattedHTML);
     resultDiv.addClass('bot-transcript-bubble');
     resultDiv.addClass('detection-result');
@@ -453,31 +452,38 @@ function displayDetectionResults(hasilDeteksiString) {
         }
     }
 
-    speakDetectionSummary(speakPenyakit, speakGejala, foundDiagnosis);
-    // updateReservationButtonVisibility(); // Dihapus
+    // Now, call speakDetectionSummary to handle the voice response and reservation prompt.
+    // This function will decide what to speak based on lastDetectionResult and lastDetectedDisease.
+    speakDetectionSummary(currentPenyakit, currentGejala, currentFoundDiagnosis);
 }
 
 
 // --- Speak Detection Summary ---
 function speakDetectionSummary(penyakit, gejala, diagnosisDitemukan) {
     let textToSpeak = '';
-    const validPenyakit = diagnosisDitemukan && penyakit && penyakit !== "Tidak diketahui" && penyakit.trim() !== '';
 
-    if (validPenyakit) {
+    // Condition to add reservation prompt: if any detection occurred (not NO_VALID_DIAGNOSIS)
+    const shouldPromptReservation = (lastDetectionResult !== "NO_VALID_DIAGNOSIS");
+
+    if (lastDetectionResult === "INSUFFICIENT_SYMPTOMS") {
+        textToSpeak = `Gejala yang terdeteksi adalah ${gejala}. Silakan ulangi kata gejala Anda dan tambahkan.`;
+    } else if (diagnosisDitemukan && penyakit && penyakit.toLowerCase() !== 'tidak terdeteksi') {
+        // This is for a confident diagnosis (e.g., ISPA)
         textToSpeak = `Baik, berdasarkan analisis, kemungkinan penyakit Anda adalah ${penyakit}. `;
-        if (gejala && gejala !== "N/A" && gejala.toLowerCase() !== 'n/a' && gejala.trim() !== '') {
-        }
-        // Mengubah pesan untuk tidak menyebut tombol fisik
-        textToSpeak += `Jika Anda ingin membuat janji temu, silakan katakan "saya ingin reservasi".`;
-        addMessageToTranscript('Vira', `Jika Anda ingin membuat janji temu, silakan katakan "saya ingin reservasi".`);
     } else {
+        // This covers NO_VALID_DIAGNOSIS (no symptoms detected at all)
+        // or if symptoms were >=3 but still no confident diagnosis (rare with current NLP)
         textToSpeak = "Analisis selesai. Untuk informasi lebih lanjut atau jika gejala berlanjut, disarankan untuk konsultasi dengan dokter.";
-        lastDetectionResult = "NO_VALID_DIAGNOSIS";
-        lastDetectedDisease = null;
     }
+
+    // Add reservation prompt if applicable
+    if (shouldPromptReservation) {
+        textToSpeak += ` Jika Anda ingin membuat janji temu, silakan katakan "saya ingin reservasi".`;
+        addMessageToTranscript('Vira', `Jika Anda ingin membuat janji temu, silakan katakan "saya ingin reservasi".`); // Add to transcript
+    }
+
     console.log("Bot speaking diagnosis summary:", textToSpeak);
     speakText(textToSpeak);
-    // updateReservationButtonVisibility(); // Dihapus
 }
 
 
@@ -507,60 +513,64 @@ function speakText(textToSpeak) {
 // Fungsi ini tetap ada karena dipanggil oleh perintah suara "saya ingin reservasi"
 function handleReservationClick() {
     console.log("Reservation triggered by voice. Preparing confirmation popup...");
-    if (!lastDetectionResult || lastDetectionResult === "NO_VALID_DIAGNOSIS" || !lastDetectedDisease) {
-        console.warn("Reservation action triggered, but no valid diagnosis data available.");
-        if (!isSpeaking) {
-            Swal.fire('Tidak Ada Diagnosis', 'Belum ada hasil analisis gejala yang valid untuk reservasi.', 'warning');
-        }
-        return;
-    }
-    const gejalaDataRaw = lastDetectionResult;
-    const penyakitDisplay = lastDetectedDisease || "kemungkinan kondisi ini";
+    // Condition for reservation trigger: lastDetectedDisease must be a valid disease name (not 'Tidak Terdeteksi')
+    // AND lastDetectionResult must NOT be 'INSUFFICIENT_SYMPTOMS'.
+    if (lastDetectedDisease && lastDetectedDisease.toLowerCase() !== 'tidak terdeteksi' && lastDetectionResult !== "INSUFFICIENT_SYMPTOMS") {
+        console.log("Valid diagnosis found for reservation:", lastDetectedDisease);
+        const gejalaDataRaw = lastDetectionResult; // This will contain the full raw detection string
+        const penyakitDisplay = lastDetectedDisease;
 
-    Swal.fire({
-        title: 'Konfirmasi Reservasi',
-        html: `
-            <p class="text-sm text-gray-700">Apakah Anda yakin ingin melanjutkan ke halaman reservasi untuk <b>${penyakitDisplay}</b> berdasarkan analisis gejala?</p>
-            <div class="form-check text-start mt-3 mb-2 flex items-center justify-center">
-                <input class="form-check-input h-5 w-5 text-blue-600 mr-2" type="checkbox" value="" id="konfirmasi-reservasi-check">
-                <label class="form-check-label text-sm text-gray-600" for="konfirmasi-reservasi-check">
-                    Saya setuju data hasil analisis ini dikirimkan untuk membantu proses reservasi.
-                </label>
-            </div>
-        `,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Lanjutkan Reservasi',
-        cancelButtonText: 'Batal',
-        focusConfirm: false,
-        preConfirm: () => {
-            const checkbox = document.getElementById('konfirmasi-reservasi-check');
-            if (!checkbox || !checkbox.checked) {
-                Swal.showValidationMessage('Anda harus menyetujui pengiriman data untuk melanjutkan.');
-                return false;
+        Swal.fire({
+            title: 'Konfirmasi Reservasi',
+            html: `
+                <p class="text-sm text-gray-700">Apakah Anda yakin ingin melanjutkan ke halaman reservasi untuk <b>${penyakitDisplay}</b> berdasarkan analisis gejala?</p>
+                <div class="form-check text-start mt-3 mb-2 flex items-center justify-center">
+                    <input class="form-check-input h-5 w-5 text-blue-600 mr-2" type="checkbox" value="" id="konfirmasi-reservasi-check">
+                    <label class="form-check-label text-sm text-gray-600" for="konfirmasi-reservasi-check">
+                        Saya setuju data hasil analisis ini dikirimkan untuk membantu proses reservasi.
+                    </label>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Lanjutkan Reservasi',
+            cancelButtonText: 'Batal',
+            focusConfirm: false,
+            preConfirm: () => {
+                const checkbox = document.getElementById('konfirmasi-reservasi-check');
+                if (!checkbox || !checkbox.checked) {
+                    Swal.showValidationMessage('Anda harus menyetujui pengiriman data untuk melanjutkan.');
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            console.log("User confirmed reservation data sending. Proceeding to redirect...");
-            goToReservationPage(gejalaDataRaw);
-        } else {
-            console.log("User cancelled reservation data sending.");
-            if (listenButton && !isListening && !isSpeaking) {
-                resetListenButtonUI(true);
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("User confirmed reservation data sending. Proceeding to redirect...");
+                goToReservationPage(gejalaDataRaw);
+            } else {
+                console.log("User cancelled reservation data sending.");
+                if (listenButton && !isListening && !isSpeaking) {
+                    resetListenButtonUI(true);
+                }
             }
+        });
+    } else {
+        console.warn("Reservation action triggered, but no valid or sufficient diagnosis data available.");
+        if (!isSpeaking) {
+            Swal.fire('Tidak Ada Diagnosis', 'Belum ada hasil analisis gejala yang valid atau cukup untuk reservasi.', 'warning');
         }
-    });
+    }
 }
 
 // --- Redirect to Reservation Page (Called AFTER confirmation) ---
 function goToReservationPage(diagnosisData) {
     console.log("Redirecting function called...");
     let diagnosisParam = "";
-    if (diagnosisData && diagnosisData !== "NO_VALID_DIAGNOSIS") {
+    // Ensure that 'Tidak Terdeteksi' is not considered a valid diagnosis for direct reservation
+    if (diagnosisData && diagnosisData !== "NO_VALID_DIAGNOSIS" && diagnosisData !== "INSUFFICIENT_SYMPTOMS" && !diagnosisData.toLowerCase().includes('penyakit terdeteksi: tidak terdeteksi')) {
         diagnosisParam = encodeURIComponent(diagnosisData);
         console.log("Valid symptoms data (raw server response) encoded to send:", diagnosisParam);
     } else {
@@ -627,7 +637,6 @@ function speechError(error) {
 
     lastDetectionResult = null;
     lastDetectedDisease = null;
-    // updateReservationButtonVisibility(); // Dihapus
 }
 
 function speechEnd() {
@@ -656,22 +665,6 @@ function resetListenButtonUI(enable = true) {
         }
     }
 }
-
-// function updateReservationButtonVisibility() { // Fungsi ini tidak lagi diperlukan
-//     // if (reservationButton) {
-//     //     if (lastDetectedDisease && lastDetectionResult && lastDetectionResult !== "NO_VALID_DIAGNOSIS") {
-//     //         console.log("UI UPDATE: Showing reservation button for disease:", lastDetectedDisease);
-//     //         reservationButton.style('display', 'flex');
-//     //         reservationButton.removeAttribute('disabled');
-//     //     } else {
-//     //         console.log("UI UPDATE: Hiding reservation button (no valid diagnosis or disease not parsed).");
-//     //         reservationButton.style('display', 'none');
-//     //     }
-//     // } else {
-//     //     // console.warn("UI UPDATE: Reservation button element not found when trying to update visibility as it has been removed.");
-//     // }
-// }
-
 function updateStatus(message, duration = 0) {
     if (!statusDisplay) return;
     clearTimeout(statusTimeout);
@@ -698,4 +691,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
             body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: sans-serif; color: red;"><h1>Kesalahan Kritis</h1><p>Fungsi utama aplikasi (setup) tidak ditemukan. Aplikasi tidak dapat dimulai. Pastikan file JavaScript dimuat dengan benar.</p></div>';
         }
     }
+    async function sendToServer(inputText) {
+    try {
+        viewer.innerHTML = "Mengirim data ke server..."; // Umpan balik saat mengirim
+        const response = await fetch('/api/process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `inputText=${encodeURIComponent(inputText)}` // Mengirim data sebagai URL encoded
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.text();
+        viewer.innerHTML = data; // Tampilkan hasil klasifikasi di elemen viewer
+        resetRecording(); // Reset rekaman setelah pengiriman
+    } catch (error) {
+        console.error('Error:', error);
+        viewer.innerHTML = "Terjadi kesalahan saat mengirim data.";
+    }
+}
+
+function resetRecording() {
+    recording = ""; // Reset rekaman
+    uniqueTexts.clear(); // Kosongkan Set setelah pengiriman
+}
 });
