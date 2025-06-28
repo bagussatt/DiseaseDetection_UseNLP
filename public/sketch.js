@@ -476,7 +476,7 @@ function speakDetectionSummary(penyakit, gejala, diagnosisDitemukan) {
     const shouldPromptReservation = (lastDetectionResult === "VALID_DIAGNOSIS");
 
     if (lastDetectionResult === "INSUFFICIENT_SYMPTOMS") {
-        textToSpeak = `Gejala yang terdeteksi adalah ${gejala}. Gejala Anda masih belum cukup untuk kami deteksi.`;
+        textToSpeak = `Gejala yang terdeteksi adalah ${gejala}. Gejala Anda masih belum cukup untuk kami Analisis.`;
     } else if (lastDetectionResult === "VALID_DIAGNOSIS") { // Explicitly check for VALID_DIAGNOSIS
         textToSpeak = `Baik, berdasarkan analisis, kemungkinan penyakit Anda adalah ${penyakit}. `;
     } else { // This is NO_VALID_DIAGNOSIS
