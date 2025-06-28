@@ -12,30 +12,35 @@ const keywords = {
         name: "ISPA (Infeksi Saluran Pernapasan Akut)",
         keywords: ['batuk', 'pilek', 'tenggorok', 'demam', 'sesak', 'napas', 'bersin', 'nyeri otot', 'sakit kepala', 'lemas', 'mual', 'muntah', 'diare'],
         saranDokter: 'Lakukan pemeriksaan ke dokter jika gejala berlangsung lebih dari 3 minggu atau semakin memburuk.',
+        saranObat: '',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/mengenali-gejala-ispa-dan-tindakan-yang-perlu-dilakukan)'
     },
     hipertensi: {
         name: "Hipertensi (Tekanan Darah Tinggi)",
         keywords: ['darah tinggi', 'pusing', 'sakit kepala', 'sesak', 'napas', 'gelisah', 'penglihatan kabur', 'mudah lelah', 'jantung berdebar', 'nyeri dada', 'mimisan'],
         saranDokter: 'Periksa tekanan darah secara rutin dan hindari makanan tinggi garam.',
+        saranObat: '',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/topik-penyakit/pencegahan-infeksi-pada-usia-produktif/hipertensi-tekanan-darah-tinggi). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diabetes: {
         name: "Diabetes Melitus",
         keywords: ['kencing', 'lapar', 'haus', 'berat badan turun', 'kesemutan', 'gatal', 'luka sulit sembuh', 'lelah', 'penglihatan kabur', 'infeksi kulit', 'kencing manis', 'gula darah tinggi'],
         saranDokter: 'Jaga pola makan sehat, rutin berolahraga, pantau kadar gula darah, dan ikuti anjuran dokter.',
+        saranObat: '',
         sumber: '[Kementerian Kesehatan RI](https://upk.kemkes.go.id/new/mengenal-gejala-diabetes-melitus). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     diare: {
         name: "Diare",
         keywords: ['diare', 'nyeri perut', 'mual', 'muntah', 'kram perut', 'feses cair', 'bab cair', 'dehidrasi', 'demam', 'lemas', 'mencret'],
         saranDokter: 'Pastikan tetap terhidrasi dengan minum oralit atau cairan elektrolit. Segera ke dokter jika diare parah atau disertai darah.',
+        saranObat: '',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/penyakit/diare). Data prevalensi: Survei Kesehatan Indonesia (SKI) 2023.'
     },
     ginjalkronis: {
         name: "Penyakit Ginjal Kronis",
         keywords: ['kencing malam', 'bengkak kaki', 'bengkak mata', 'lelah', 'mual', 'muntah', 'nafsu makan turun', 'darah tinggi', 'darah urin', 'gatal', 'sakit kepala', 'sesak napas'],
         saranDokter: 'Jaga pola makan sehat, batasi asupan cairan sesuai anjuran dokter, dan lakukan pemeriksaan ginjal secara rutin jika berisiko.',
+        saranObat: '',
         sumber: '[Kementerian Kesehatan RI](https://ayosehat.kemkes.go.id/gejala-penyakit-ginjal-kronis-yang-harus-diwaspadai). Data prevalensi: Surveai Kesehatan Indonesia (SKI) 2023.'
     }
     // Tambahkan penyakit lain di sini

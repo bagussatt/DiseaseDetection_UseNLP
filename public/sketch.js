@@ -13,6 +13,7 @@ let lastDetectedDisease = null;
 let greetingSpoken = false;
 let statusTimeout;
 let consentGiven = false;
+let fullDetectionDataString = null; // NEW: To store the full raw detection string for reservation page
 
 // --- p5.js Setup Function ---
 function setup() {
@@ -269,8 +270,11 @@ function gotSpeech() {
         if (lowerUserInput.includes("saya ingin reservasi")) {
             console.log("Voice command 'saya ingin reservasi' detected.");
             // Condition for reservation trigger: lastDetectedDisease must be a valid disease name (not 'Tidak Terdeteksi')
-            // AND lastDetectionResult must NOT be 'INSUFFICIENT_SYMPTOMS'.
-            if (lastDetectedDisease && lastDetectedDisease.toLowerCase() !== 'tidak terdeteksi' && lastDetectionResult !== "INSUFFICIENT_SYMPTOMS") {
+            // AND lastDetectionResult must be "VALID_DIAGNOSIS".
+            console.log("DEBUG: lastDetectedDisease before reservation check:", lastDetectedDisease);
+            console.log("DEBUG: lastDetectionResult before reservation check:", lastDetectionResult);
+
+            if (lastDetectionResult === "VALID_DIAGNOSIS") {
                 speakText("Baik, saya akan memproses permintaan reservasi Anda.");
                 handleReservationClick(); // This function handles the confirmation popup
             } else {
@@ -344,6 +348,7 @@ function displayDetectionResults(hasilDeteksiString) {
     console.log("Displaying detection results. Raw input:", hasilDeteksiString);
     lastDetectionResult = "NO_VALID_DIAGNOSIS"; // Default to no valid diagnosis
     lastDetectedDisease = null; // Ensure this is reset at the start of new detection
+    fullDetectionDataString = hasilDeteksiString; // Store the full raw string for potential reservation page
 
     const noDetectionKeywords = [
         'tidak ada penyakit',
@@ -366,24 +371,8 @@ function displayDetectionResults(hasilDeteksiString) {
     let currentFoundDiagnosis = false;
     let symptomCount = 0; // Initialize symptom count
 
-    if (isNoDetection) {
-        console.log("No specific disease detected based on keywords or empty/null result, and no symptoms found.");
-        const noDetectChatMsg = 'Kami belum mendeteksi penyakit Anda.';
-        const noDetectSpeakMsg = 'Kami belum mendeteksi penyakit Anda.';
-
-        addMessageToTranscript('Vira', noDetectChatMsg);
-        lastDetectionResult = "NO_VALID_DIAGNOSIS";
-        lastDetectedDisease = null;
-        speakText(noDetectSpeakMsg);
-        return; // Exit here for clear "no detection" cases
-    }
-
-    console.log("Potential disease or symptoms detected. Processing detailed results.");
-    lastDetectionResult = hasilDeteksiString.trim();
-
-    const lines = lastDetectionResult.split('\n');
-    
-    // Extracting data first
+    // --- Step 1: Parse the incoming string to extract data ---
+    const lines = hasilDeteksiString.split('\n');
     lines.forEach(line => {
         const parts = line.split(':');
         if (parts.length >= 2) {
@@ -403,25 +392,38 @@ function displayDetectionResults(hasilDeteksiString) {
         }
     });
 
-    // Calculate symptom count from currentGejala
+    // --- Step 2: Calculate symptom count, filtering out "Tidak ada gejala spesifik" ---
     if (currentGejala && currentGejala !== "N/A" && currentGejala.trim() !== '') {
         const symptomsArray = currentGejala.split(',').map(s => s.trim()).filter(s => s !== '');
-        symptomCount = symptomsArray.length;
+        // Filter out the specific phrase "Tidak ada gejala spesifik" from counting as a symptom
+        const actualSymptoms = symptomsArray.filter(s => s.toLowerCase() !== 'tidak ada gejala spesifik');
+        symptomCount = actualSymptoms.length;
     }
 
     let formattedHTML = ''; // Initialize formattedHTML here
+    let bubbleClass = 'bot-transcript-bubble'; // Default class
 
-    // Determine the HTML content and set lastDetectionResult based on conditions
-    if (symptomCount > 0 && symptomCount < 3 && !currentFoundDiagnosis) {
-        // Case: Symptoms detected but less than 3 AND no confident diagnosis
+    // --- Step 3: Determine the response logic based on parsed data and symptom count ---
+
+    // Case A: No actual symptoms detected (symptomCount is 0)
+    if (symptomCount === 0) {
+        formattedHTML = `<span class="sender-label">[Bot]:</span> Gejala yang Anda sampaikan belum kami mengerti.`; // Plain text response
+        lastDetectionResult = "NO_VALID_DIAGNOSIS"; // Explicitly set to NO_VALID_DIAGNOSIS
+        bubbleClass += ' error-border'; // Add error border class (red)
+        lastDetectedDisease = null; // Ensure it's null for no detection
+    }
+    // Case B: Symptoms detected, but less than 3 AND no confident diagnosis
+    else if (symptomCount > 0 && symptomCount < 3 && !currentFoundDiagnosis) {
         formattedHTML = `<span class="sender-label">[Bot]:</span> Gejala yang terdeteksi adalah: <strong>${currentGejala}</strong>. <br>
-                         Silakan ulangi kata gejala Anda dan tambahkan.`;
+                         Gejala Anda masih belum cukup untuk kami Analisis.`;
         lastDetectionResult = "INSUFFICIENT_SYMPTOMS"; // Set this status
-        // lastDetectedDisease remains null or 'Tidak Terdeteksi' as set by NLP, which is correct for this state.
-    } else {
-        // Case: Sufficient symptoms OR a confident diagnosis was made.
+        bubbleClass += ' warning-border'; // Add warning border class (orange)
+        // lastDetectedDisease remains as parsed (e.g., 'Tidak Terdeteksi' from NLP), which is fine here.
+    }
+    // Case C: Confident diagnosis (currentFoundDiagnosis is true)
+    else if (currentFoundDiagnosis) {
         formattedHTML = '<span class="sender-label">[Bot]:</span> <strong>Hasil Analisis:</strong><ul class="list-disc list-inside ml-4 mt-1">';
-        lines.forEach(line => {
+        lines.forEach(line => { // Re-iterate lines to build full HTML for valid diagnosis
             const parts = line.split(':');
             if (parts.length >= 2) {
                 const label = parts[0].trim();
@@ -435,14 +437,23 @@ function displayDetectionResults(hasilDeteksiString) {
             }
         });
         formattedHTML += '</ul>';
-        // lastDetectionResult and lastDetectedDisease are already set correctly in the extraction loop above
-        // If currentFoundDiagnosis is true, lastDetectionResult will implicitly be a valid diagnosis.
+        lastDetectionResult = "VALID_DIAGNOSIS"; // Explicitly set for valid diagnosis
+        // No specific border class for success
+    }
+    // Fallback for any other unexpected cases (should be rare with refined NLP and logic)
+    else {
+        // This case should ideally not be reached if NLP and parsing are robust.
+        // It's a safety net, treated like NO_VALID_DIAGNOSIS.
+        formattedHTML = `<span class="sender-label">[Bot]:</span> Gejala yang Anda sampaikan belum kami mengerti.`;
+        lastDetectionResult = "NO_VALID_DIAGNOSIS";
+        bubbleClass += ' error-border';
+        lastDetectedDisease = null;
     }
 
-    // Always append the HTML to the transcript
+    // --- Step 4: Append the HTML to the transcript ---
     let resultDiv = createDiv(formattedHTML);
-    resultDiv.addClass('bot-transcript-bubble');
-    resultDiv.addClass('detection-result');
+    resultDiv.addClass(bubbleClass); // Apply the determined class
+    resultDiv.addClass('detection-result'); // Keep this for general styling
     if (transcriptArea) {
         transcriptArea.child(resultDiv);
         try {
@@ -452,8 +463,7 @@ function displayDetectionResults(hasilDeteksiString) {
         }
     }
 
-    // Now, call speakDetectionSummary to handle the voice response and reservation prompt.
-    // This function will decide what to speak based on lastDetectionResult and lastDetectedDisease.
+    // --- Step 5: Call speakDetectionSummary for voice response and reservation prompt ---
     speakDetectionSummary(currentPenyakit, currentGejala, currentFoundDiagnosis);
 }
 
@@ -462,18 +472,15 @@ function displayDetectionResults(hasilDeteksiString) {
 function speakDetectionSummary(penyakit, gejala, diagnosisDitemukan) {
     let textToSpeak = '';
 
-    // Condition to add reservation prompt: if any detection occurred (not NO_VALID_DIAGNOSIS)
-    const shouldPromptReservation = (lastDetectionResult !== "NO_VALID_DIAGNOSIS");
+    // Condition to add reservation prompt: only if it's a VALID_DIAGNOSIS
+    const shouldPromptReservation = (lastDetectionResult === "VALID_DIAGNOSIS");
 
     if (lastDetectionResult === "INSUFFICIENT_SYMPTOMS") {
-        textToSpeak = `Gejala yang terdeteksi adalah ${gejala}. Silakan ulangi kata gejala Anda dan tambahkan.`;
-    } else if (diagnosisDitemukan && penyakit && penyakit.toLowerCase() !== 'tidak terdeteksi') {
-        // This is for a confident diagnosis (e.g., ISPA)
+        textToSpeak = `Gejala yang terdeteksi adalah ${gejala}. Gejala Anda masih belum cukup untuk kami deteksi.`;
+    } else if (lastDetectionResult === "VALID_DIAGNOSIS") { // Explicitly check for VALID_DIAGNOSIS
         textToSpeak = `Baik, berdasarkan analisis, kemungkinan penyakit Anda adalah ${penyakit}. `;
-    } else {
-        // This covers NO_VALID_DIAGNOSIS (no symptoms detected at all)
-        // or if symptoms were >=3 but still no confident diagnosis (rare with current NLP)
-        textToSpeak = "Analisis selesai. Untuk informasi lebih lanjut atau jika gejala berlanjut, disarankan untuk konsultasi dengan dokter.";
+    } else { // This is NO_VALID_DIAGNOSIS
+        textToSpeak = "Gejala yang Anda sampaikan belum kami mengerti.";
     }
 
     // Add reservation prompt if applicable
@@ -514,10 +521,10 @@ function speakText(textToSpeak) {
 function handleReservationClick() {
     console.log("Reservation triggered by voice. Preparing confirmation popup...");
     // Condition for reservation trigger: lastDetectedDisease must be a valid disease name (not 'Tidak Terdeteksi')
-    // AND lastDetectionResult must NOT be 'INSUFFICIENT_SYMPTOMS'.
-    if (lastDetectedDisease && lastDetectedDisease.toLowerCase() !== 'tidak terdeteksi' && lastDetectionResult !== "INSUFFICIENT_SYMPTOMS") {
+    // AND lastDetectionResult must be "VALID_DIAGNOSIS".
+    if (lastDetectedDisease && lastDetectedDisease.toLowerCase() !== 'tidak terdeteksi' && lastDetectionResult === "VALID_DIAGNOSIS") {
         console.log("Valid diagnosis found for reservation:", lastDetectedDisease);
-        const gejalaDataRaw = lastDetectionResult; // This will contain the full raw detection string
+        const gejalaDataRaw = fullDetectionDataString; // Use fullDetectionDataString here
         const penyakitDisplay = lastDetectedDisease;
 
         Swal.fire({

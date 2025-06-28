@@ -39,6 +39,8 @@ exports.processText = async (req, res) => {
             responseText += `Penyakit terdeteksi: ${item.penyakit}\n`;
             responseText += `Gejala yang muncul: ${Array.isArray(item.gejala) ? item.gejala.join(', ') : 'N/A'}\n`;
             responseText += `Saran Tambahan: ${item.saranDokter}\n`;
+            responseText += `${item.saranObat}\n`
+        
         });
     } else {
         // Fallback, meskipun dengan perubahan di NLP, blok ini seharusnya jarang (atau tidak pernah) tercapai
